@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title data-i18n="pageSubjects.title">รายวิชา — Thanawan • STAT KKU</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+  <script defer src="lang.js"></script>
+</head>
+<body>
+  <div id="top"></div>
+
+  <!-- Navbar -->
+  <header class="site-header">
+    <div class="container nav">
+      <a class="brand" href="index.html" data-i18n="brand"><strong>Thanawan • STAT KKU</strong></a>
+
+      <div class="lang-switch" role="group" aria-label="Language switch">
+        <button class="lang-btn" data-lang="th" aria-pressed="true">TH</button>
+        <button class="lang-btn" data-lang="en" aria-pressed="false">EN</button>
+      </div>
+
+      <input type="checkbox" id="nav-toggle" class="nav__toggle" aria-label="เปิดเมนู" />
+      <label for="nav-toggle" class="nav__burger" aria-hidden="true"><span></span></label>
+
+      <nav class="nav__menu" aria-label="เมนูหลัก">
+        <a class="nav__link" href="index.html" data-i18n="nav.home">หน้าแรก</a>
+        <a class="nav__link is-active" href="subjects.html" data-i18n="nav.subjects">รายวิชา</a>
+        <a class="nav__link" href="index.html#publications" data-i18n="nav.publications">ผลงานวิจัย</a>
+        <a class="nav__link" href="index.html#news" data-i18n="nav.news">ประกาศ</a>
+        <a class="nav__link" href="index.html#contact" data-i18n="nav.contact">ติดต่อ</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- การ์ดนำให้กด 2 รายวิชา -->
+    <section class="section">
+      <div class="container">
+        <h1 class="section__title" data-i18n="subjectsPage.h1">รายวิชา</h1>
+        <div class="grid grid--2 toc-cards">
+          <!-- การ์ด 1 -->
+          <a class="card course-link" href="#SC602001">
+            <div class="course-code">SC602001</div>
+            <div class="course-title" data-i18n="subjectsPage.c1.title">Introduction to Statistics</div>
+            <p class="course-meta" data-i18n="subjectsPage.c1.meta">ภาคต้น 2568 • 3(3-0-6) หน่วยกิต</p>
+            <div class="chips">
+              <span class="chip" data-i18n="subjectsPage.c1.tag1">Descriptive &amp; Inference</span>
+              <span class="chip" data-i18n="subjectsPage.c1.tag2">R/Python</span>
+            </div>
+          </a>
+          <!-- การ์ด 2 -->
+          <a class="card course-link" href="#SC602005">
+            <div class="course-code">SC602005</div>
+            <div class="course-title" data-i18n="subjectsPage.c2.title">Probability &amp; Statistics</div>
+            <p class="course-meta" data-i18n="subjectsPage.c2.meta">ภาคต้น 2568 • 3(2-1-6) หน่วยกิต</p>
+            <div class="chips">
+              <span class="chip" data-i18n="subjectsPage.c2.tag1">ML Basics</span>
+              <span class="chip" data-i18n="subjectsPage.c2.tag2">Projects</span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- รายละเอียดวิชา 1 -->
+    <section id="SC602001" class="section anchor-section">
+      <div class="container">
+        <div class="course-header">
+          <div>
+            <h2 data-i18n="subjectsPage.c1.h2">SC602001: Introduction to Statistics</h2>
+            <p class="muted" data-i18n="subjectsPage.c1.meta">ภาคต้น 2568 • 3(3-0-6) หน่วยกิต</p>
+          </div>
+          <div class="actions">
+            <a class="btn btn--primary" href="files/SC651001-syllabus-2568-2.pdf" target="_blank" rel="noopener" data-i18n="subjectsPage.btn.syllabus">Syllabus</a>
+            <a class="btn btn--outline" href="#" target="_blank" rel="noopener" data-i18n="subjectsPage.btn.materials">Materials</a>
+          </div>
+        </div>
+
+        <div class="detail-grid">
+          <article class="card">
+            <h3 data-i18n="subjectsPage.info">ข้อมูลรายวิชา</h3>
+            <ul class="kv">
+              <li><b data-i18n="subjectsPage.labels.lecturerL">ผู้สอน</b> : <span data-i18n="subjectsPage.c1.lecturerV">Thanawan Prahadchai</span> (<a href="mailto:thanawan@kku.ac.th">thanawan@kku.ac.th</a>)</li>
+              <li><b data-i18n="subjectsPage.labels.timeL">เวลา</b> : <span data-i18n="subjectsPage.c1.timeV">อังคาร 13:00–16:00</span></li>
+              <li><b data-i18n="subjectsPage.labels.placeL">สถานที่</b> : <span data-i18n="subjectsPage.c1.placeV">Faculty of Science, KKU</span></li>
+              <li><b data-i18n="subjectsPage.labels.toolsL">เครื่องมือ</b> : <span data-i18n="subjectsPage.c1.toolsV">R / Python / Excel</span></li>
+            </ul>
+
+            <h4 data-i18n="subjectsPage.learning">วัตถุประสงค์/ผลลัพธ์การเรียนรู้</h4>
+            <ul class="bullets">
+              <li data-i18n="subjectsPage.c1.lo1">เข้าใจแนวคิดสถิติพื้นฐานและการอนุมาน</li>
+              <li data-i18n="subjectsPage.c1.lo2">วิเคราะห์ข้อมูลจริงด้วยซอฟต์แวร์สถิติ</li>
+              <li data-i18n="subjectsPage.c1.lo3">สื่อสารผลเชิงวิชาการได้</li>
+            </ul>
+
+            <div class="resource-chips chips">
+              <a class="chip" href="#" data-i18n="subjectsPage.c1.link1">Random number</a>
+              <a class="chip" href="#" data-i18n="subjectsPage.c1.link2">Q</a>
+              <a class="chip" href="#" data-i18n="subjectsPage.c1.link3">MST</a>
+              <a class="chip" href="#" data-i18n="subjectsPage.c1.link4">Google Classroom</a>
+            </div>
+          </article>
+
+          <aside class="card">
+            <h3 data-i18n="subjectsPage.assess">การประเมินผล</h3>
+            <ul class="bullets">
+              <li data-i18n="subjectsPage.c1.gr1">แบบฝึกหัด/งานย่อย 30%</li>
+              <li data-i18n="subjectsPage.c1.gr2">MIDTERM 20% • FINAL 30%</li>
+              <li data-i18n="subjectsPage.c1.gr3">โปรเจกต์/พรีเซนต์ 20%</li>
+            </ul>
+
+            <h4 data-i18n="subjectsPage.topics">หัวข้อโดยรวม</h4>
+            <ul class="bullets">
+              <li data-i18n="subjectsPage.c1.t1">Exploratory Data Analysis</li>
+              <li data-i18n="subjectsPage.c1.t2">Probability &amp; Distributions</li>
+              <li data-i18n="subjectsPage.c1.t3">Estimation &amp; Hypothesis Testing</li>
+              <li data-i18n="subjectsPage.c1.t4">Regression Basics</li>
+            </ul>
+          </aside>
+        </div>
+
+        <div class="back-top"><a href="#top" data-i18n="subjectsPage.backTop">↑ กลับไปด้านบน</a></div>
+      </div>
+    </section>
+
+    <!-- รายละเอียดวิชา 2 -->
+    <section id="SC602005" class="section anchor-section">
+      <div class="container">
+        <div class="course-header">
+          <div>
+            <h2 data-i18n="subjectsPage.c2.h2">SC602005: Probability &amp; Statistics</h2>
+            <p class="muted" data-i18n="subjectsPage.c2.meta">ภาคต้น 2568 • 3(2-1-6) หน่วยกิต</p>
+          </div>
+          <div class="actions">
+            <a class="btn btn--primary" href="files/SC65xxx-stat-ai-syllabus.pdf" target="_blank" rel="noopener" data-i18n="subjectsPage.btn.syllabus">Syllabus</a>
+            <a class="btn btn--outline" href="#" target="_blank" rel="noopener" data-i18n="subjectsPage.btn.materials">Materials</a>
+          </div>
+        </div>
+
+        <div class="detail-grid">
+          <article class="card">
+            <h3 data-i18n="subjectsPage.info">ข้อมูลรายวิชา</h3>
+            <ul class="kv">
+              <li><b data-i18n="subjectsPage.labels.lecturerL">ผู้สอน</b> : <span data-i18n="subjectsPage.c2.lecturerV">Thanawan Prahadchai</span></li>
+              <li><b data-i18n="subjectsPage.labels.timeL">เวลา</b> : <span data-i18n="subjectsPage.c2.timeV">ศุกร์ 09:00–12:00</span></li>
+              <li><b data-i18n="subjectsPage.labels.placeL">สถานที่</b> : <span data-i18n="subjectsPage.c2.placeV">Faculty of Science, KKU</span></li>
+              <li><b data-i18n="subjectsPage.labels.toolsL">เครื่องมือ</b> : <span data-i18n="subjectsPage.c2.toolsV">Python (pandas, scikit-learn)</span></li>
+            </ul>
+
+            <h4 data-i18n="subjectsPage.goals">เป้าหมายรายวิชา</h4>
+            <ul class="bullets">
+              <li data-i18n="subjectsPage.c2.lo1">เข้าใจ workflow ของโครงการข้อมูลเชิงสถิติ</li>
+              <li data-i18n="subjectsPage.c2.lo2">ประยุกต์ ML พื้นฐานกับโจทย์วิจัย</li>
+              <li data-i18n="subjectsPage.c2.lo3">ทำรายงาน/รีโปรดิวซ์ผลการทดลอง</li>
+            </ul>
+
+            <div class="resource-chips chips">
+              <a class="chip" href="#" data-i18n="subjectsPage.c2.link1">GitHub Repo</a>
+              <a class="chip" href="#" data-i18n="subjectsPage.c2.link2">Datasets</a>
+              <a class="chip" href="#" data-i18n="subjectsPage.c2.link3">Reading List</a>
+            </div>
+          </article>
+
+          <aside class="card">
+            <h3 data-i18n="subjectsPage.assess">การประเมินผล</h3>
+            <ul class="bullets">
+              <li data-i18n="subjectsPage.c2.gr1">Mini-projects 40%</li>
+              <li data-i18n="subjectsPage.c2.gr2">Quizzes/Labs 30%</li>
+              <li data-i18n="subjectsPage.c2.gr3">Final Project 30%</li>
+            </ul>
+
+            <h4 data-i18n="subjectsPage.topics">หัวข้อโดยรวม</h4>
+            <ul class="bullets">
+              <li data-i18n="subjectsPage.c2.t1">Data prep &amp; EDA</li>
+              <li data-i18n="subjectsPage.c2.t2">Regression/Classification</li>
+              <li data-i18n="subjectsPage.c2.t3">Model evaluation</li>
+              <li data-i18n="subjectsPage.c2.t4">Reproducible research</li>
+            </ul>
+          </aside>
+        </div>
+
+        <div class="back-top"><a href="#top" data-i18n="subjectsPage.backTop">↑ กลับไปด้านบน</a></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer__flex">
+      <p data-i18n="footer.copy">© 2025 Thanawan Prahadchai — Faculty of Science, KKU</p>
+      <nav class="footer__nav">
+        <a href="#" data-i18n="footer.privacy">Privacy</a>
+        <a href="#" data-i18n="footer.access">Accessibility</a>
+        <a href="#" data-i18n="footer.sitemap">Sitemap</a>
+      </nav>
+    </div>
+  </footer>
+
+  <!-- Smooth-scroll to anchor on load -->
+  <script>
+    document.addEventListener('DOMContentLoaded', ()=>{
+      if (location.hash){
+        const el = document.querySelector(location.hash);
+        if (el) el.scrollIntoView({ behavior:'smooth', block:'start' });
+      }
+    });
+  </script>
+</body>
+</html>

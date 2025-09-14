@@ -72,7 +72,8 @@ const I18N = {
     "subjects.c1meta": "ภาคต้น 2568 • เอกสาร • Syllabus",
     "subjects.c2meta": "ภาคต้น 2568 • เอกสาร • Syllabus ",
     "subjects.c3meta": "คอร์สสั้น • โน้ต • ชุดข้อมูล",
-    "subjects.syllabus": "Syllabus",
+    "subjects.Course-Deaials": "Course Deaials",
+    "subjects.syllabus": "syllabus",
     "subjects.materials": "เอกสาร",
     "subjects.notes": "โน้ต",
 
@@ -194,6 +195,146 @@ const I18N = {
     "footer.sitemap": "Sitemap"
   }
 };
+/* ---------- TH ---------- */
+Object.assign(I18N.th, {
+  "pageSubjects.title": "รายวิชา — Thanawan • STAT KKU",
+  "subjectsPage.h1": "รายวิชา",
+
+  "subjectsPage.btn.syllabus": "Syllabus",
+  "subjectsPage.btn.materials": "เอกสาร",
+
+  "subjectsPage.info": "ข้อมูลรายวิชา",
+  "subjectsPage.learning": "วัตถุประสงค์/ผลลัพธ์การเรียนรู้",
+  "subjectsPage.goals": "เป้าหมายรายวิชา",
+  "subjectsPage.assess": "การประเมินผล",
+  "subjectsPage.topics": "หัวข้อโดยรวม",
+  "subjectsPage.backTop": "↑ กลับไปด้านบน",
+
+  "subjectsPage.labels.lecturerL": "ผู้สอน",
+  "subjectsPage.labels.timeL": "เวลา",
+  "subjectsPage.labels.placeL": "สถานที่",
+  "subjectsPage.labels.toolsL": "เครื่องมือ",
+
+  /* Course 1: SC602001 */
+  "subjectsPage.c1.title": "Introduction to Statistics",
+  "subjectsPage.c1.h2": "SC602001: Introduction to Statistics",
+  "subjectsPage.c1.meta": "ภาคต้น 2568 • 3(3-0-6) หน่วยกิต",
+  "subjectsPage.c1.lecturerV": "Thanawan Prahadchai",
+  "subjectsPage.c1.timeV": "อังคาร 13:00–16:00",
+  "subjectsPage.c1.placeV": "คณะวิทยาศาสตร์ มข.",
+  "subjectsPage.c1.toolsV": "R / Python / Excel",
+  "subjectsPage.c1.lo1": "เข้าใจแนวคิดสถิติพื้นฐานและการอนุมาน",
+  "subjectsPage.c1.lo2": "วิเคราะห์ข้อมูลจริงด้วยซอฟต์แวร์สถิติ",
+  "subjectsPage.c1.lo3": "สื่อสารผลเชิงวิชาการได้",
+  "subjectsPage.c1.link1": "Random number",
+  "subjectsPage.c1.link2": "Q",
+  "subjectsPage.c1.link3": "MST",
+  "subjectsPage.c1.link4": "Google Classroom",
+  "subjectsPage.c1.gr1": "แบบฝึกหัด/งานย่อย 30%",
+  "subjectsPage.c1.gr2": "MIDTERM 20% • FINAL 30%",
+  "subjectsPage.c1.gr3": "โปรเจกต์/พรีเซนต์ 20%",
+  "subjectsPage.c1.t1": "Exploratory Data Analysis",
+  "subjectsPage.c1.t2": "Probability & Distributions",
+  "subjectsPage.c1.t3": "Estimation & Hypothesis Testing",
+  "subjectsPage.c1.t4": "Regression Basics",
+  "subjectsPage.c1.tag1": "Descriptive & Inference",
+  "subjectsPage.c1.tag2": "R/Python",
+
+  /* Course 2: SC602005 */
+  "subjectsPage.c2.title": "Probability & Statistics",
+  "subjectsPage.c2.h2": "SC602005: Probability & Statistics",
+  "subjectsPage.c2.meta": "ภาคต้น 2568 • 3(2-1-6) หน่วยกิต",
+  "subjectsPage.c2.lecturerV": "Thanawan Prahadchai",
+  "subjectsPage.c2.timeV": "ศุกร์ 09:00–12:00",
+  "subjectsPage.c2.placeV": "คณะวิทยาศาสตร์ มข.",
+  "subjectsPage.c2.toolsV": "Python (pandas, scikit-learn)",
+  "subjectsPage.c2.lo1": "เข้าใจ workflow ของโครงการข้อมูลเชิงสถิติ",
+  "subjectsPage.c2.lo2": "ประยุกต์ ML พื้นฐานกับโจทย์วิจัย",
+  "subjectsPage.c2.lo3": "ทำรายงาน/รีโปรดิวซ์ผลการทดลอง",
+  "subjectsPage.c2.link1": "GitHub Repo",
+  "subjectsPage.c2.link2": "Datasets",
+  "subjectsPage.c2.link3": "Reading List",
+  "subjectsPage.c2.gr1": "Mini-projects 40%",
+  "subjectsPage.c2.gr2": "Quizzes/Labs 30%",
+  "subjectsPage.c2.gr3": "Final Project 30%",
+  "subjectsPage.c2.t1": "Data prep & EDA",
+  "subjectsPage.c2.t2": "Regression/Classification",
+  "subjectsPage.c2.t3": "Model evaluation",
+  "subjectsPage.c2.t4": "Reproducible research",
+  "subjectsPage.c2.tag1": "พื้นฐาน ML",
+  "subjectsPage.c2.tag2": "โปรเจกต์"
+});
+
+/* ---------- EN ---------- */
+Object.assign(I18N.en, {
+  "pageSubjects.title": "Subjects — Thanawan • STAT KKU",
+  "subjectsPage.h1": "Subjects",
+
+  "subjectsPage.btn.syllabus": "Syllabus",
+  "subjectsPage.btn.materials": "Materials",
+
+  "subjectsPage.info": "Course information",
+  "subjectsPage.learning": "Learning outcomes",
+  "subjectsPage.goals": "Course goals",
+  "subjectsPage.assess": "Assessment",
+  "subjectsPage.topics": "Topics overview",
+  "subjectsPage.backTop": "↑ Back to top",
+
+  "subjectsPage.labels.lecturerL": "Lecturer",
+  "subjectsPage.labels.timeL": "Time",
+  "subjectsPage.labels.placeL": "Location",
+  "subjectsPage.labels.toolsL": "Tools",
+
+  /* Course 1: SC602001 */
+  "subjectsPage.c1.title": "Introduction to Statistics",
+  "subjectsPage.c1.h2": "SC602001: Introduction to Statistics",
+  "subjectsPage.c1.meta": "1st semester 2025 • 3(3-0-6) credits",
+  "subjectsPage.c1.lecturerV": "Thanawan Prahadchai",
+  "subjectsPage.c1.timeV": "Tue 13:00–16:00",
+  "subjectsPage.c1.placeV": "Faculty of Science, KKU",
+  "subjectsPage.c1.toolsV": "R / Python / Excel",
+  "subjectsPage.c1.lo1": "Understand basics of statistics and inference",
+  "subjectsPage.c1.lo2": "Analyze real data with statistical software",
+  "subjectsPage.c1.lo3": "Communicate results academically",
+  "subjectsPage.c1.link1": "Random number",
+  "subjectsPage.c1.link2": "Q",
+  "subjectsPage.c1.link3": "MST",
+  "subjectsPage.c1.link4": "Google Classroom",
+  "subjectsPage.c1.gr1": "Assignments 30%",
+  "subjectsPage.c1.gr2": "MIDTERM 20% • FINAL 30%",
+  "subjectsPage.c1.gr3": "Project/Presentation 20%",
+  "subjectsPage.c1.t1": "Exploratory Data Analysis",
+  "subjectsPage.c1.t2": "Probability & Distributions",
+  "subjectsPage.c1.t3": "Estimation & Hypothesis Testing",
+  "subjectsPage.c1.t4": "Regression Basics",
+  "subjectsPage.c1.tag1": "Descriptive & Inference",
+  "subjectsPage.c1.tag2": "R/Python",
+
+  /* Course 2: SC602005 */
+  "subjectsPage.c2.title": "Probability & Statistics",
+  "subjectsPage.c2.h2": "SC602005: Probability & Statistics",
+  "subjectsPage.c2.meta": "1st semester 2025 • 3(2-1-6) credits",
+  "subjectsPage.c2.lecturerV": "Thanawan Prahadchai",
+  "subjectsPage.c2.timeV": "Fri 09:00–12:00",
+  "subjectsPage.c2.placeV": "Faculty of Science, KKU",
+  "subjectsPage.c2.toolsV": "Python (pandas, scikit-learn)",
+  "subjectsPage.c2.lo1": "Understand the workflow of statistical data projects",
+  "subjectsPage.c2.lo2": "Apply basic ML to research problems",
+  "subjectsPage.c2.lo3": "Write reports / reproduce experiments",
+  "subjectsPage.c2.link1": "GitHub Repo",
+  "subjectsPage.c2.link2": "Datasets",
+  "subjectsPage.c2.link3": "Reading List",
+  "subjectsPage.c2.gr1": "Mini-projects 40%",
+  "subjectsPage.c2.gr2": "Quizzes/Labs 30%",
+  "subjectsPage.c2.gr3": "Final Project 30%",
+  "subjectsPage.c2.t1": "Data prep & EDA",
+  "subjectsPage.c2.t2": "Regression/Classification",
+  "subjectsPage.c2.t3": "Model evaluation",
+  "subjectsPage.c2.t4": "Reproducible research",
+  "subjectsPage.c2.tag1": "ML Basics",
+  "subjectsPage.c2.tag2": "Projects"
+});
+/*////////////////////////////////////////////////////////*/
 
 function setLanguage(lang){
   const dict = I18N[lang] || I18N.th;
@@ -219,4 +360,11 @@ document.addEventListener("DOMContentLoaded", ()=>{
   document.querySelectorAll(".lang-btn").forEach(btn=>{
     btn.addEventListener("click", ()=> setLanguage(btn.dataset.lang));
   });
+});
+/*/////////////////////////////////////////////////////////////////////////////*/
+document.addEventListener('DOMContentLoaded', () => {
+  if (location.hash) {
+    const el = document.querySelector(location.hash);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
 });
