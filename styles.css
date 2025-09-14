@@ -557,8 +557,50 @@ body {
     font-weight: 700;
 }
 
+/* จัดให้ badge ชิดขวา */
 .timeline .event {
-    color: #2b2b2b;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.timeline .event-main {
+    flex: 1;
+    min-width: 0;
+}
+
+.timeline .pill.pinned {
+    margin-left: auto;
+    white-space: nowrap;
+}
+
+/* Pill บนพื้นสว่าง (เช่น timeline) */
+.timeline .pill {
+    background: #E7EEF9;
+    color: #335090;
+    border: 1px solid #B8C7E6;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: .85rem;
+}
+
+.timeline .pill::before {
+    content: "📌";
+    margin-right: 6px;
+}
+
+/* มือถือ: ให้ badge ลงบรรทัดใหม่ใต้หัวข้อ */
+@media (max-width:560px) {
+    .timeline .event {
+        flex-wrap: wrap;
+    }
+
+    .timeline .pill.pinned {
+        order: 2;
+        margin-left: 0;
+        margin-top: 6px;
+    }
 }
 
 /* ===== CTA / Contact ===== */
@@ -808,4 +850,47 @@ html {
         flex-direction: column;
         align-items: flex-start;
     }
+}
+
+/* ==== Sticky footer (ให้ footer อยู่ล่างสุดของจอเสมอ) ==== */
+html,
+body {
+    height: 100%;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1 0 auto;
+}
+
+/* ดันคอนเทนต์กินพื้นที่ที่เหลือ */
+.site-footer {
+    margin-top: auto;
+}
+
+/* เสริมความชัดเจน ไม่ให้ดู "ลอย" */
+.site-footer {
+    background: #0F172A;
+    color: #cbd5e1;
+    padding: 28px 0;
+    border-top: 1px solid rgba(135, 171, 214, .35);
+    /* เส้นแบ่งเข้ากับธีม #87ABD6/#335090 */
+    box-shadow: 0 -1px 0 rgba(0, 0, 0, .06);
+}
+
+.footer__flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+}
+
+/* กันคอนเทนต์ชน footer เวลาบรรทัดสุดท้าย */
+.section:last-child {
+    padding-bottom: 12px;
 }
