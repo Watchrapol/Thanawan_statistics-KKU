@@ -2,51 +2,67 @@
 <html lang="th">
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>พอร์ทัลนักศึกษา — ดูคะแนน</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="portal.css">
+
+    <!-- สไตล์หลักของเว็บ (มีโทเค็น/ปุ่ม/การ์ดจากระบบหลัก) -->
+    <link rel="stylesheet" href="styles.css" />
+    <!-- สไตล์เฉพาะหน้านี้ -->
+    <link rel="stylesheet" href="portal.css" />
 
     <!-- Supabase JS v2 -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- ลอจิกของหน้าพอร์ทัล -->
     <script defer src="portal.js"></script>
 </head>
 
 <body class="page-portal">
-    <main class="portal">
-        <h1>พอร์ทัลนักศึกษา</h1>
+    <main class="portal portal--compact" role="main" aria-labelledby="h1">
+        <h1 id="h1">พอร์ทัลนักศึกษา</h1>
         <p class="muted">ล็อกอินด้วยอีเมลที่ลงทะเบียนไว้ เพื่อดูคะแนนของคุณ</p>
 
         <!-- ขั้นที่ 1: อีเมล -->
         <form id="f-email" class="stack" autocomplete="off">
             <label>อีเมล
-                <input type="email" name="email" required placeholder="you@kku.ac.th" class="input">
+                <input class="input" type="email" name="email" required placeholder="you@kku.ac.th" />
             </label>
-            <button class="btn btn--primary" type="submit">ส่งรหัส OTP</button>
+            <button id="btn-send" class="btn btn--primary" type="submit">ส่งรหัส OTP</button>
             <small class="muted">เราจะส่งรหัส 6 หลักไปที่อีเมลนี้ (ถ้าอีเมลมีในระบบ)</small>
+            <p id="msg-email" class="notice" hidden aria-live="polite"></p>
         </form>
 
         <!-- ขั้นที่ 2: OTP -->
-        <form id="f-otp" class="stack" hidden autocomplete="off">
+        <form id="f-otp" class="stack otp-form" hidden autocomplete="off" aria-label="ยืนยันรหัส OTP">
             <label>รหัส OTP
-                <input type="text" name="code" inputmode="numeric" pattern="[0-9]{6}" maxlength="6"
-                    autocomplete="one-time-code" placeholder="กรอกรหัส 6 หลัก" class="input code" required>
+                <input class="input code" type="text" name="code" inputmode="numeric" pattern="[0-9]{6}" maxlength="6"
+                    autocomplete="one-time-code" placeholder="กรอกรหัส 6 หลัก" required />
             </label>
-            <button class="btn btn--primary" type="submit">ยืนยัน</button>
-            <button id="btn-back" class="btn btn--outline" type="button">ย้อนกลับ</button>
-            <small class="muted">หรือกดลิงก์ Magic link ที่ส่งไปในอีเมล</small>
-            <p id="msg" class="notice" hidden></p>
 
+            <div class="row center-items">
+                <button id="btn-confirm" class="btn btn--primary" type="submit">ยืนยัน</button>
+                <button id="btn-back" class="btn btn--outline" type="button">ย้อนกลับ</button>
+            </div>
+
+            <small class="muted">
+                ต้องใส่ภายใน <b><span id="otp-count">--</span>s</b>
+                • ที่ส่งไปในอีเมล
+            </small>
+            <p id="msg-otp" class="notice" hidden aria-live="polite"></p>
         </form>
 
         <!-- ขั้นที่ 3: แดชบอร์ด -->
         <section id="app" hidden>
-            <div id="who"></div>
-            <h3>รายวิชาที่ลงทะเบียนกับอาจารย์</h3>
-            <div id="courses" class="grid-courses"></div>
-            <hr>
-            <div id="course-detail"></div>
+            <!-- การ์ดข้อมูลผู้เข้าระบบ (คอลัมน์ซ้าย) -->
+            <div id="card-who"></div>
+
+            <!-- หัวข้อ + การ์ดรายวิชา (คอลัมน์ซ้าย) -->
+            <h3 id="courses-title" class="h3">รายวิชาที่ลงทะเบียนกับอาจารย์</h3>
+            <div id="card-courses"></div>
+
+            <!-- การ์ดคะแนน (คอลัมน์ขวา โผล่เมื่อกดดูคะแนน) -->
+            <div id="card-score"></div>
+
             <button id="signout" class="btn btn--outline">ออกจากระบบ</button>
         </section>
     </main>

@@ -1,82 +1,75 @@
-/* ====== Portal page only (scoped) ====== */
+/* ===== เฉพาะหน้าพอร์ทัล ===== */
 .page-portal [hidden] {
     display: none !important;
 }
 
-/* กันเหตุฟอร์ม 2 ชุดโผล่พร้อมกัน */
+/* ============ เลย์เอาต์แดชบอร์ด: 2→3 คอลัมน์ & อยู่กลาง ============ */
+body.page-portal {
+    min-height: 100svh;
+    display: grid;
+    /* ไว้กึ่งกลางโหมด compact ตอนยังไม่ล็อกอิน */
+    background: #f3f6fb;
+}
 
-.page-portal .portal {
-    max-width: min(1240px, calc(100% - 64px));
-    margin: 40px auto;
+/* โหมด compact (ก่อนล็อกอิน) */
+.page-portal .portal.portal--compact {
+    place-self: center;
+    inline-size: clamp(360px, 92vw, 560px);
+    margin: 0;
+    padding: 20px;
     background: #fff;
     border: 1px solid #E5E8EE;
-    border-radius: 14px;
-    padding: 32px;
+    border-radius: 16px;
     box-shadow: 0 2px 16px rgba(16, 24, 40, .04);
 }
 
-/* ฟอร์มอีเมล: บนเดสก์ท็อปวางอินพุต+ปุ่มในแถวเดียว */
-@media (min-width:900px) {
-    .page-portal #f-email {
-        display: flex;
-        align-items: flex-end;
-        gap: 12px;
-        max-width: 920px;
-    }
-
-    .page-portal #f-email label {
-        flex: 1;
-    }
-
-    .page-portal #f-email .input {
-        width: 100%;
-    }
+.page-portal .portal h1 {
+    margin: 0 0 6px;
 }
 
-/* การ์ดรายวิชา: ยืด-หดอัตโนมัติ */
-.page-portal .grid-courses {
-    display: grid;
-    gap: 16px;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+.page-portal .portal>.muted {
+    margin: 0 0 12px;
 }
 
-@media (min-width:1200px) {
-    .page-portal .grid-courses {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
+/* ฟอร์มพื้นฐาน */
+.page-portal .stack {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
 }
 
-/* ตารางคะแนนอ่านง่าย */
-.page-portal .table-wrap {
-    overflow: auto;
+.page-portal .row {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
 }
 
-.page-portal .table-wrap table {
+.page-portal .center-items {
+    justify-content: center;
+}
+
+.page-portal .input {
     width: 100%;
-    border-collapse: collapse;
-    font-variant-numeric: tabular-nums;
-}
-
-.page-portal .table-wrap th,
-.page-portal .table-wrap td {
+    border: 1.5px solid #dbe1ea;
+    border-radius: 10px;
     padding: 10px 12px;
-    border-bottom: 1px solid #eef2f7;
+    background: #fff;
 }
 
-.page-portal .table-wrap tbody tr:nth-child(odd) {
-    background: #f7f9fc;
+.page-portal .input:focus {
+    outline: 0;
+    border-color: #87ABD6;
+    box-shadow: 0 0 0 3px rgba(135, 171, 214, .35);
 }
 
-.page-portal .table-wrap tfoot td {
-    background: #f2f6fd;
-    font-weight: 700;
+.page-portal .code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 }
 
-.page-portal td.right {
-    text-align: right;
+.page-portal .muted {
+    color: #64748b;
 }
 
-/* แจ้งสถานะ */
 .page-portal .notice {
     margin-top: 8px;
     font-size: .95rem;
@@ -86,23 +79,243 @@
     color: #166534;
 }
 
-.page-portal .notice--warn {
-    color: #92400e;
-}
-
 .page-portal .notice--err {
     color: #b91c1c;
 }
 
-/* เกรดเป็น pill (ถ้าใช้) */
-.page-portal .pill {
+/* ฟอร์มอีเมล: จัดอินพุต+ปุ่มบรรทัดเดียวบนเดสก์ท็อป */
+@media (min-width:780px) {
+    .page-portal #f-email {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        grid-template-areas:
+            "label btn"
+            "help  help";
+        align-items: end;
+        column-gap: 12px;
+        row-gap: 6px;
+    }
+
+    .page-portal #f-email label {
+        grid-area: label;
+        margin: 0;
+    }
+
+    .page-portal #btn-send {
+        grid-area: btn;
+    }
+
+    .page-portal #f-email small {
+        grid-area: help;
+        margin: 0;
+    }
+
+    /* ฟอร์ม OTP ตรงกลาง */
+    .page-portal .otp-form {
+        display: grid;
+        grid-template-columns: 1fr auto auto;
+        grid-template-areas:
+            "code confirm back"
+            "help help   help";
+        align-items: end;
+        column-gap: 12px;
+        row-gap: 6px;
+        justify-content: center;
+    }
+
+    .page-portal .otp-form label {
+        grid-area: code;
+        margin: 0;
+    }
+
+    .page-portal #btn-confirm {
+        grid-area: confirm;
+    }
+
+    .page-portal #btn-back {
+        grid-area: back;
+    }
+
+    .page-portal .otp-form small {
+        grid-area: help;
+        margin: 0;
+        text-align: center;
+    }
+}
+
+/* การ์ดมาตรฐาน */
+.page-portal .card {
+    border: 1px solid #E5E8EE;
+    border-radius: 14px;
+    padding: 16px;
+    background: #fff;
+    transition: transform .06s ease, box-shadow .2s ease, border-color .2s ease;
+}
+
+.page-portal .card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px rgba(17, 24, 39, .08);
+    border-color: #cfd9ec;
+}
+
+.page-portal #card-who,
+.page-portal #card-courses,
+.page-portal #card-score {
+    margin-top: 14px;
+}
+
+/* รายวิชา: รองรับทั้ง .courses-grid และ .grid-courses */
+.page-portal .courses-grid,
+.page-portal .grid-courses {
+    display: grid;
+    grid-template-columns: 1fr;
+    /* แนวตั้งเสมอ */
+    gap: 12px;
+}
+
+.page-portal .courses-grid .card {
+    padding: 14px;
+}
+
+/* เดสก์ท็อปใหญ่: ล็อกสูงสุด 3 คอลัมน์ */
+@media (min-width:1200px) {
+
+    .page-portal .courses-grid,
+    .page-portal .grid-courses {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+/* มีวิชาเดียว → การ์ดเต็มแถว */
+.page-portal .courses-grid.is-single,
+.page-portal .grid-courses.is-single {
+    grid-template-columns: 1fr;
+}
+
+/* ตารางคะแนนใหญ่ขึ้นและลื่นตา */
+.page-portal .table-wrap {
+    overflow: auto;
+}
+
+.page-portal table {
+    width: 100%;
+    border-collapse: collapse;
+    font-variant-numeric: tabular-nums;
+}
+
+.page-portal th,
+.page-portal td {
+    padding: 12px 14px;
+    border-bottom: 1px solid #eef2f7;
+}
+
+.page-portal tbody tr:nth-child(odd) {
+    background: #f8fafc;
+}
+
+.page-portal tfoot td {
+    background: #eef4ff;
+    font-weight: 700;
+}
+
+.page-portal td.right {
+    text-align: right;
+}
+
+.pill {
     display: inline-block;
     padding: .2rem .55rem;
     border-radius: 999px;
     font-weight: 600;
 }
 
-.page-portal .pill--grade {
+.pill--grade {
     background: #e8eefb;
     color: #1f2e5c;
+}
+
+/* ปุ่มโหลด */
+.page-portal .btn.is-loading {
+    position: relative;
+    pointer-events: none;
+    opacity: .85;
+}
+
+.page-portal .btn.is-loading::after {
+    content: "";
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    width: 14px;
+    height: 14px;
+    border: 2px solid currentColor;
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    transform: translateY(-50%);
+    animation: spin .8s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: translateY(-50%) rotate(360deg);
+    }
+}
+
+/* โหมดแดชบอร์ด (หลังล็อกอิน): 2 คอลัมน์ เริ่มต้น */
+.page-portal .portal.is-dashboard {
+    place-self: initial;
+    /* ยกเลิกการจัดกลางจาก compact */
+    max-width: min(1320px, calc(100% - 64px));
+    margin: 36px auto;
+    display: grid;
+    gap: 16px 20px;
+    align-items: start;
+    justify-content: center;
+    /* จัดทั้งกริดให้อยู่กลางแนวนอน */
+    grid-template-columns: 380px 420px;
+    /* 2 คอลัมน์ (ซ้าย/ขวา) */
+    grid-template-areas:
+        "who courses";
+}
+
+/* ถ้ามีการ์ดคะแนน → ขยายเป็น 3 คอลัมน์ */
+.page-portal .portal.is-dashboard.has-score {
+    grid-template-columns: 380px 420px minmax(560px, 820px);
+    grid-template-areas:
+        "who courses score";
+}
+
+/* ผูกพื้นที่ของแต่ละการ์ดกับคอลัมน์ตามชื่อพื้นที่ด้านบน */
+.page-portal #card-who {
+    grid-area: who;
+}
+
+.page-portal #card-courses {
+    grid-area: courses;
+}
+
+.page-portal #card-score {
+    grid-area: score;
+}
+
+
+/* จัดตำแหน่งการ์ดในกริด */
+.page-portal .portal.is-dashboard #card-who,
+.page-portal .portal.is-dashboard #courses-title,
+.page-portal .portal.is-dashboard #card-courses,
+.page-portal .portal.is-dashboard #signout {
+    grid-column: 1;
+    /* คอลัมน์ซ้าย */
+}
+
+.page-portal .portal.is-dashboard #card-score {
+    grid-column: 2;
+    /* คอลัมน์ขวา */
+}
+
+/* จอแคบ → คอลัมน์เดียว */
+@media (max-width:920px) {
+    .page-portal .portal.is-dashboard {
+        display: block;
+    }
 }
