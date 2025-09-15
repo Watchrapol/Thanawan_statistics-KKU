@@ -35,6 +35,7 @@
         const lang = localStorage.getItem("lang") || "th";
         const sortMode = ul.dataset.sort || "pinnedThenDate";
         const limit = parseInt(ul.dataset.limit || "0", 10);
+        const newDays = parseInt(ul.dataset.newDays || "7", 10);
 
         let list = sortList(raw, sortMode);
         if (limit > 0) list = list.slice(0, limit);
@@ -44,28 +45,36 @@
             return;
         }
 
+        const now = new Date();
         ul.innerHTML = list.map(item => {
+            const dateObj = new Date(item.date + "T00:00:00");
+            const daysDiff = (now - dateObj) / 86400000;
+            const isNew = daysDiff >= 0 && daysDiff <= newDays;
+
             const dateStr = fmtDate(item.date, lang);
             const title = (item.title?.[lang]) || "";
             const detail = (item.detail?.[lang]) || "";
-            const badge = item.pinned ? `<span class="pill" style="margin-left:8px" data-i18n="news.pinned">${lang === 'th' ? 'ปักหมุด' : 'Pinned'}</span>` : "";
             const titleHtml = item.url
                 ? `<a href="${item.url}" target="_blank" rel="noopener">${title}</a>`
                 : title;
 
-            return `
-  <li>
-    <div class="time"><span>${dateStr}</span></div>
-    <div class="event">
-      <div class="event-main">
-        <b>${titleHtml}</b> — <span>${detail}</span>
-      </div>
-      ${item.pinned ? `<span class="pill pinned" aria-label="${lang === 'th' ? 'ปักหมุด' : 'Pinned'}"> ${lang === 'th' ? 'ปักหมุด' : 'Pinned'}</span>` : ""}
-    </div>
-  </li>`;
+            const badges = `
+      <div class="event-badges">
+        ${item.pinned ? `<span class="pill pinned">${lang === 'th' ? 'ปักหมุด' : 'Pinned'}</span>` : ""}
+        ${isNew ? `<span class="pill new">${lang === 'th' ? 'ใหม่' : 'NEW'}</span>` : ""}
+      </div>`;
 
+            return `
+      <li>
+        <div class="time"><span>${dateStr}</span></div>
+        <div class="event">
+          <div class="event-main"><b>${titleHtml}</b> — <span>${detail}</span></div>
+          ${badges}
+        </div>
+      </li>`;
         }).join("");
     }
+
 
     let CACHE = [];
     try {

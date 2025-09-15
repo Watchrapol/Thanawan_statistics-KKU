@@ -265,6 +265,7 @@ Object.assign(I18N.th, {
     "subjectsPage.c2.tag2": "โปรเจกต์",
 
     /* announcements*/
+    "news.new":"ใหม่",
     "pageNews.title": "ประกาศทั้งหมด — Thanawan • STAT KKU",
     "pageNews.h1": "ประกาศทั้งหมด",
     "news.more": "ดูประกาศทั้งหมด →",
@@ -341,6 +342,7 @@ Object.assign(I18N.en, {
     "subjectsPage.c2.tag2": "Projects",
 
     /* announcements*/
+    "news.new":"NEW",
     "pageNews.title": "Announcements — Thanawan • STAT KKU",
     "pageNews.h1": "All announcements",
     "news.more": "View all announcements →",

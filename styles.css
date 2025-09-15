@@ -569,20 +569,61 @@ body {
     min-width: 0;
 }
 
+.timeline .event-badges {
+    display: flex;
+    gap: 8px;
+    margin-left: auto;
+}
+
 .timeline .pill.pinned {
     margin-left: auto;
     white-space: nowrap;
+    background: #E7EEF9;
+    color: #335090;
+    border: 1px solid #B8C7E6;
 }
 
 /* Pill บนพื้นสว่าง (เช่น timeline) */
 .timeline .pill {
-    background: #E7EEF9;
-    color: #335090;
-    border: 1px solid #B8C7E6;
     padding: 4px 10px;
     border-radius: 999px;
     font-weight: 700;
     font-size: .85rem;
+    white-space: nowrap;
+}
+
+
+/* NEW กระพริบ (เข้าธีม อ่านชัด) */
+.timeline .pill.new {
+    background: #FFF4BF;
+    color: #7A5E00;
+    border: 1px solid #f2a86b;
+    animation: blink .9s steps(2, start) infinite;
+}
+
+@keyframes blink {
+    50% {
+        opacity: .3;
+    }
+}
+
+/* เคารพการตั้งค่าลดแอนิเมชันของผู้ใช้ */
+@media (prefers-reduced-motion: reduce) {
+    .timeline .pill.new {
+        animation: none;
+    }
+}
+
+/* มือถือ: ให้ badge ลงบรรทัดใหม่ใต้หัวข้อ */
+@media (max-width:560px) {
+    .timeline .event {
+        flex-wrap: wrap;
+    }
+
+    .timeline .event-badges {
+        width: 100%;
+        justify-content: flex-start;
+    }
 }
 
 .timeline .pill::before {
