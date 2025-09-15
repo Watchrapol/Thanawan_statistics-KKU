@@ -1,34 +1,8 @@
 [
     {
-        "id": "proj-week12",
-        "date": "2025-03-30",
-        "title": {
-            "th": "ส่งงานโปรเจกต์",
-            "en": "Project submission"
-        },
-        "detail": {
-            "th": "ภายใน 23:59 น. วันอาทิตย์สัปดาห์ที่ 12",
-            "en": "By 23:59 on Sunday of Week 12"
-        },
-        "url": "",
-        "pinned": true
-    },
-    {
-        "id": "mid2-2025",
-        "date": "2025-02-08",
-        "title": {
-            "th": "MID2 (10%)",
-            "en": "MID2 (10%)"
-        },
-        "detail": {
-            "th": "เสาร์ 14:00–16:30 (Sec1–6501 / Sec2–6502)",
-            "en": "Sat 14:00–16:30 (Sec1–6501 / Sec2–6502)"
-        },
-        "url": ""
-    },
-    {
-        "id": "mid1-2025",
-        "date": "2025-01-14",
+        "id": "sc602001-mid1",
+        "date": "2025-10-18", 
+        "postedAt": "2025-09-15",
         "title": {
             "th": "MID1 (20%)",
             "en": "MID1 (20%)"
@@ -37,19 +11,42 @@
             "th": "อังคาร 13:00–16:00",
             "en": "Tue 13:00–16:00"
         },
-        "url": ""
+        "course": "SC602001",
+        "pinned": false
     },
     {
-        "id": "test5-2025",
-        "date": "2025-09-14",
+        "id": "proj-week12",
+        "date": "2025-11-30",
+        "postedAt": "2025-11-20",
         "title": {
-            "th": "test5 (5%)",
-            "en": "test5 (5%)"
+            "th": "ส่งโปรเจกต์",
+            "en": "Project submission"
         },
         "detail": {
-            "th": "จันทร์ 09:00–10:30",
-            "en": "Mon 09:00–10:30"
+            "th": "ก่อน 23:59",
+            "en": "Before 23:59"
         },
-        "url": ""
+        "courses": [
+            "SC602001",
+            "SC602005"
+        ],
+        "pinned": true
+    },
+    {
+        "id": "test-1",
+        "date": "2025-09-15",
+        "postedAt": "2025-09-11",
+        "title": {
+            "th": "test-1",
+            "en": "test-1"
+        },
+        "detail": {
+            "th": "09:00",
+            "en": "10:30"
+        },
+        "courses": [
+            "SC602001"
+        ],
+        "pinned": false
     }
 ]

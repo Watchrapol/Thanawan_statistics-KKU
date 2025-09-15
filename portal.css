@@ -1,0 +1,108 @@
+/* ====== Portal page only (scoped) ====== */
+.page-portal [hidden] {
+    display: none !important;
+}
+
+/* กันเหตุฟอร์ม 2 ชุดโผล่พร้อมกัน */
+
+.page-portal .portal {
+    max-width: min(1240px, calc(100% - 64px));
+    margin: 40px auto;
+    background: #fff;
+    border: 1px solid #E5E8EE;
+    border-radius: 14px;
+    padding: 32px;
+    box-shadow: 0 2px 16px rgba(16, 24, 40, .04);
+}
+
+/* ฟอร์มอีเมล: บนเดสก์ท็อปวางอินพุต+ปุ่มในแถวเดียว */
+@media (min-width:900px) {
+    .page-portal #f-email {
+        display: flex;
+        align-items: flex-end;
+        gap: 12px;
+        max-width: 920px;
+    }
+
+    .page-portal #f-email label {
+        flex: 1;
+    }
+
+    .page-portal #f-email .input {
+        width: 100%;
+    }
+}
+
+/* การ์ดรายวิชา: ยืด-หดอัตโนมัติ */
+.page-portal .grid-courses {
+    display: grid;
+    gap: 16px;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+@media (min-width:1200px) {
+    .page-portal .grid-courses {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+/* ตารางคะแนนอ่านง่าย */
+.page-portal .table-wrap {
+    overflow: auto;
+}
+
+.page-portal .table-wrap table {
+    width: 100%;
+    border-collapse: collapse;
+    font-variant-numeric: tabular-nums;
+}
+
+.page-portal .table-wrap th,
+.page-portal .table-wrap td {
+    padding: 10px 12px;
+    border-bottom: 1px solid #eef2f7;
+}
+
+.page-portal .table-wrap tbody tr:nth-child(odd) {
+    background: #f7f9fc;
+}
+
+.page-portal .table-wrap tfoot td {
+    background: #f2f6fd;
+    font-weight: 700;
+}
+
+.page-portal td.right {
+    text-align: right;
+}
+
+/* แจ้งสถานะ */
+.page-portal .notice {
+    margin-top: 8px;
+    font-size: .95rem;
+}
+
+.page-portal .notice--ok {
+    color: #166534;
+}
+
+.page-portal .notice--warn {
+    color: #92400e;
+}
+
+.page-portal .notice--err {
+    color: #b91c1c;
+}
+
+/* เกรดเป็น pill (ถ้าใช้) */
+.page-portal .pill {
+    display: inline-block;
+    padding: .2rem .55rem;
+    border-radius: 999px;
+    font-weight: 600;
+}
+
+.page-portal .pill--grade {
+    background: #e8eefb;
+    color: #1f2e5c;
+}

@@ -474,10 +474,52 @@ body {
     color: #111;
 }
 
+/* ปุ่ม ghost บนพื้นสว่าง (เช่นในการ์ดรายวิชา) */
 .btn--ghost {
     background: transparent;
+    color: var(--primary-700);
+    border: 2px solid rgba(51, 80, 144, .35);
+    /* #335090 แบบโปร่ง */
+    transition: background .2s ease, border-color .2s ease, transform .05s ease;
+}
+
+.btn--ghost:hover {
+    background: rgba(135, 171, 214, .12);
+    /* #87ABD6 โปร่ง */
+    border-color: rgba(51, 80, 144, .55);
+}
+
+.btn--ghost:focus-visible {
+    outline: 3px solid rgba(10, 66, 134, 0.6);
+    outline-offset: 2px;
+}
+
+.btn--ghost:active {
+    transform: translateY(1px);
+}
+
+/* ขนาดเล็ก (มีอยู่แล้ว—ย้ำไว้) */
+.btn--sm {
+    padding: 8px 14px;
+    font-size: .95rem;
+}
+
+/* เวอร์ชันบนพื้นมืด (เช่น hero สีเข้ม) — ใช้ .on-dark เพิ่มเข้าไป */
+.btn--ghost.on-dark {
     color: #fff;
-    border: 2px solid #ffffff80;
+    border-color: rgba(22, 50, 211, 0.55);
+}
+
+.btn--ghost.on-dark:hover {
+    background: rgba(255, 255, 255, .08);
+    border-color: rgba(255, 255, 255, .9);
+}
+
+/* สถานะ disabled */
+.btn:disabled,
+.btn[aria-disabled="true"] {
+    opacity: .55;
+    pointer-events: none;
 }
 
 /* ===== ปุ่มบนพื้นหลังเข้มของ Featured strip ===== */
@@ -935,3 +977,47 @@ main {
 .section:last-child {
     padding-bottom: 12px;
 }
+
+.notice {
+    margin-top: 8px;
+    font-size: .95rem;
+}
+
+.notice--ok {
+    color: #166534;
+}
+
+.notice--warn {
+    color: #92400e;
+}
+
+.notice--err {
+    color: #b91c1c;
+}
+
+.btn.is-loading {
+    position: relative;
+    pointer-events: none;
+    opacity: .8;
+}
+
+.btn.is-loading::after {
+    content: "";
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    width: 14px;
+    height: 14px;
+    border: 2px solid #fff;
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    transform: translateY(-50%);
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: translateY(-50%) rotate(360deg);
+    }
+}
+
