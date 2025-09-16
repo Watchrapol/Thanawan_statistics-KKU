@@ -1,57 +1,60 @@
 <!doctype html>
 <html lang="th">
+
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>พอร์ทัลนักศึกษา — ดูคะแนน</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>ระบบดูคะแนนนักศึกษา</title>
 
-  <link rel="stylesheet" href="styles.css" />
-  <link rel="stylesheet" href="portal.css" />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="portal.css" />
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script defer src="portal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script defer src="portal.js"></script>
 </head>
+
 <body class="page-portal">
-  <main class="portal portal--compact" role="main" aria-labelledby="h1">
-    <h1 id="h1">พอร์ทัลนักศึกษา</h1>
-    <p class="muted">ล็อกอินด้วยอีเมลที่ลงทะเบียนไว้ เพื่อดูคะแนนของคุณ</p>
+    <main class="portal portal--compact" role="main" aria-labelledby="h1">
+        <h1 id="h1">ระบบดูคะแนนนักศึกษา</h1>
+        <p class="muted">ล็อกอินด้วยอีเมลสถาบันเพื่อดูคะแนนของคุณ</p>
 
-    <!-- ขั้นที่ 1: อีเมล -->
-    <form id="f-email" class="stack" autocomplete="off">
-      <label>อีเมล
-        <input class="input" type="email" name="email" required placeholder="you@kku.ac.th" />
-      </label>
+        <!-- ขั้นที่ 1: อีเมล -->
+        <form id="f-email" class="stack" autocomplete="off">
+            <label>mail-kku
+                <input class="input" type="email" name="email" required placeholder="you@kku.ac.th" />
+            </label>
 
-      <!-- ปุ่มใหม่: ย้อนกลับไปหน้ารายวิชา -->
-      <button id="btn-back-courses" class="btn btn--outline" type="button">ย้อนกลับไปหน้ารายวิชา</button>
+            <!-- ปุ่มใหม่: ย้อนกลับไปหน้ารายวิชา -->
+            <button id="btn-back-courses" class="btn btn--outline" type="button">ย้อนกลับไปหน้ารายวิชา</button>
 
-      <button id="btn-send" class="btn btn--primary" type="submit">ส่งรหัส OTP</button>
-      <small class="muted">เราจะส่งรหัส 6 หลักไปที่อีเมลนี้ (ถ้าอีเมลมีในระบบ)</small>
-      <p id="msg-email" class="notice" hidden aria-live="polite"></p>
-    </form>
+            <button id="btn-send" class="btn btn--primary" type="submit">ส่งรหัส OTP</button>
+            <small class="muted">เราจะส่งรหัส 6 หลักไปที่อีเมลนี้ (ถ้าอีเมลมีในระบบ)</small>
+            <p id="msg-email" class="notice" hidden aria-live="polite"></p>
+        </form>
 
-    <!-- ขั้นที่ 2: OTP -->
-    <form id="f-otp" class="stack otp-form" hidden autocomplete="off" aria-label="ยืนยันรหัส OTP">
-      <label>รหัส OTP
-        <input class="input code" type="text" name="code" inputmode="numeric" pattern="[0-9]{6}" maxlength="6"
-               autocomplete="one-time-code" placeholder="กรอกรหัส 6 หลัก" required />
-      </label>
-      <div class="row center-items">
-        <button id="btn-confirm" class="btn btn--primary" type="submit">ยืนยัน</button>
-        <button id="btn-back" class="btn btn--outline" type="button">ย้อนกลับ</button>
-      </div>
-      <small class="muted">
-        ต้องใส่ภายใน <b><span id="otp-count">--</span>s</b> • ที่ส่งไปในอีเมล
-      </small>
-      <p id="msg-otp" class="notice" hidden aria-live="polite"></p>
-    </form>
+        <!-- ขั้นที่ 2: OTP -->
+        <form id="f-otp" class="stack otp-form" hidden autocomplete="off" aria-label="ยืนยันรหัส OTP">
+            <label>รหัส OTP
+                <input class="input code" type="text" name="code" inputmode="numeric" pattern="[0-9]{6}" maxlength="6"
+                    autocomplete="one-time-code" placeholder="กรอกรหัส 6 หลัก" required />
+            </label>
+            <div class="row center-items">
+                <button id="btn-confirm" class="btn btn--primary" type="submit">ยืนยัน</button>
+                <button id="btn-back" class="btn btn--outline" type="button">ย้อนกลับ</button>
+            </div>
+            <small class="muted">
+                ต้องใส่ภายใน <b><span id="otp-count">--</span>s</b> • ที่ส่งไปในอีเมล
+            </small>
+            <p id="msg-otp" class="notice" hidden aria-live="polite"></p>
+        </form>
 
-    <!-- ขั้นที่ 3: แดชบอร์ด -->
-    <section id="app" hidden>
-      <div id="card-who"></div>
-      <div id="card-courses"></div>
-      <div id="card-score"></div>
-    </section>
-  </main>
+        <!-- ขั้นที่ 3: แดชบอร์ด -->
+        <section id="app" hidden>
+            <div id="card-who"></div>
+            <div id="card-courses"></div>
+            <div id="card-score"></div>
+        </section>
+    </main>
 </body>
+
 </html>

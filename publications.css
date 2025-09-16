@@ -1,0 +1,38 @@
+/* publications.css — ใช้เฉพาะหน้า publications.html */
+
+/* ผูกสCOPEด้วยคลาสที่ body: .page-publications */
+.page-publications {
+
+  /* บังคับลิสต์การ์ดให้เป็น 1 คอลัมน์ */
+  .pubs-onecol {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+
+  /* ระยะขอบการ์ดอ่านสบายขึ้น (เฉพาะการ์ดงานวิจัย) */
+  .pub-item.card {
+    padding: var(--space-5);
+    border-radius: var(--radius);
+  }
+
+  /* ปุ่มบนการ์ด – ระยะห่างเล็กน้อย */
+  .pub-item .actions {
+    margin-top: 10px;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  /* เมตา (pill) จัดระยะ */
+  .pub-item .meta {
+    margin-top: 8px;
+    gap: 8px;
+  }
+}
+
+/* ถ้าอยากให้กลับมาเป็น 2 คอลัมน์บนหน้าจอกว้าง ให้ปลดคอมเมนต์บล็อกด้านล่าง */
+/* @media (min-width: 1280px) {
+//   .page-publications .pubs-onecol {
+//     grid-template-columns: 1fr 1fr;
+//   }
+// }*/
