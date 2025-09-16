@@ -5,14 +5,10 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>พอร์ทัลนักศึกษา — ดูคะแนน</title>
 
-  <!-- สไตล์หลักของเว็บ (โทเค็น/ปุ่ม/การ์ดจากระบบหลัก) -->
   <link rel="stylesheet" href="styles.css" />
-  <!-- สไตล์เฉพาะหน้านี้ -->
   <link rel="stylesheet" href="portal.css" />
 
-  <!-- Supabase JS v2 -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <!-- ลอจิกของหน้าพอร์ทัล -->
   <script defer src="portal.js"></script>
 </head>
 <body class="page-portal">
@@ -25,6 +21,10 @@
       <label>อีเมล
         <input class="input" type="email" name="email" required placeholder="you@kku.ac.th" />
       </label>
+
+      <!-- ปุ่มใหม่: ย้อนกลับไปหน้ารายวิชา -->
+      <button id="btn-back-courses" class="btn btn--outline" type="button">ย้อนกลับไปหน้ารายวิชา</button>
+
       <button id="btn-send" class="btn btn--primary" type="submit">ส่งรหัส OTP</button>
       <small class="muted">เราจะส่งรหัส 6 หลักไปที่อีเมลนี้ (ถ้าอีเมลมีในระบบ)</small>
       <p id="msg-email" class="notice" hidden aria-live="polite"></p>
@@ -48,13 +48,8 @@
 
     <!-- ขั้นที่ 3: แดชบอร์ด -->
     <section id="app" hidden>
-      <!-- คอลัมน์ซ้าย: ข้อมูลผู้ใช้ + ปุ่มออกจากระบบ (เรนเดอร์ด้วย JS) -->
       <div id="card-who"></div>
-
-      <!-- คอลัมน์ขวา: รายวิชาที่ลงทะเบียน (เรนเดอร์ด้วย JS) -->
       <div id="card-courses"></div>
-
-      <!-- คอลัมน์ขวาสุด: คะแนนวิชาที่เลือก (เรนเดอร์เมื่อกดดูคะแนน) -->
       <div id="card-score"></div>
     </section>
   </main>
