@@ -1,4 +1,4 @@
-// คำแปล 2 ภาษา + ตัวสลับภาษา (จำค่าไว้ใน localStorage)
+// === i18n (TH/EN) + language switch (persist in localStorage) ===
 const I18N = {
   th: {
     title: "Thanawan • STAT KKU — หน้าแรก",
@@ -10,9 +10,9 @@ const I18N = {
     "nav.news": "ประกาศ",
     "nav.contact": "ติดต่อ",
 
-    // Hero (Intro)
+    // Hero
     "hero.name": "Thanawan Prahadchai",
-    "hero.tagline": "อาจารย์ประจำสาขาสถิติ มข. — ทำวิจัยด้านเหตุการณ์สุดขั้ว (Extreme Events), การวิเคราะห์ความถี่เชิงภูมิภาค (RFA) และ AI สำหรับข้อมูลสถิติ",
+    "hero.tagline": "อาจารย์ประจำสาขาสถิติ มข. — ทำวิจัยด้านเหตุการณ์สุดขั้ว (Extreme Events), การวิเคราะห์ความถี่เชิงภูมิภาค (RFA) ",
     "hero.ctaCV": "ดาวน์โหลด CV",
     "hero.ctaContact": "ติดต่อ",
     "hero.image": "ภาพโปรไฟล์ / หน้าปก",
@@ -21,7 +21,7 @@ const I18N = {
     "hero.openGuest": "• บรรยายพิเศษ / วิทยากร",
     "hero.openSupervision": "• ที่ปรึกษางานวิจัยระดับบัณฑิตศึกษา",
 
-    // Chips (research areas)
+    // Chips
     "chips.rfa": "RFA & L-moments",
     "chips.spi": "ดัชนีภัยแล้ง (SPI/SPEI)",
     "chips.evt": "Extreme Value Theory",
@@ -29,7 +29,7 @@ const I18N = {
     "chips.ai": "Statistical AI",
     "chips.hydro": "อุทกวิทยา",
 
-    // Featured strip
+    // Featured
     "feat.badge": "ผลงานใหม่",
     "feat.title": "Using Negative Power Transformation to Model Block Minima (2025)",
     "feat.desc": "แนวทางแปลงค่ากำลังลบสำหรับแบบจำลอง Block Minima ช่วยปรับปรุงการประมาณค่าสุดโต่งและการตีความพารามิเตอร์ GEV",
@@ -73,7 +73,7 @@ const I18N = {
     "subjects.c1meta": "ภาคต้น 2568 • เอกสาร • Syllabus",
     "subjects.c2meta": "ภาคต้น 2568 • เอกสาร • Syllabus ",
     "subjects.c3meta": "คอร์สสั้น • โน้ต • ชุดข้อมูล",
-    "subjects.Course-Deaials": "Course Deaials",
+    "subjects.courseDetails": "Course Details",   // ✅ แก้คีย์
     "subjects.syllabus": "syllabus",
     "subjects.materials": "เอกสาร",
     "subjects.notes": "โน้ต",
@@ -98,8 +98,15 @@ const I18N = {
     "footer.access": "การเข้าถึง",
     "footer.sitemap": "แผนผังเว็บไซต์",
 
-    /* ---------- Subjects page ---------- */
+    /* Pages: titles (สำหรับ <title>) */
     "pageSubjects.title": "รายวิชา — Thanawan • STAT KKU",
+    "pageNews.title": "ประกาศทั้งหมด — Thanawan • STAT KKU",
+    "pagePublications.title": "ผลงานวิจัย — Thanawan • STAT KKU",
+    "pagePrivacy.title": "นโยบายความเป็นส่วนตัว — Thanawan • STAT KKU",
+    "pageAccessibility.title": "การเข้าถึง — Thanawan • STAT KKU",
+    "pageSitemap.title": "แผนผังเว็บไซต์ — Thanawan • STAT KKU",
+
+    /* Subjects page (รายละเอียด) */
     "subjectsPage.h1": "รายวิชา",
     "subjectsPage.btn.syllabus": "Syllabus",
     "subjectsPage.btn.materials": "เอกสาร",
@@ -161,47 +168,7 @@ const I18N = {
     "subjectsPage.c2.t3": "Model evaluation",
     "subjectsPage.c2.t4": "Reproducible research",
     "subjectsPage.c2.tag1": "พื้นฐาน ML",
-    "subjectsPage.c2.tag2": "โปรเจกต์",
-
-    /* ---------- Announcements page ---------- */
-    "news.new": "ใหม่",
-    "pageNews.title": "ประกาศทั้งหมด — Thanawan • STAT KKU",
-    "pageNews.h1": "ประกาศทั้งหมด",
-    "news.pinned": "ปักหมุด",
-
-    /* ---------- Publications page (ใหม่) ---------- */
-    "pagePublications.title": "ผลงานวิจัย — Thanawan • STAT KKU",
-    "pubsPage.h1": "ผลงานวิจัย (Publications)",
-    "pubsPage.lead": "บทความ วารสาร งานประชุม และโครงการด้าน Extreme Value Theory, RFA/L-moments, Hydrology และ Statistical AI",
-    "pubsPage.filter.all": "ทั้งหมด",
-    "pubsPage.searchLabel": "ค้นหา",
-    "pubsPage.searchPH": "ค้นหาชื่อบทความ, ผู้แต่ง, คำสำคัญ…",
-
-    "pubs.read": "อ่านเปเปอร์",
-    "pubs.code": "โค้ด & ข้อมูล",
-    "pubs.btn.doi": "DOI",
-    "pubs.btn.bibtex": "BibTeX",
-    "pubs.copied": "คัดลอกแล้ว",
-
-    "pubs.tag.open": "Open Access",
-    "pubs.tag.under": "อยู่ระหว่างพิจารณา",
-    "pubs.tag.hydro": "อุทกวิทยา",
-    "pubs.tag.methods": "ระเบียบวิธี",
-    "pubs.tag.extreme": "Extreme Value",
-
-    "pubs.item1.title": "Using Negative Power Transformation to Model Block Minima",
-    "pubs.item1.meta": "Prahadchai, T. (2025). <span class=\"en\">Under review</span>.",
-    "pubs.item1.desc": "วิธีแปลงกำลังลบเพื่อเสถียรพารามิเตอร์ของ GEV ฝั่ง Block Minima และปรับปรุงการประมาณค่าสุดโต่ง",
-
-    "pubs.item2.title": "Regional Frequency Analysis with Drought Indices for Northeast Thailand",
-    "pubs.item2.meta": "(2025) <span class=\"en\">Preprint</span>.",
-    "pubs.item2.desc": "RFA ด้วย SPI/SPEI สำหรับภาคอีสาน พร้อมทดสอบเอกพันธ์และแผนที่รอบระยะเวลากลับ",
-
-    "pubs.item3.title": "Hyperparameter Optimization for NPT-GEV Models",
-    "pubs.item3.meta": "(2024) <span class=\"en\">Workshop paper</span>.",
-    "pubs.item3.desc": "เฟรมเวิร์กจูนพารามิเตอร์อัตโนมัติสำหรับ NPT-GEV ด้วยแนวคิดสืบค้นเชิงบูรณาการ",
-
-    "pubs.backTop": "↑ กลับขึ้นบน"
+    "subjectsPage.c2.tag2": "โปรเจกต์"
   },
 
   en: {
@@ -216,7 +183,7 @@ const I18N = {
 
     // Hero
     "hero.name": "Thanawan Prahadchai",
-    "hero.tagline": "Lecturer in Statistics at KKU — research on extreme events, Regional Frequency Analysis (RFA), and AI for statistics.",
+    "hero.tagline": "Lecturer in Statistics at KKU — research on extreme events, Regional Frequency Analysis (RFA).",
     "hero.ctaCV": "Download CV",
     "hero.ctaContact": "Contact",
     "hero.image": "Profile / Cover Image",
@@ -233,7 +200,7 @@ const I18N = {
     "chips.ai": "Statistical AI",
     "chips.hydro": "Hydrology",
 
-    // Featured strip
+    // Featured
     "feat.badge": "Featured",
     "feat.title": "Using Negative Power Transformation to Model Block Minima (2025)",
     "feat.desc": "A negative power transformation approach for block minima to improve extreme estimation and GEV parameter interpretability.",
@@ -277,6 +244,7 @@ const I18N = {
     "subjects.c1meta": "2nd semester 2025 • Materials • Syllabus",
     "subjects.c2meta": "1st semester 2025 • Slides • Labs",
     "subjects.c3meta": "Short course • Notes • Datasets",
+    "subjects.courseDetails": "Course Details",  // ✅ match TH
     "subjects.syllabus": "Syllabus",
     "subjects.materials": "Materials",
     "subjects.notes": "Notes",
@@ -301,8 +269,15 @@ const I18N = {
     "footer.access": "Accessibility",
     "footer.sitemap": "Sitemap",
 
-    /* ---------- Subjects page ---------- */
+    /* Page titles */
     "pageSubjects.title": "Subjects — Thanawan • STAT KKU",
+    "pageNews.title": "Announcements — Thanawan • STAT KKU",
+    "pagePublications.title": "Publications — Thanawan • STAT KKU",
+    "pagePrivacy.title": "Privacy Policy — Thanawan • STAT KKU",
+    "pageAccessibility.title": "Accessibility — Thanawan • STAT KKU",
+    "pageSitemap.title": "Sitemap — Thanawan • STAT KKU",
+
+    /* Subjects page */
     "subjectsPage.h1": "Subjects",
     "subjectsPage.btn.syllabus": "Syllabus",
     "subjectsPage.btn.materials": "Materials",
@@ -364,66 +339,35 @@ const I18N = {
     "subjectsPage.c2.t3": "Model evaluation",
     "subjectsPage.c2.t4": "Reproducible research",
     "subjectsPage.c2.tag1": "ML Basics",
-    "subjectsPage.c2.tag2": "Projects",
-
-    /* ---------- Announcements page ---------- */
-    "news.new": "NEW",
-    "pageNews.title": "Announcements — Thanawan • STAT KKU",
-    "pageNews.h1": "All announcements",
-    "news.pinned": "Pinned",
-
-    /* ---------- Publications page (new) ---------- */
-    "pagePublications.title": "Publications — Thanawan • STAT KKU",
-    "pubsPage.h1": "Publications",
-    "pubsPage.lead": "Journal articles, conference papers, and projects in Extreme Value Theory, RFA/L-moments, Hydrology, and Statistical AI",
-    "pubsPage.filter.all": "All",
-    "pubsPage.searchLabel": "Search",
-    "pubsPage.searchPH": "Search title, author, keywords…",
-
-    "pubs.read": "Read paper",
-    "pubs.code": "Code & data",
-    "pubs.btn.doi": "DOI",
-    "pubs.btn.bibtex": "BibTeX",
-    "pubs.copied": "Copied",
-
-    "pubs.tag.open": "Open Access",
-    "pubs.tag.under": "Under review",
-    "pubs.tag.hydro": "Hydrology",
-    "pubs.tag.methods": "Methods",
-    "pubs.tag.extreme": "Extreme Value",
-
-    "pubs.item1.title": "Using Negative Power Transformation to Model Block Minima",
-    "pubs.item1.meta": "Prahadchai, T. (2025). <span class=\"en\">Under review</span>.",
-    "pubs.item1.desc": "A negative power transformation to stabilize GEV parameters for block minima and improve extreme estimation.",
-
-    "pubs.item2.title": "Regional Frequency Analysis with Drought Indices for Northeast Thailand",
-    "pubs.item2.meta": "(2025) <span class=\"en\">Preprint</span>.",
-    "pubs.item2.desc": "RFA using SPI/SPEI for Northeast Thailand with homogeneity tests and return-period mapping.",
-
-    "pubs.item3.title": "Hyperparameter Optimization for NPT-GEV Models",
-    "pubs.item3.meta": "(2024) <span class=\"en\">Workshop paper</span>.",
-    "pubs.item3.desc": "An automated tuning framework for NPT-GEV based on integrated search strategies.",
-
-    "pubs.backTop": "↑ Back to top"
+    "subjectsPage.c2.tag2": "Projects"
   }
 };
 
-/*////////////////////////////////////////////////////////*/
+/* ---------------- Core i18n switcher ---------------- */
 function setLanguage(lang) {
   const dict = I18N[lang] || I18N.th;
   document.documentElement.lang = lang;
 
-  // แปลทั้ง innerHTML และ attribute (เช่น placeholder)
+  // translate text / attributes
   document.querySelectorAll("[data-i18n]").forEach((el) => {
     const key = el.getAttribute("data-i18n");
-    const attr = el.getAttribute("data-i18n-attr"); // ตัวเลือก: placeholder, title, aria-label ฯลฯ
-    if (dict[key] !== undefined) {
-      if (attr) el.setAttribute(attr, dict[key]);
-      else el.innerHTML = dict[key];
+    const attr = el.getAttribute("data-i18n-attr"); // e.g., placeholder/title/aria-label
+    const val = dict[key];
+    if (val !== undefined) {
+      if (attr) el.setAttribute(attr, val);
+      else el.innerHTML = val;
     }
   });
 
-  // ปุ่มภาษา
+  // <title> (ถ้ามี data-i18n="title" หรือคีย์เฉพาะหน้า)
+  const titleEl = document.querySelector("title[data-i18n]");
+  if (titleEl) {
+    const key = titleEl.getAttribute("data-i18n"); // ปกติคือ "title" หรือ page*.title
+    const pageKey = titleEl.dataset.pageKey;       // ใช้ได้ถ้าตั้ง data-page-key ไว้
+    titleEl.textContent = dict[pageKey || key] || titleEl.textContent;
+  }
+
+  // toggle pressed state
   document.querySelectorAll(".lang-btn").forEach((btn) => {
     btn.setAttribute("aria-pressed", String(btn.dataset.lang === lang));
   });
@@ -439,7 +383,6 @@ document.addEventListener("DOMContentLoaded", () => {
     btn.addEventListener("click", () => setLanguage(btn.dataset.lang));
   });
 
-  // เลื่อนเข้า anchor ถ้ามี hash ใน URL
   if (location.hash) {
     const el = document.querySelector(location.hash);
     if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
