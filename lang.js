@@ -11,15 +11,15 @@ const I18N = {
     "nav.contact": "ติดต่อ",
 
     // Hero
-    "hero.name": "Thanawan Prahadchai",
+    "hero.name": "ธนวรรณ ประฮาดไชย",
     "hero.tagline": "อาจารย์ประจำสาขาสถิติ คณะวิทยาศาสตร์ มหาวิทยาลัยขอนแก่น ",
     "hero.ctaCV": "ดาวน์โหลด CV",
     "hero.ctaContact": "ติดต่อ",
     "hero.image": "ภาพโปรไฟล์ / หน้าปก",
-    "hero.openTitle": "กำลังเปิดรับ:",
-    "hero.openCollab": "• ความร่วมมือวิจัย",
-    "hero.openGuest": "• บรรยายพิเศษ / วิทยากร",
-    "hero.openSupervision": "• ที่ปรึกษางานวิจัยระดับบัณฑิตศึกษา",
+    "hero.openTitle": "ประวัติการศึกษา:",
+    "hero.openPhD": "• Ph.D. in Statistics, Chonnam National University, South Korea",
+    "hero.openMSc": "• M.Sc. in Statistics, Chonnam National University, South Korea",
+    "hero.openBsc": "• B.Sc. in Statistics, Mahasarakham University, Thailand",
 
     // Chips
     "chips.rfa": "Design and Analysis of Computer Experiments",
@@ -183,10 +183,10 @@ const I18N = {
     "hero.ctaCV": "Download CV",
     "hero.ctaContact": "Contact",
     "hero.image": "Profile / Cover Image",
-    "hero.openTitle": "Currently open to:",
-    "hero.openCollab": "• Research collaboration",
-    "hero.openGuest": "• Guest lectures / talks",
-    "hero.openSupervision": "• Graduate supervision",
+    "hero.openTitle": "EDUCATION:",
+    "hero.openPhD": "• Ph.D. in Statistics, Chonnam National University, South Korea",
+    "hero.openMSc": "• M.Sc. in Statistics, Chonnam National University, South Korea",
+    "hero.openBsc": "• B.Sc. in Statistics, Mahasarakham University, Thailand",
 
     // Chips
     "chips.rfa": "Design and Analysis of Computer Experiments",

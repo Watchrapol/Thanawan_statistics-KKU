@@ -12,6 +12,9 @@
         rel="stylesheet">
 
     <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css" />
+    <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js" defer></script>
+    <script src="script.js" defer></script>
     <script defer src="lang.js"></script>
     <script defer src="news.js"></script>
 </head>
@@ -72,16 +75,23 @@
                 </div>
 
                 <aside class="hero__media" aria-label="Profile / opportunities">
-                    <picture class="media-placeholder">
-                        <img src="assets/images/ft03.jpg" alt="Thanawan Prahadchai" class="profile-img" width="800"
-                            height="600" loading="lazy" decoding="async">
-                    </picture>
+                        <div class="swiper mySwiper rerun">
+                            <div class="swiper-wrapper">
+                                <div class="swiper-slide"><img src="assets/images/ft01.jpg" alt="1"></div>
+                                <div class="swiper-slide"><img src="assets/images/ft02.jpg" alt="2"></div>
+                                <div class="swiper-slide"><img src="assets/images/ft03.jpg" alt="3"></div>
+                                <div class="swiper-slide"><img src="assets/images/ft04.jpg" alt="4"></div>
+                                <div class="swiper-slide"><img src="assets/images/ft05.jpg" alt="5"></div>
+                                <div class="swiper-slide"><img src="assets/images/ft06.jpg" alt="6"></div>
+                            </div>
+                            <div class="swiper-pagination"></div>
+                        </div>
 
                     <ul class="class-info">
-                        <li><strong data-i18n="hero.openTitle">Currently open to:</strong></li>
-                        <li data-i18n="hero.openCollab">• Research collaboration</li>
-                        <li data-i18n="hero.openGuest">• Guest lectures / talks</li>
-                        <li data-i18n="hero.openSupervision">• Graduate supervision</li>
+                        <li><strong data-i18n="hero.openTitle">EDUCATION:</strong></li>
+                        <li data-i18n="hero.openPhD">(2021 - 2025) Ph.D. in Statistics, Chonnam National University, Republic of Korea</li>
+                        <li data-i18n="hero.openMSc">(2019 - 2021) M.Sc. in Statistics, Chonnam National University, Republic of Korea</li>
+                        <li data-i18n="hero.openBsc">(2015 - 2019)B.Sc. in Statistics, Mahasarakham University, Thailand</li>
                     </ul>
                 </aside>
 
