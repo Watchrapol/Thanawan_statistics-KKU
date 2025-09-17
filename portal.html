@@ -24,9 +24,7 @@
                 <input class="input" type="email" name="email" required placeholder="you@kku.ac.th" />
             </label>
 
-            <!-- ปุ่มใหม่: ย้อนกลับไปหน้ารายวิชา -->
             <button id="btn-back-courses" class="btn btn--outline" type="button">ย้อนกลับไปหน้ารายวิชา</button>
-
             <button id="btn-send" class="btn btn--primary" type="submit">ส่งรหัส OTP</button>
             <small class="muted">เราจะส่งรหัส 6 หลักไปที่อีเมลนี้ (ถ้าอีเมลมีในระบบ)</small>
             <p id="msg-email" class="notice" hidden aria-live="polite"></p>
@@ -50,8 +48,29 @@
 
         <!-- ขั้นที่ 3: แดชบอร์ด -->
         <section id="app" hidden>
+            <!-- การ์ดข้อ 3: อยู่บนสุดเสมอ -->
+            <div id="card-branding" class="card">
+                <h3 class="h">ข้อมูลระบบ & การชี้แจง</h3>
+                <div class="branding-row">
+                    <div class="brand-logo" aria-hidden="true">KKU</div>
+                    <div>
+                        <div class="brand-title">ระบบคะแนนนักศึกษา – สาขาสถิติ คณะวิทยาศาสตร์</div>
+                        <div class="muted">เวอร์ชัน 1.0 • อัปเดตล่าสุด: <span id="app-updated">—</span></div>
+                    </div>
+                </div>
+                <p class="disclaimer">
+                    ผลคะแนนที่แสดงเป็นข้อมูลเบื้องต้นเพื่อการติดตามความก้าวหน้าในการเรียน
+                    <span class="pill pill--muted">อาจมีการเปลี่ยนแปลง</span>
+                    โดยยึดประกาศอย่างเป็นทางการของอาจารย์ผู้สอนและภาควิชาเป็นหลัก
+                    หากพบความคลาดเคลื่อนโปรดติดต่อผู้สอน
+                </p>
+            </div>
+
+            <!-- แถว 2 -->
             <div id="card-who"></div>
             <div id="card-courses"></div>
+
+            <!-- แถวล่างสุด (โผล่หลังจากกดดูคะแนน) -->
             <div id="card-score"></div>
         </section>
     </main>

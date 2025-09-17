@@ -75,15 +75,12 @@ body.page-portal {
     box-shadow: 0 0 0 3px rgba(135, 171, 214, .35);
 }
 
-/* ฟอร์มอีเมล: เดสก์ท็อปให้ปุ่มย้อนอยู่ขวาสุด */
+/* ฟอร์มอีเมล: เดสก์ท็อป */
 @media (min-width:780px) {
     .page-portal #f-email {
         display: grid;
         grid-template-columns: 1fr auto auto;
-        /* label | ส่ง OTP | ย้อนกลับ */
-        grid-template-areas:
-            "label btn-send btn-back"
-            "help  help     help";
+        grid-template-areas: "label btn-send btn-back" "help help help";
         align-items: end;
         column-gap: 12px;
         row-gap: 6px;
@@ -107,7 +104,6 @@ body.page-portal {
         margin: 0;
     }
 
-    /* ฟอร์ม OTP ตรงกลาง */
     .page-portal .otp-form {
         display: grid;
         grid-template-columns: 1fr auto auto;
@@ -159,7 +155,7 @@ body.page-portal {
     margin-top: 14px;
 }
 
-/* ตารางคะแนน (คงสไตล์อ่านง่าย) */
+/* ตารางคะแนน */
 .page-portal .table-wrap {
     overflow: auto;
     border-radius: 12px;
@@ -253,7 +249,7 @@ body.page-portal {
     box-shadow: 0 1px 0 rgba(0, 0, 0, .08), inset 0 -2px 0 rgba(0, 0, 0, .05);
 }
 
-/* โหมดแดชบอร์ด */
+/* โหมดแดชบอร์ด: โครง 3 แถว (คะแนนอยู่แถวล่างสุดเต็มกว้างเมื่อมี) */
 .page-portal .portal.is-dashboard {
     place-self: initial;
     max-width: min(1320px, calc(100% - 64px));
@@ -266,12 +262,15 @@ body.page-portal {
     align-items: start;
     justify-content: center;
     grid-template-columns: 380px minmax(420px, 1fr);
-    grid-template-areas: "who courses";
+    grid-template-areas:
+        "branding branding"
+        "who      courses"
+        "score    score";
 }
 
-.page-portal .portal.is-dashboard.has-score #app {
-    grid-template-columns: 380px 420px minmax(560px, 820px);
-    grid-template-areas: "who courses score";
+.page-portal #card-branding {
+    grid-area: branding;
+    margin-top: 14px;
 }
 
 .page-portal #card-who {
@@ -284,6 +283,12 @@ body.page-portal {
 
 .page-portal #card-score {
     grid-area: score;
+    display: none;
+}
+
+/* ซ่อนก่อนกด */
+.page-portal .portal.is-dashboard.has-score #card-score {
+    display: block;
 }
 
 @media (max-width:920px) {
@@ -316,5 +321,115 @@ body.page-portal {
 @keyframes spin {
     to {
         transform: translateY(-50%) rotate(360deg);
+    }
+}
+
+/* ===== การ์ด 3 (branding) ===== */
+.page-portal .h {
+    margin: 0 0 10px;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: .2px;
+}
+
+.page-portal .branding-row {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin: 6px 0 12px;
+}
+
+.page-portal .brand-logo {
+    width: 56px;
+    height: 56px;
+    border-radius: 12px;
+    display: grid;
+    place-items: center;
+    font-weight: 800;
+    color: #335090;
+    background: linear-gradient(135deg, #e7efff, #fff);
+    border: 1px solid #E5E8EE;
+}
+
+.page-portal .brand-title {
+    font-weight: 650;
+}
+
+.page-portal .disclaimer {
+    margin: 0;
+    padding: 12px 14px;
+    border: 1px dashed #E5E8EE;
+    border-radius: 12px;
+    background: #f8fafc;
+    color: #334155;
+    font-size: 13px;
+}
+
+/* ===== รายวิชาที่ลงทะเบียน: แถวแนวนอนเต็มกว้าง ===== */
+.page-portal #card-courses .courses-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.page-portal #card-courses .course-item {
+    display: grid;
+    grid-template-columns: 140px 1fr auto;
+    align-items: center;
+    gap: 16px;
+    padding: 14px 16px;
+    border: 1px solid #E5E8EE;
+    border-radius: 12px;
+    background: #fff;
+    transition: transform .06s ease, box-shadow .2s ease, border-color .2s ease;
+}
+
+.page-portal #card-courses .course-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px rgba(17, 24, 39, .08);
+    border-color: #cfd9ec;
+}
+
+.page-portal #card-courses .course-code {
+    font-weight: 800;
+    font-size: 18px;
+    letter-spacing: .3px;
+}
+
+.page-portal #card-courses .course-main {
+    min-width: 0;
+}
+
+.page-portal #card-courses .course-title {
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.page-portal #card-courses .course-sub {
+    color: #64748b;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.page-portal #card-courses .course-meta {
+    margin-top: 6px;
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.page-portal #card-courses .course-actions .btn {
+    white-space: nowrap;
+}
+
+@media (max-width:700px) {
+    .page-portal #card-courses .course-item {
+        grid-template-columns: 1fr;
+        align-items: start;
+    }
+
+    .page-portal #card-courses .course-actions {
+        justify-self: start;
     }
 }
