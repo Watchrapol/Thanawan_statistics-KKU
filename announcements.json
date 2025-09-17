@@ -31,22 +31,6 @@
             "SC602005"
         ],
         "pinned": true
-    },
-    {
-        "id": "test-1",
-        "date": "2025-09-15",
-        "postedAt": "2025-09-11",
-        "title": {
-            "th": "test-1",
-            "en": "test-1"
-        },
-        "detail": {
-            "th": "09:00",
-            "en": "10:30"
-        },
-        "courses": [
-            "SC602001"
-        ],
-        "pinned": false
     }
+ 
 ]

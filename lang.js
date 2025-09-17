@@ -12,7 +12,7 @@ const I18N = {
 
     // Hero
     "hero.name": "Thanawan Prahadchai",
-    "hero.tagline": "อาจารย์ประจำสาขาสถิติ มข. — ทำวิจัยด้านเหตุการณ์สุดขั้ว (Extreme Events), การวิเคราะห์ความถี่เชิงภูมิภาค (RFA) ",
+    "hero.tagline": "อาจารย์ประจำสาขาสถิติ คณะวิทยาศาสตร์ มหาวิทยาลัยขอนแก่น ",
     "hero.ctaCV": "ดาวน์โหลด CV",
     "hero.ctaContact": "ติดต่อ",
     "hero.image": "ภาพโปรไฟล์ / หน้าปก",
@@ -22,17 +22,14 @@ const I18N = {
     "hero.openSupervision": "• ที่ปรึกษางานวิจัยระดับบัณฑิตศึกษา",
 
     // Chips
-    "chips.rfa": "RFA & L-moments",
-    "chips.spi": "ดัชนีภัยแล้ง (SPI/SPEI)",
-    "chips.evt": "Extreme Value Theory",
-    "chips.ts": "อนุกรมเวลา",
-    "chips.ai": "Statistical AI",
-    "chips.hydro": "อุทกวิทยา",
+    "chips.rfa": "Design and Analysis of Computer Experiments",
+    "chips.spi": "Statistical Meteorology including Extreme Events and Climate Change",
+    "chips.evt": "Statistical Computing",
 
     // Featured
     "feat.badge": "ผลงานใหม่",
-    "feat.title": "Using Negative Power Transformation to Model Block Minima (2025)",
-    "feat.desc": "แนวทางแปลงค่ากำลังลบสำหรับแบบจำลอง Block Minima ช่วยปรับปรุงการประมาณค่าสุดโต่งและการตีความพารามิเตอร์ GEV",
+    "feat.title": "Ensemble Machine Learning for Comprehensive Drought Assessment: A Case Study in the Mun Watershed of Northeast Thailand",
+    "feat.desc": "Tossapol Phoophiwfa, Prapawan Chomphuwiset, <u>Thanawan Prahadchai</u>, Sujitta Suraphee, Andrei Volodin, Piyapatr Busababodhin",
     "feat.read": "อ่านเปเปอร์",
     "feat.code": "โค้ด & ข้อมูล",
     "feat.open": "Open Access",
@@ -40,12 +37,11 @@ const I18N = {
     // Highlights
     "highlights.title": "หัวข้อเด่น",
     "highlights.projects": "โครงการที่กำลังดำเนินการ",
-    "highlights.p1": "RFA ด้วยดัชนีภัยแล้ง — ลุ่มน้ำชี",
-    "highlights.p2": "NPT-GEV: ปรับแต่งพารามิเตอร์อัตโนมัติ",
-    "highlights.p3": "พยากรณ์ระดับคลื่นทะเลไทยจาก ERA5",
+    "highlights.p1": "Distribution-Based Estimation of Hyperparameters for the Negative Power Transformation of the Generalized Extreme Value Distribution.",
+    "highlights.p2": "Using Negative Power Transformation to Model Block Minima.",
     "highlights.focus": "หัวข้อวิจัยหลัก",
     "highlights.open": "กำลังเปิดรับ",
-    "highlights.openDesc": "ความร่วมมือวิจัย · วิทยากรรับเชิญ · ที่ปรึกษางานวิจัยบัณฑิตศึกษา",
+    "highlights.openDesc": "· ความร่วมมือวิจัย <br>· วิทยากรรับเชิญ <br>· ที่ปรึกษางานวิจัยบัณฑิตศึกษา",
     "highlights.contact": "ติดต่อความร่วมมือ",
     "common.learnMore": "ดูเพิ่มเติม →",
 
@@ -73,27 +69,27 @@ const I18N = {
     "subjects.c1meta": "ภาคต้น 2568 • เอกสาร • Syllabus",
     "subjects.c2meta": "ภาคต้น 2568 • เอกสาร • Syllabus ",
     "subjects.c3meta": "คอร์สสั้น • โน้ต • ชุดข้อมูล",
-    "subjects.courseDetails": "Course Details",   // ✅ แก้คีย์
+    "subjects.courseDetails": "ข้อมูลรายวิชา",   // ✅ แก้คีย์
     "subjects.syllabus": "syllabus",
     "subjects.materials": "เอกสาร",
     "subjects.notes": "โน้ต",
 
     // Publications (home)
     "pubs.title": "ผลงานวิจัยล่าสุด",
-    "pubs.p1": "Prahadchai, T. (2025). การใช้ Negative Power Transformation กับ Block Minima (อยู่ระหว่างพิจารณา)",
-    "pubs.p2": "Regional Frequency Analysis ด้วยดัชนีภัยแล้งสำหรับภาคตะวันออกเฉียงเหนือของไทย (2025)",
-    "pubs.p3": "Hyperparameter Optimization สำหรับแบบจำลอง NPT-GEV (2024)",
+    "pubs.p1": "Distribution-Based Estimation of Hyperparameters for the Negative Power Transformation of the Generalized Extreme Value Distribution. Journal of applied statistics (under review)",
+    "pubs.p2": "Using Negative Power Transformation to Model Block Minima. Journal of applied statistics (under review)",
+    "pubs.p3": "Ensemble Machine Learning for Comprehensive Drought Assessment: A Case Study in the Mun Watershed of Northeast Thailand (2025)",
     "pubs.more": "ดูทั้งหมด",
 
     // Contact
     "contact.title": "ติดต่ออาจารย์",
-    "contact.addr": "ภาควิชาสถิติ คณะวิทยาศาสตร์ มหาวิทยาลัยขอนแก่น",
+    "contact.addr": "ภาควิชาสถิติ คณะวิทยาศาสตร์ มหาวิทยาลัยขอนแก่น SC06404",
     "contact.emailL": "อีเมล:",
     "contact.emailBtn": "ส่งอีเมล",
     "contact.cv": "ดาวน์โหลด CV",
 
     // Footer
-    "footer.copy": "© 2025 Thanawan Prahadchai — คณะวิทยาศาสตร์ มหาวิทยาลัยขอนแก่น",
+    "footer.copy": "© 2025 Thanawan Prahadchai — ",
     "footer.privacy": "นโยบายความเป็นส่วนตัว",
     "footer.access": "การเข้าถึง",
     "footer.sitemap": "แผนผังเว็บไซต์",
@@ -183,7 +179,7 @@ const I18N = {
 
     // Hero
     "hero.name": "Thanawan Prahadchai",
-    "hero.tagline": "Lecturer in Statistics at KKU — research on extreme events, Regional Frequency Analysis (RFA).",
+    "hero.tagline": "Lecturer, Department of Statistics, Faculty of Science, Khon Kaen University (KKU), Khon Kaen 40002, Thailand",
     "hero.ctaCV": "Download CV",
     "hero.ctaContact": "Contact",
     "hero.image": "Profile / Cover Image",
@@ -193,17 +189,14 @@ const I18N = {
     "hero.openSupervision": "• Graduate supervision",
 
     // Chips
-    "chips.rfa": "RFA & L-moments",
-    "chips.spi": "Drought indices (SPI/SPEI)",
-    "chips.evt": "Extreme Value Theory",
-    "chips.ts": "Time Series",
-    "chips.ai": "Statistical AI",
-    "chips.hydro": "Hydrology",
+    "chips.rfa": "Design and Analysis of Computer Experiments",
+    "chips.spi": "Statistical Meteorology including Extreme Events and Climate Change",
+    "chips.evt": "Statistical Computing",
 
     // Featured
     "feat.badge": "Featured",
-    "feat.title": "Using Negative Power Transformation to Model Block Minima (2025)",
-    "feat.desc": "A negative power transformation approach for block minima to improve extreme estimation and GEV parameter interpretability.",
+    "feat.title": "Ensemble Machine Learning for Comprehensive Drought Assessment: A Case Study in the Mun Watershed of Northeast Thailand",
+    "feat.desc": "Tossapol Phoophiwfa, Prapawan Chomphuwiset, <u>Thanawan Prahadchai</u>, Sujitta Suraphee, Andrei Volodin, Piyapatr Busababodhin",
     "feat.read": "Read paper",
     "feat.code": "Code & data",
     "feat.open": "Open Access",
@@ -211,12 +204,11 @@ const I18N = {
     // Highlights
     "highlights.title": "Highlights",
     "highlights.projects": "Ongoing Projects",
-    "highlights.p1": "RFA with drought indices — Chi River Basin",
-    "highlights.p2": "NPT-GEV: Hyperparameter optimization",
-    "highlights.p3": "ERA5-based wave height forecasting (Thai coasts)",
+    "highlights.p1": "Distribution-Based Estimation of Hyperparameters for the Negative Power Transformation of the Generalized Extreme Value Distribution.",
+    "highlights.p2": "Using Negative Power Transformation to Model Block Minima.",
     "highlights.focus": "Research Focus",
     "highlights.open": "Currently open to",
-    "highlights.openDesc": "Research collaboration · Guest lectures · Graduate supervision",
+    "highlights.openDesc": "· Research collaboration <br>· Guest lectures <br>· Graduate supervision",
     "highlights.contact": "Contact for collaboration",
     "common.learnMore": "Learn more →",
 
@@ -251,20 +243,20 @@ const I18N = {
 
     // Publications (home)
     "pubs.title": "Recent Publications",
-    "pubs.p1": "Prahadchai, T. (2025). Using Negative Power Transformation to Model Block Minima. (under review)",
-    "pubs.p2": "Regional Frequency Analysis with Drought Indices for Northeast Thailand (2025).",
-    "pubs.p3": "Hyperparameter Optimization for NPT-GEV Models (2024).",
+    "pubs.p1": "Distribution-Based Estimation of Hyperparameters for the Negative Power Transformation of the Generalized Extreme Value Distribution. Journal of applied statistics (under review)",
+    "pubs.p2": "Using Negative Power Transformation to Model Block Minima. Journal of applied statistics (under review)",
+    "pubs.p3": "Ensemble Machine Learning for Comprehensive Drought Assessment: A Case Study in the Mun Watershed of Northeast Thailand (2025)",
     "pubs.more": "View all",
 
     // Contact
     "contact.title": "Contact",
-    "contact.addr": "Department of Statistics, Faculty of Science, Khon Kaen University",
+    "contact.addr": "Department of Statistics, Faculty of Science, Khon Kaen University SC06404",
     "contact.emailL": "Email:",
     "contact.emailBtn": "Email me",
     "contact.cv": "Download CV",
 
     // Footer
-    "footer.copy": "© 2025 Thanawan Prahadchai — Faculty of Science, KKU",
+    "footer.copy": "© 2025 Thanawan Prahadchai — ",
     "footer.privacy": "Privacy",
     "footer.access": "Accessibility",
     "footer.sitemap": "Sitemap",
