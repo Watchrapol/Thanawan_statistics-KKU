@@ -1,35 +1,32 @@
 [
     {
-        "id": "sc602001-mid1",
-        "date": "2025-10-18", 
-        "postedAt": "2025-09-15",
+        "id": "SC602001-FINAL",
+        "date": "2025-10-21", 
+        "postedAt": "2025-09-18",
         "title": {
-            "th": "MID1 (20%)",
-            "en": "MID1 (20%)"
+            "th": "FINAL (35%)",
+            "en": "FINAL (35%)"
         },
         "detail": {
-            "th": "อังคาร 13:00–16:00",
+            "th": "อังคาร 13:00",
             "en": "Tue 13:00–16:00"
         },
         "course": "SC602001",
-        "pinned": false
+        "pinned": true
     },
     {
-        "id": "proj-week12",
-        "date": "2025-11-30",
-        "postedAt": "2025-11-20",
+        "id": "SC602005-FINAL",
+        "date": "2025-10-21", 
+        "postedAt": "2025-09-18",
         "title": {
-            "th": "ส่งโปรเจกต์",
-            "en": "Project submission"
+            "th": "FINAL (30%)",
+            "en": "FINAL (30%)"
         },
         "detail": {
-            "th": "ก่อน 23:59",
-            "en": "Before 23:59"
+            "th": "อังคาร 13:00",
+            "en": "Tue 13:00–16:00"
         },
-        "courses": [
-            "SC602001",
-            "SC602005"
-        ],
+        "course": "SC602005",
         "pinned": true
     }
  

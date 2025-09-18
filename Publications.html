@@ -6,17 +6,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title data-i18n="pagePublications.title">ผลงานวิจัย — Thanawan • STAT KKU</title>
 
-  <!-- ฟอนต์ -->
   <link
     href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Thai:wght@400;500;600;700&display=swap"
     rel="stylesheet">
-
-  <!-- สไตล์หลัก + สไตล์เฉพาะหน้า -->
   <link rel="stylesheet" href="styles.css" />
   <link rel="stylesheet" href="publications.css" />
 
   <script defer src="lang.js"></script>
-  <!-- แยกสคริปต์เฉพาะหน้า -->
   <script defer src="publications.js"></script>
 </head>
 
@@ -24,14 +20,13 @@
   <a class="skip-link" href="#main" data-i18n="skip">ข้ามไปยังเนื้อหา</a>
   <div id="top"></div>
 
-  <!-- Navbar -->
-  <header class="site-header">
+  <header class="site-header" role="banner">
     <div class="container nav">
       <a class="brand" href="index.html" data-i18n="brand"><strong>Thanawan • STAT KKU</strong></a>
 
       <div class="lang-switch" role="group" aria-label="Language switch">
-        <button class="lang-btn" data-lang="th" aria-pressed="true">TH</button>
-        <button class="lang-btn" data-lang="en" aria-pressed="false">EN</button>
+        <button class="lang-btn" data-lang="th" aria-pressed="true" data-i18n="lang.th">TH</button>
+        <button class="lang-btn" data-lang="en" aria-pressed="false" data-i18n="lang.en">EN</button>
       </div>
 
       <input type="checkbox" id="nav-toggle" class="nav__toggle" aria-label="เปิดเมนู" />
@@ -48,150 +43,47 @@
   </header>
 
   <main id="main">
-    <!-- Hero / Title + Filters -->
-    <section class="hero">
+    <section class="hero" aria-labelledby="pubs-title">
       <div class="container">
-        <h1 style="margin:0 0 8px" data-i18n="pubsPage.h1">ผลงานวิจัย (Publications)</h1>
+        <h1 id="pubs-title" class="hero__title" data-i18n="pubsPage.h1">ผลงานวิจัย (Publications)</h1>
         <p class="lead" data-i18n="pubsPage.lead">
           บทความ วารสาร งานประชุม และโครงการด้าน Extreme Value Theory, RFA/L-moments, Hydrology และ Statistical AI
         </p>
 
-        <!-- ฟิลเตอร์ (ชิป) -->
-        <div class="chips" id="filters" aria-label="ตัวกรองผลงาน">
-          <button class="chip" data-filter="all" aria-pressed="true" data-i18n="pubsPage.filter.all">ทั้งหมด</button>
-          <button class="chip" data-filter="rfa" data-i18n="chips.rfa">RFA & L-moments</button>
-          <button class="chip" data-filter="evt" data-i18n="chips.evt">Extreme Value Theory</button>
-          <button class="chip" data-filter="hydro" data-i18n="chips.hydro">Hydrology</button>
-          <button class="chip" data-filter="ts" data-i18n="chips.ts">อนุกรมเวลา</button>
-          <button class="chip" data-filter="ai" data-i18n="chips.ai">Statistical AI</button>
+        <div class="chips" id="filters" role="toolbar" aria-label="ตัวกรองผลงาน">
+          <button class="chip is-active" data-filter="all" aria-pressed="true"
+            data-i18n="pubs.chips.all">ทั้งหมด</button>
+          <button class="chip" data-filter="ai" aria-pressed="false" data-i18n="chips.dac"></button>
+          <button class="chip" data-filter="evt" aria-pressed="false" data-i18n="chips.smi"></button>
+          <button class="chip" data-filter="ai" aria-pressed="false" data-i18n="chips.sc"></button>
+          <button class="chip" data-filter="ai" aria-pressed="false" data-i18n="pubs.chips.ai">AI</button>
         </div>
 
-
-        <!-- ค้นหา -->
-        <div style="margin-top:12px; max-width:560px">
-          <label for="q" class="sr-only">ค้นหา</label>
-          <input id="q" type="search" placeholder="ค้นหาชื่อบทความ, ผู้แต่ง, คำสำคัญ…" aria-label="ค้นหาผลงาน"
-            style="width:100%; padding:12px 14px; border:1px solid var(--border); border-radius:12px; font:inherit;">
+        <div class="search">
+          <label for="q" class="sr-only" data-i18n="pubsPage.searchLabel">ค้นหาผลงาน</label>
+          <input id="q" type="search" class="search__input" placeholder="ค้นหาชื่อบทความ, ผู้แต่ง, คำสำคัญ…"
+            aria-label="ค้นหาผลงาน" data-i18n="pubsPage.searchPlaceholder" data-i18n-attr="placeholder">
         </div>
+
+        <p id="resultCount" class="result-count" aria-live="polite"></p>
       </div>
     </section>
 
-    <!-- รายการตามปี -->
+    <!-- ที่ว่างสำหรับเรนเดอร์รายการจาก JSON -->
     <section class="section">
-      <div class="container">
-        <!-- 2025 list -->
-        <div class="cards pubs-onecol" id="list-2025" style="margin-bottom:28px">
-          <!-- Item 1 -->
-          <article class="card pub-item" data-tags="evt hydro rfa"
-            data-title="Using Negative Power Transformation to Model Block Minima" data-authors="Prahadchai"
-            data-year="2025">
-            <h3 class="featured__title" style="margin:0 0 6px; font-size:1.25rem" data-i18n="pubs.item1.title">Using
-              Negative Power Transformation to Model Block Minima</h3>
-
-            <p class="lead" style="margin:0 0 10px" data-i18n="pubs.item1.meta">
-              Prahadchai, T. (2025). <span class="en">Under review</span>.
-            </p>
-
-            <p class="featured__desc" style="margin:0 0 10px" data-i18n="pubs.item1.desc">
-              วิธีแปลงกำลังลบเพื่อเสถียรพารามิเตอร์ของ GEV ฝั่ง Block Minima และปรับปรุงการประมาณค่าสุดโต่ง
-            </p>
-
-            <div class="actions" style="margin-top:8px">
-              <a class="btn btn--primary" href="#" target="_blank" rel="noopener" data-i18n="pubs.read">อ่านเปเปอร์</a>
-              <a class="btn btn--outline" href="#" target="_blank" rel="noopener" data-i18n="pubs.code">โค้ด &amp;
-                ข้อมูล</a>
-              <a class="btn btn--ghost btn--sm" href="#" target="_blank" rel="noopener" data-i18n="pubs.btn.doi">DOI</a>
-              <button class="btn btn--ghost btn--sm" data-i18n="pubs.btn.bibtex"
-                data-bibtex='@article{prahadchai2025npt, title={Using Negative Power Transformation to Model Block Minima}, author={Prahadchai, T.}, year={2025}}'>
-                BibTeX
-              </button>
-            </div>
-
-            <div class="meta" style="margin-top:8px">
-              <span class="pill" data-i18n="pubs.tag.open">Open Access</span>
-              <span class="pill" data-i18n="pubs.tag.under">Under review</span>
-            </div>
-          </article>
-
-          <!-- Item 2 -->
-          <article class="card pub-item" data-tags="rfa hydro"
-            data-title="Regional Frequency Analysis with Drought Indices for Northeast Thailand"
-            data-authors="Prahadchai" data-year="2025">
-            <h3 style="margin:0 0 6px; font-size:1.25rem" data-i18n="pubs.item2.title">
-              Regional Frequency Analysis with Drought Indices for Northeast Thailand
-            </h3>
-
-            <p class="lead" style="margin:0 0 10px" data-i18n="pubs.item2.meta">(2025) <span class="en">Preprint</span>.
-            </p>
-
-            <p style="margin:0 0 10px" data-i18n="pubs.item2.desc">
-              RFA ด้วย SPI/SPEI สำหรับภาคอีสาน พร้อมทดสอบเอกพันธ์และแผนที่รอบระยะเวลากลับ
-            </p>
-
-            <div class="actions" style="margin-top:8px">
-              <a class="btn btn--primary" href="#" target="_blank" rel="noopener" data-i18n="pubs.read">อ่านเปเปอร์</a>
-              <a class="btn btn--outline" href="#" target="_blank" rel="noopener" data-i18n="pubs.code">โค้ด &amp;
-                ข้อมูล</a>
-              <button class="btn btn--ghost btn--sm" data-i18n="pubs.btn.bibtex"
-                data-bibtex='@article{rfa2025, title={Regional Frequency Analysis with Drought Indices for Northeast Thailand}, author={Prahadchai, T.}, year={2025}}'>
-                BibTeX
-              </button>
-            </div>
-
-            <div class="meta" style="margin-top:8px">
-              <span class="pill" data-i18n="pubs.tag.open">Open Access</span>
-              <span class="pill" data-i18n="pubs.tag.hydro">Hydrology</span>
-            </div>
-          </article>
-        </div>
-
-        <!-- 2024 list -->
-        <div class="cards pubs-onecol" id="list-2024" style="margin-bottom:28px">
-          <article class="card pub-item" data-tags="evt ai" data-title="Hyperparameter Optimization for NPT-GEV Models"
-            data-authors="Prahadchai" data-year="2024">
-            <h3 style="margin:0 0 6px; font-size:1.25rem" data-i18n="pubs.item3.title">
-              Hyperparameter Optimization for NPT-GEV Models
-            </h3>
-
-            <p class="lead" style="margin:0 0 10px" data-i18n="pubs.item3.meta">
-              (2024) <span class="en">Workshop paper</span>.
-            </p>
-
-            <p style="margin:0 0 10px" data-i18n="pubs.item3.desc">
-              เฟรมเวิร์กจูนพารามิเตอร์อัตโนมัติสำหรับ NPT-GEV ด้วยแนวคิดสืบค้นเชิงบูรณาการ
-            </p>
-
-            <div class="actions" style="margin-top:8px">
-              <a class="btn btn--primary" href="#" target="_blank" rel="noopener" data-i18n="pubs.read">อ่านเปเปอร์</a>
-              <a class="btn btn--outline" href="#" target="_blank" rel="noopener" data-i18n="pubs.code">โค้ด &amp;
-                ข้อมูล</a>
-              <button class="btn btn--ghost btn--sm" data-i18n="pubs.btn.bibtex"
-                data-bibtex='@inproceedings{nptgev2024, title={Hyperparameter Optimization for NPT-GEV Models}, author={Prahadchai, T.}, year={2024}}'>
-                BibTeX
-              </button>
-            </div>
-
-            <div class="meta" style="margin-top:8px">
-              <span class="pill" data-i18n="pubs.tag.methods">Methods</span>
-              <span class="pill" data-i18n="pubs.tag.extreme">Extreme Value</span>
-            </div>
-          </article>
-        </div>
-
-
-        <div class="back-top"><a href="#top">↑ กลับขึ้นบน</a></div>
+      <div class="container" id="pubs-root">
+        <!-- JS จะเติม <h2 class="year-heading"> และ <div id="list-YYYY"> ที่นี่ -->
       </div>
     </section>
   </main>
 
-  <!-- Footer -->
-  <footer class="site-footer">
+  <footer class="site-footer" role="contentinfo">
     <div class="container footer__flex">
       <p data-i18n="footer.copy">© 2025 Thanawan Prahadchai — Faculty of Science, KKU</p>
       <nav class="footer__nav" aria-label="ลิงก์ส่วนท้าย">
-        <a href="#" data-i18n="footer.privacy">Privacy</a>
-        <a href="#" data-i18n="footer.access">Accessibility</a>
-        <a href="#" data-i18n="footer.sitemap">Sitemap</a>
+        <a href="privacy.html" data-i18n="footer.privacy">Privacy</a>
+        <a href="accessibility.html" data-i18n="footer.access">Accessibility</a>
+        <a href="sitemap.html" data-i18n="footer.sitemap">Sitemap</a>
       </nav>
     </div>
   </footer>

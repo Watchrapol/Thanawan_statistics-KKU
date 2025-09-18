@@ -22,9 +22,9 @@ const I18N = {
     "hero.openBsc": "• B.Sc. in Statistics, Mahasarakham University, Thailand",
 
     // Chips
-    "chips.rfa": "Design and Analysis of Computer Experiments",
-    "chips.spi": "Statistical Meteorology including Extreme Events and Climate Change",
-    "chips.evt": "Statistical Computing",
+    "chips.dac": "Design and Analysis of Computer Experiments",
+    "chips.smi": "Statistical Meteorology including Extreme Events and Climate Change",
+    "chips.sc": "Statistical Computing",
 
     // Featured
     "feat.badge": "ผลงานใหม่",
@@ -45,24 +45,6 @@ const I18N = {
     "highlights.contact": "ติดต่อความร่วมมือ",
     "common.learnMore": "ดูเพิ่มเติม →",
 
-    // e-Book
-    "ebook.title": "e-Book ✨ สรุปความรู้พื้นฐานด้านสถิติศาสตร์ พร้อมตัวอย่าง",
-    "ebook.sub": "สรุปสาระสำคัญทางสถิติสากล พร้อมตัวอย่าง",
-    "ebook.buy": "สั่งซื้อที่ CU e-Book",
-    "ebook.comment": "ส่งคำแนะนำ/คอมเมนต์",
-
-    // Announcements
-    "news.title": "ประกาศ",
-    "news.mid1Date": "14 ม.ค. 2568",
-    "news.mid1L": "MID1 (20%)",
-    "news.mid1": "อังคาร 13:00–16:00",
-    "news.mid2Date": "8 ก.พ. 2568",
-    "news.mid2L": "MID2 (10%)",
-    "news.mid2": "เสาร์ 14:00–16:30 (Sec1–6501 / Sec2–6502)",
-    "news.projDate": "สัปดาห์ที่ 12",
-    "news.projL": "ส่งงานโปรเจกต์",
-    "news.projV": "ภายใน 23:59 น. วันอาทิตย์",
-    "news.more": "ดูประกาศทั้งหมด →",
 
     // Subjects (home)
     "subjects.title": "รายวิชาในเทอมนี้",
@@ -89,7 +71,7 @@ const I18N = {
     "contact.cv": "ดาวน์โหลด CV",
 
     // Footer
-    "footer.copy": "© 2025 Thanawan Prahadchai — ",
+    "footer.copy": "© 2025 Thanawan Prahadchai ",
     "footer.privacy": "นโยบายความเป็นส่วนตัว",
     "footer.access": "การเข้าถึง",
     "footer.sitemap": "แผนผังเว็บไซต์",
@@ -175,10 +157,52 @@ const I18N = {
     "subjectsPage.c2.t4": "บทที่ 4 การประมาณค่าช่วงความเชื่อมั่น",
     "subjectsPage.c2.t5": "บทที่ 5 การทดสอบสมมติฐาน การวิเคราะห์ความแปรปรวนการทดสอบไคกำลังสอง การทดสอบการแจกแจง",
     "subjectsPage.c2.t6": "บทที่ 6 การทดสอบแบบไม่ใช้พารามิเตอร์",
-    "subjectsPage.c2.t7": "บทที่ 7 การวิเคราะห์สหสัมพันธ์และการถดถอยเชิงเส้น]",
+    "subjectsPage.c2.t7": "บทที่ 7 การวิเคราะห์สหสัมพันธ์และการถดถอยเชิงเส้น",
     "subjectsPage.c2.tag1": "R",
     "subjectsPage.c2.tag2": "Excel",
     "subjectsPage.c2.tag3": "SPSS",
+
+    // === Publications (nav/page) ===
+    "pagePublications.title": "ผลงานวิจัย — Thanawan • STAT KKU",
+    "pubsPage.h1": "ผลงานวิจัย",
+    "pubsPage.lead": "บทความ วารสาร งานประชุม และโครงการด้าน Extreme Value Theory, RFA/L-moments, Hydrology และ Statistical AI",
+    "pubsPage.searchLabel": "ค้นหาผลงาน",
+    "pubsPage.searchPlaceholder": "ค้นหาชื่อบทความ, ผู้แต่ง, คำสำคัญ…",
+
+    // === Filter chips (เฉพาะหน้าผลงานวิจัย) ===
+    "chips.all": "ทั้งหมด",
+
+    // === Action buttons ===
+    "pubs.read": "อ่านเปเปอร์",
+    "pubs.code": "โค้ด & ข้อมูล",
+    "pubs.btn.doi": "DOI",
+    "pubs.btn.bibtex": "BibTeX",
+    "pubs.copied": "คัดลอกแล้ว",
+
+    // === Tags / pills ===
+    "pubs.tag.open": "Open Access",
+    "pubs.tag.under": "Under review",
+    "pubs.tag.hydro": "Hydrology",
+    "pubs.tag.methods": "Methods",
+    "pubs.tag.extreme": "Extreme Value",
+
+    // === รายการงาน (ตัวอย่าง 3 รายการในหน้า) ===
+    "pubs.item1.title": "Using Negative Power Transformation to Model Block Minima",
+    "pubs.item1.meta": "Prahadchai, T. (2025). Under review.",
+    "pubs.item1.desc": "วิธีแปลงกำลังลบเพื่อเสถียรพารามิเตอร์ของ GEV ฝั่ง Block Minima และปรับปรุงการประมาณค่าสุดโต่ง",
+
+    "pubs.item2.title": "Regional Frequency Analysis with Drought Indices for Northeast Thailand",
+    "pubs.item2.meta": "(2025) Preprint.",
+    "pubs.item2.desc": "RFA ด้วย SPI/SPEI สำหรับภาคอีสาน พร้อมทดสอบเอกพันธ์และแผนที่รอบระยะเวลากลับ",
+
+    "pubs.item3.title": "Hyperparameter Optimization for NPT-GEV Models",
+    "pubs.item3.meta": "(2024) Workshop paper.",
+    "pubs.item3.desc": "เฟรมเวิร์กจูนพารามิเตอร์อัตโนมัติสำหรับ NPT-GEV ด้วยแนวคิดสืบค้นเชิงบูรณาการ",
+
+
+
+    // News
+    "pageNews.h1": "ประกาศทั้งหมด",
   },
 
   en: {
@@ -226,12 +250,6 @@ const I18N = {
     "highlights.contact": "Contact for collaboration",
     "common.learnMore": "Learn more →",
 
-    // e-Book
-    "ebook.title": "e-Book ✨ Summary of Basic Knowledge in Statistics with Examples",
-    "ebook.sub": "Concise essentials in statistics with examples",
-    "ebook.buy": "Buy at CU e-Book",
-    "ebook.comment": "Feedback / Comment",
-
     // Announcements
     "news.title": "Announcements",
     "news.mid1Date": "14 Jan 2025",
@@ -270,7 +288,7 @@ const I18N = {
     "contact.cv": "Download CV",
 
     // Footer
-    "footer.copy": "© 2025 Thanawan Prahadchai — ",
+    "footer.copy": "© 2025 Thanawan Prahadchai ",
     "footer.privacy": "Privacy",
     "footer.access": "Accessibility",
     "footer.sitemap": "Sitemap",
@@ -329,7 +347,7 @@ const I18N = {
     "subjectsPage.c1.t11": "Chapter 11 Categorical Data Analysis",
     "subjectsPage.c1.tag1": "R",
     "subjectsPage.c1.tag2": "Excel",
-     "subjectsPage.c1.tag3": "SPSS",
+    "subjectsPage.c1.tag3": "SPSS",
 
 
     // Course 2
@@ -360,7 +378,49 @@ const I18N = {
     "subjectsPage.c2.tag2": "Excel",
     "subjectsPage.c2.tag3": "SPSS",
     "course.announcements.title": "Announcements for this course",
-    "course.announcements.viewAll": "View all announcements for this course →"
+    "course.announcements.viewAll": "View all announcements for this course →",
+
+    // === Publications (nav/page) ===
+    "pagePublications.title": "Publications — Thanawan • STAT KKU",
+    "pubsPage.h1": "Publications",
+    "pubsPage.lead": "Journal Articles, Conference Papers, and Research Projects in Extreme Value Theory, RFA/L-moments, Hydrology, and Statistical AI.",
+    "pubsPage.searchLabel": "Search publications",
+    "pubsPage.searchPlaceholder": "Search title, authors, keywords…",
+
+    // === Filter chips (publications page) ===
+    "chips.all": "All",
+
+    // === Action buttons ===
+    "pubs.read": "Read paper",
+    "pubs.code": "Code & Data",
+    "pubs.btn.doi": "DOI",
+    "pubs.btn.bibtex": "BibTeX",
+    "pubs.copied": "Copied",
+
+    // === Tags / pills ===
+    "pubs.tag.open": "Open Access",
+    "pubs.tag.under": "Under review",
+    "pubs.tag.hydro": "Hydrology",
+    "pubs.tag.methods": "Methods",
+    "pubs.tag.extreme": "Extreme Value",
+
+    // === Items (same three) ===
+    "pubs.item1.title": "Using Negative Power Transformation to Model Block Minima",
+    "pubs.item1.meta": "Prahadchai, T. (2025). Under review.",
+    "pubs.item1.desc": "A negative power transform to stabilize GEV parameters for block minima and improve extreme estimation.",
+
+    "pubs.item2.title": "Regional Frequency Analysis with Drought Indices for Northeast Thailand",
+    "pubs.item2.meta": "(2025) Preprint.",
+    "pubs.item2.desc": "RFA with SPI/SPEI for Northeastern Thailand with homogeneity testing and return period maps.",
+
+    "pubs.item3.title": "Hyperparameter Optimization for NPT-GEV Models",
+    "pubs.item3.meta": "(2024) Workshop paper.",
+    "pubs.item3.desc": "An automated hyperparameter tuning framework for NPT-GEV via integrated search.",
+
+
+
+    // News
+    "pageNews.h1": "All Announcements"
   }
 };
 
@@ -396,6 +456,8 @@ function setLanguage(lang) {
   localStorage.setItem("lang", lang);
   // ✅ อัปเดตรายการปุ่ม readmore ให้เข้ากับภาษาและสถานะปัจจุบัน
   refreshAllReadmoreLabels(lang);
+  // ✅ แจ้งทุกหน้าว่าเปลี่ยนภาษาแล้ว (ให้หน้า publications ฟังแล้ว re-render)
+  window.dispatchEvent(new CustomEvent("langchange", { detail: { lang } }));
 }
 
 document.addEventListener("DOMContentLoaded", () => {
