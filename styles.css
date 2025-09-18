@@ -1131,3 +1131,39 @@ main {
 }
 .bullets li.no-marker{ list-style: none; }
 .bullets li.no-marker::marker{ content: ""; }  /* กันเบราว์เซอร์บางตัว */
+
+/* ----- Fix: mobile chips in hero (avoid overflow) ----- */
+/* ป้องกันชิปทุกตัวไม่ให้ล้นคอนเทนเนอร์ */
+.chip{
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: anywhere;      /* บังคับตัดคำถ้ายาวมาก */
+  word-break: break-word;
+}
+
+/* มือถือ: ให้ชิปใน hero เรียงเป็นบล็อกเต็มกว้าง อ่านง่าย ไม่ล้น */
+@media (max-width: 480px){
+  .hero .chips{
+    display: grid;
+    grid-template-columns: 1fr; /* เรียงลง 1 คอลัมน์ */
+    gap: 10px;
+    overflow: visible;          /* ไม่ต้องเลื่อนแนวนอน */
+  }
+  .hero .chip{
+    white-space: normal;        /* อนุญาตขึ้นบรรทัดใหม่ */
+    text-align: left;
+    padding: 12px 14px;
+    border-radius: 12px;
+    line-height: 1.45;
+  }
+}
+
+/* iPhone Plus/iPad Mini แนวตั้งก็ใช้แบบซ้อนลง อ่านสบาย */
+@media (min-width: 481px) and (max-width: 640px){
+  .hero .chips{
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  .hero .chip{ white-space: normal; }
+}
