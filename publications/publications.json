@@ -15,9 +15,9 @@
                 "hydro"
             ],
             "status": "published",
-            "url_pdf": "#",
+            "url_pdf": "https://doi.org/10.29220/CSAM.2025.32.4.455",
             "url_code": "#",
-            "doi": "",
+            "doi": "https://doi.org/10.29220/CSAM.2025.32.4.455",
             "bibtex": "@article{prahadchai2025modelavg, title={Model averaging of nonstationary extreme value models, applied to maximum precipitation in Thailand}, journal={Communications for Statistical Applications and Methods}, year={2025}, volume={32}, number={4}, pages={455--473}}",
             "keywords": [
                 "model averaging",
@@ -56,9 +56,9 @@
                 "evt"
             ],
             "status": "published",
-            "url_pdf": "#",
+            "url_pdf": "https://doi.org/10.5194/egusphere-egu25-2660",
             "url_code": "#",
-            "doi": "",
+            "doi": "https://doi.org/10.5194/egusphere-egu25-2660",
             "bibtex": "@inproceedings{yoon2025ttgev, title={Transformed Technique for Applying the Generalized Extreme Value Distribution to Block Minima}, booktitle={EGU General Assembly}, year={2025}}",
             "keywords": [
                 "GEV",
@@ -98,9 +98,9 @@
                 "ai"
             ],
             "status": "published",
-            "url_pdf": "#",
+            "url_pdf": "https://doi.org/10.1134/S1995080225604953",
             "url_code": "#",
-            "doi": "",
+            "doi": "https://doi.org/10.1134/S1995080225604953",
             "bibtex": "@article{phoophiwfa2025ensemble, title={Ensemble Machine Learning for Comprehensive Drought Assessment: A Case Study in the Mun Watershed of Northeast Thailand}, journal={Lobachevskiy Journal of Mathematics}, year={2025}, volume={46}, number={2}, pages={824--837}}",
             "keywords": [
                 "drought assessment",
@@ -141,9 +141,9 @@
                 "hydro"
             ],
             "status": "published",
-            "url_pdf": "#",
+            "url_pdf": "https://doi.org/10.29220/CSAM.2024.31.1.037",
             "url_code": "#",
-            "doi": "",
+            "doi": "https://doi.org/10.29220/CSAM.2024.31.1.037",
             "bibtex": "@article{prahadchai2024rfa, title={Regional flood frequency analysis of extreme rainfall in Thailand, based on L-moments}, journal={Communications for Statistical Applications and Methods}, year={2024}, volume={31}, number={1}, pages={37--53}}",
             "keywords": [
                 "RFA",
@@ -185,9 +185,9 @@
                 "evt"
             ],
             "status": "published",
-            "url_pdf": "#",
+            "url_pdf": "https://doi.org/10.5194/hess-28-801-2024",
             "url_code": "#",
-            "doi": "",
+            "doi": "https://doi.org/10.5194/hess-28-801-2024",
             "bibtex": "@article{phoophiwfa2024gpd, title={Employing the generalized Pareto distribution to analyze extreme rainfall events on consecutive rainy days in Thailand's Chi watershed: implications for flood management}, journal={Hydrology and Earth System Sciences}, year={2024}, volume={28}, number={4}, pages={801--816}}",
             "keywords": [
                 "GPD",
@@ -227,9 +227,9 @@
                 "evt"
             ],
             "status": "published",
-            "url_pdf": "#",
+            "url_pdf": "https://doi.org/10.1134/S199508022460777X",
             "url_code": "#",
-            "doi": "",
+            "doi": "https://doi.org/10.1134/S199508022460777X",
             "bibtex": "@article{chomphuwiset2024copula, title={Flood Risk Assessment Using Extreme Value Copulas in Khong Watershed Northeastern, Thailand}, journal={Lobachevskiy Journal of Mathematics}, year={2024}, volume={45}, number={12}, pages={6286--6295}}",
             "keywords": [
                 "copula",
@@ -268,9 +268,9 @@
                 "hydro"
             ],
             "status": "published",
-            "url_pdf": "#",
+            "url_pdf": "https://doi.org/10.1002/asl.1145",
             "url_code": "#",
-            "doi": "",
+            "doi": "https://doi.org/10.1002/asl.1145",
             "bibtex": "@article{prahadchai2023maxprecip, title={Analysis of maximum precipitation in Thailand using non-stationary extreme value models}, journal={Atmospheric Science Letters}, year={2023}, volume={24}, number={4}, pages={e1145}}",
             "keywords": [
                 "non-stationary EVT",
@@ -308,9 +308,9 @@
                 "evt"
             ],
             "status": "published",
-            "url_pdf": "#",
+            "url_pdf": "https://doi.org/10.3390/atmos13040589",
             "url_code": "#",
-            "doi": "",
+            "doi": "https://doi.org/10.3390/atmos13040589",
             "bibtex": "@article{senapeng2022spatial, title={Spatial modeling of extreme temperature in northeast Thailand}, journal={Atmosphere}, year={2022}, volume={13}, number={4}, pages={589}}",
             "keywords": [
                 "spatial modeling",

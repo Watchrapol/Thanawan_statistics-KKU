@@ -4,63 +4,75 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>นโยบายความเป็นส่วนตัว | Thanawan • STAT KKU</title>
-    <link rel="stylesheet" href="styles.css" />
+    <title data-i18n="pagePrivacy.title">นโยบายความเป็นส่วนตัว — Thanawan • STAT KKU</title>
     <meta name="description" content="นโยบายความเป็นส่วนตัวของเว็บไซต์ Thanawan • STAT KKU" />
+    <link rel="stylesheet" href="styles.css" />
+    <script defer src="lang.js"></script>
 </head>
 
-<body>
-    <a class="skip-link" href="#main">ข้ามไปยังเนื้อหา</a>
+<body class="page-privacy">
+    <a class="skip-link" href="#main" data-i18n="skip">ข้ามไปยังเนื้อหา</a>
 
-
-    <main id="main" class="section">
+    <main id="main" class="section" aria-labelledby="pp-title">
         <div class="container">
-            <h1 class="section__title">นโยบายความเป็นส่วนตัว (Privacy Policy)</h1>
-            <p class="lead">ปรับปรุงล่าสุด: 17 กันยายน 2025</p>
+            <h1 id="pp-title" class="section__title" data-i18n="privacy.h1">
+                นโยบายความเป็นส่วนตัว (Privacy Policy)
+            </h1>
 
+            <p class="lead">
+                <span data-i18n="privacy.updated">ปรับปรุงล่าสุด:</span>
+                <!-- ใส่วันที่ล่าสุดใน datetime ให้เครื่องอ่านได้ -->
+                <time datetime="2025-09-17">17 กันยายน 2025</time>
+            </p>
 
-            <h2>ข้อมูลที่เราเก็บรวบรวม</h2>
+            <h2 data-i18n="privacy.collect.h2">ข้อมูลที่เราเก็บรวบรวม</h2>
             <ul class="list">
-                <li>ข้อมูลการติดต่อที่ผู้ใช้ส่งให้ (เช่น แบบฟอร์มติดต่อ อีเมล)</li>
-                <li>ข้อมูลการใช้งานเว็บไซต์ผ่านคุกกี้/Analytics (ถ้ามี)</li>
+                <li data-i18n="privacy.collect.i1">ข้อมูลการติดต่อที่ผู้ใช้ส่งให้ (เช่น แบบฟอร์มติดต่อ อีเมล)</li>
+                <li data-i18n="privacy.collect.i2">ข้อมูลการใช้งานเว็บไซต์ผ่านคุกกี้/Analytics (ถ้ามี)</li>
             </ul>
 
-
-            <h2>วัตถุประสงค์ในการใช้ข้อมูล</h2>
+            <h2 data-i18n="privacy.purpose.h2">วัตถุประสงค์ในการใช้ข้อมูล</h2>
             <ul class="list">
-                <li>เพื่อตอบกลับการติดต่อและให้ข้อมูลทางวิชาการ</li>
-                <li>เพื่อปรับปรุงประสบการณ์ใช้งานเว็บไซต์</li>
+                <li data-i18n="privacy.purpose.i1">เพื่อตอบกลับการติดต่อและให้ข้อมูลทางวิชาการ</li>
+                <li data-i18n="privacy.purpose.i2">เพื่อปรับปรุงประสบการณ์ใช้งานเว็บไซต์</li>
             </ul>
 
+            <h2 data-i18n="privacy.disclosure.h2">การเปิดเผยข้อมูล</h2>
+            <p data-i18n="privacy.disclosure.p">
+                เราไม่ขายหรือแลกเปลี่ยนข้อมูลส่วนบุคคลแก่บุคคลที่สาม
+                ยกเว้นกรณีที่กฎหมายกำหนดหรือเพื่อการให้บริการที่จำเป็น
+                (เช่น โฮสติ้ง/วิเคราะห์สถิติ) โดยอยู่ภายใต้ข้อตกลงที่เหมาะสม
+            </p>
 
-            <h2>การเปิดเผยข้อมูล</h2>
-            <p>เราไม่ขายหรือแลกเปลี่ยนข้อมูลส่วนบุคคลแก่บุคคลที่สาม
-                ยกเว้นกรณีที่กฎหมายกำหนดหรือเพื่อการให้บริการที่จำเป็น (เช่น โฮสติ้ง/วิเคราะห์สถิติ)
-                โดยอยู่ภายใต้ข้อตกลงที่เหมาะสม</p>
+            <h2 data-i18n="privacy.cookies.h2">คุกกี้ (Cookies)</h2>
+            <p data-i18n="privacy.cookies.p">
+                ผู้ใช้สามารถตั้งค่าบราวเซอร์เพื่อปฏิเสธคุกกี้ได้ อย่างไรก็ตามบางฟีเจอร์อาจทำงานได้ไม่เต็มประสิทธิภาพ
+            </p>
 
+            <h2 data-i18n="privacy.rights.h2">สิทธิของเจ้าของข้อมูล</h2>
+            <p data-i18n="privacy.rights.p">
+                คุณสามารถร้องขอให้เข้าถึง แก้ไข หรือลบข้อมูลของคุณได้ โดยติดต่อทีมงานที่อีเมลที่ระบุด้านล่าง
+            </p>
 
-            <h2>คุกกี้ (Cookies)</h2>
-            <p>ผู้ใช้สามารถตั้งค่าบราวเซอร์เพื่อปฏิเสธคุกกี้ได้ อย่างไรก็ตามบางฟีเจอร์อาจทำงานได้ไม่เต็มประสิทธิภาพ</p>
+            <h2 data-i18n="privacy.contact.h2">การติดต่อ</h2>
+            <p>
+                <span data-i18n="privacy.contact.emailL">อีเมล:</span>
+                <a href="mailto:thanpra@kku.ac.th">thanpra@kku.ac.th</a>
+            </p>
 
-
-            <h2>สิทธิของเจ้าของข้อมูล</h2>
-            <p>คุณสามารถร้องขอให้เข้าถึง แก้ไข หรือลบข้อมูลของคุณได้ โดยติดต่อทีมงานที่อีเมลที่ระบุด้านล่าง</p>
-
-
-            <h2>การติดต่อ</h2>
-            <p>อีเมล: <a href="mailto:thanpra@kku.ac.th">thanpra@kku.ac.th</a></p>
-            <p class="back-top"><a href="index.html">← กลับหน้าแรก</a></p>
+            <p class="back-top">
+                <a href="index.html" data-i18n="privacy.backHome">← กลับหน้าแรก</a>
+            </p>
         </div>
     </main>
 
-
     <footer class="site-footer">
         <div class="container footer__flex">
-            <p>© 2025 Thanawan Prahadchai — Faculty of Science, KKU</p>
+            <p data-i18n="footer.copy">© 2025 Thanawan Prahadchai — Faculty of Science, KKU</p>
             <nav class="footer__nav" aria-label="ลิงก์ส่วนท้าย">
-                <a href="privacy.html">นโยบายความเป็นส่วนตัว</a>
-                <a href="accessibility.html">การเข้าถึง</a>
-                <a href="sitemap.html">แผนผังเว็บไซต์</a>
+                <a href="privacy.html" data-i18n="footer.privacy">นโยบายความเป็นส่วนตัว</a>
+                <a href="accessibility.html" data-i18n="footer.access">การเข้าถึง</a>
+                <a href="sitemap.html" data-i18n="footer.sitemap">แผนผังเว็บไซต์</a>
             </nav>
         </div>
     </footer>

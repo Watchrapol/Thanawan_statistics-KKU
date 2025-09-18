@@ -199,10 +199,48 @@ const I18N = {
     "pubs.item3.meta": "(2024) Workshop paper.",
     "pubs.item3.desc": "เฟรมเวิร์กจูนพารามิเตอร์อัตโนมัติสำหรับ NPT-GEV ด้วยแนวคิดสืบค้นเชิงบูรณาการ",
 
-
-
     // News
     "pageNews.h1": "ประกาศทั้งหมด",
+
+    "sitemap.h1": "แผนผังเว็บไซต์",
+    "sitemap.tip": "แนะนำ: เพิ่มไฟล์ sitemap.xml และ robots.txt สำหรับ SEO ถ้าต้องการ",
+    "sitemap.backHome": "← กลับหน้าแรก",
+    "sitemap.contactNote": "(บนหน้าแรก)",
+
+
+    "privacy.h1": "นโยบายความเป็นส่วนตัว (Privacy Policy)",
+    "privacy.updated": "ปรับปรุงล่าสุด:",
+    "privacy.collect.h2": "ข้อมูลที่เราเก็บรวบรวม",
+    "privacy.collect.i1": "ข้อมูลการติดต่อที่ผู้ใช้ส่งให้ (เช่น แบบฟอร์มติดต่อ อีเมล)",
+    "privacy.collect.i2": "ข้อมูลการใช้งานเว็บไซต์ผ่านคุกกี้/Analytics (ถ้ามี)",
+    "privacy.purpose.h2": "วัตถุประสงค์ในการใช้ข้อมูล",
+    "privacy.purpose.i1": "เพื่อตอบกลับการติดต่อและให้ข้อมูลทางวิชาการ",
+    "privacy.purpose.i2": "เพื่อปรับปรุงประสบการณ์ใช้งานเว็บไซต์",
+    "privacy.disclosure.h2": "การเปิดเผยข้อมูล",
+    "privacy.disclosure.p": "เราไม่ขายหรือแลกเปลี่ยนข้อมูลส่วนบุคคลแก่บุคคลที่สาม ยกเว้นกรณีที่กฎหมายกำหนดหรือเพื่อการให้บริการที่จำเป็น (เช่น โฮสติ้ง/วิเคราะห์สถิติ) โดยอยู่ภายใต้ข้อตกลงที่เหมาะสม",
+    "privacy.cookies.h2": "คุกกี้ (Cookies)",
+    "privacy.cookies.p": "ผู้ใช้สามารถตั้งค่าบราวเซอร์เพื่อปฏิเสธคุกกี้ได้ อย่างไรก็ตามบางฟีเจอร์อาจทำงานได้ไม่เต็มประสิทธิภาพ",
+    "privacy.rights.h2": "สิทธิของเจ้าของข้อมูล",
+    "privacy.rights.p": "คุณสามารถร้องขอให้เข้าถึง แก้ไข หรือลบข้อมูลของคุณได้ โดยติดต่อทีมงานที่อีเมลที่ระบุด้านล่าง",
+    "privacy.contact.h2": "การติดต่อ",
+    "privacy.contact.emailL": "อีเมล:",
+    "privacy.backHome": "← กลับหน้าแรก",
+
+
+    "pageAccessibility.title": "การเข้าถึง — Thanawan • STAT KKU",
+    "access.h1": "คำประกาศด้านการเข้าถึง (Accessibility Statement)",
+    "access.lead": "เรามุ่งมั่นให้ทุกคนเข้าถึงข้อมูลได้เท่าเทียม โดยคำนึงถึงมาตรฐาน WCAG 2.1 ระดับ AA ตามความเหมาะสม",
+    "access.principles.h2": "แนวปฏิบัติหลัก",
+    "access.principles.i1": "คอนทราสต์สีเพียงพอ ตัวอักษรอ่านง่าย",
+    "access.principles.i2": "โครงสร้างหัวข้อ (h1–h6) ถูกต้องและสอดคล้อง",
+    "access.principles.i3": "รองรับคีย์บอร์ด มีสไตล์โฟกัสที่มองเห็นได้ชัด",
+    "access.principles.i4": "ใส่ข้อความแทนภาพ (alt) สำหรับรูปภาพ",
+    "access.limitations.h2": "ข้อจำกัดที่ทราบ",
+    "access.limitations.p": "หากคุณพบอุปสรรคด้านการเข้าถึง โปรดแจ้งเรา เพื่อให้เราสามารถปรับปรุงได้อย่างต่อเนื่อง",
+    "access.contact.h2": "ติดต่อเรื่องการเข้าถึง",
+    "access.contact.emailL": "อีเมล:",
+    "access.backHome": "← กลับหน้าแรก",
+
   },
 
   en: {
@@ -227,9 +265,9 @@ const I18N = {
     "hero.openBsc": "• B.Sc. in Statistics, Mahasarakham University, Thailand",
 
     // Chips
-    "chips.rfa": "Design and Analysis of Computer Experiments",
-    "chips.spi": "Statistical Meteorology including Extreme Events and Climate Change",
-    "chips.evt": "Statistical Computing",
+    "chips.dac": "Design and Analysis of Computer Experiments",
+    "chips.smi": "Statistical Meteorology including Extreme Events and Climate Change",
+    "chips.sc": "Statistical Computing",
 
     // Featured
     "feat.badge": "Featured",
@@ -420,7 +458,48 @@ const I18N = {
 
 
     // News
-    "pageNews.h1": "All Announcements"
+    "pageNews.h1": "All Announcements",
+
+
+    "sitemap.h1": "Sitemap",
+    "sitemap.tip": "Tip: Add a sitemap.xml and robots.txt for SEO if needed.",
+    "sitemap.backHome": "← Back to Home",
+    "sitemap.contactNote": "(on the Home page)",
+
+
+    "privacy.h1": "Privacy Policy",
+    "privacy.updated": "Last updated:",
+    "privacy.collect.h2": "Information We Collect",
+    "privacy.collect.i1": "Contact details you provide (e.g., contact form, email).",
+    "privacy.collect.i2": "Website usage via cookies/analytics (if any).",
+    "privacy.purpose.h2": "How We Use Your Information",
+    "privacy.purpose.i1": "To respond and provide academic information.",
+    "privacy.purpose.i2": "To improve the website experience.",
+    "privacy.disclosure.h2": "Data Disclosure",
+    "privacy.disclosure.p": "We do not sell or trade personal data. We may disclose it only when required by law or to provide essential services (e.g., hosting/analytics) under appropriate agreements.",
+    "privacy.cookies.h2": "Cookies",
+    "privacy.cookies.p": "You can set your browser to refuse cookies; some features may not function fully.",
+    "privacy.rights.h2": "Your Rights",
+    "privacy.rights.p": "You may request access, correction, or deletion of your data by contacting us via the email below.",
+    "privacy.contact.h2": "Contact",
+    "privacy.contact.emailL": "Email:",
+    "privacy.backHome": "← Back to Home",
+
+    "pageAccessibility.title": "Accessibility — Thanawan • STAT KKU",
+    "access.h1": "Accessibility Statement",
+    "access.lead": "We are committed to making our content accessible to everyone, considering WCAG 2.1 Level AA where appropriate.",
+    "access.principles.h2": "Key Practices",
+    "access.principles.i1": "Sufficient color contrast and readable typography",
+    "access.principles.i2": "Proper and consistent heading structure (h1–h6)",
+    "access.principles.i3": "Keyboard support with visible focus styles",
+    "access.principles.i4": "Alternative text (alt) for images",
+    "access.limitations.h2": "Known Limitations",
+    "access.limitations.p": "If you encounter any accessibility barriers, please let us know so we can continuously improve.",
+    "access.contact.h2": "Accessibility Contact",
+    "access.contact.emailL": "Email:",
+    "access.backHome": "← Back to Home"
+
+
   }
 };
 

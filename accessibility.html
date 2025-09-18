@@ -4,48 +4,58 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>การเข้าถึง | Thanawan • STAT KKU</title>
+    <title data-i18n="pageAccessibility.title">การเข้าถึง — Thanawan • STAT KKU</title>
+    <meta name="description"
+        content="คำประกาศด้านการเข้าถึง (Accessibility Statement) ของเว็บไซต์ Thanawan • STAT KKU" />
     <link rel="stylesheet" href="styles.css" />
+    <script defer src="lang.js"></script>
 </head>
 
-<body>
-    <a class="skip-link" href="#main">ข้ามไปยังเนื้อหา</a>
+<body class="page-accessibility">
+    <a class="skip-link" href="#main" data-i18n="skip">ข้ามไปยังเนื้อหา</a>
 
-
-    <main id="main" class="section">
+    <main id="main" class="section" aria-labelledby="a11y-title">
         <div class="container">
-            <h1 class="section__title">คำประกาศด้านการเข้าถึง (Accessibility Statement)</h1>
-            <p class="lead">เรามุ่งมั่นให้ทุกคนเข้าถึงข้อมูลได้เท่าเทียม โดยคำนึงถึงมาตรฐาน WCAG 2.1 ระดับ AA
-                ตามความเหมาะสม</p>
+            <h1 id="a11y-title" class="section__title" data-i18n="access.h1">
+                คำประกาศด้านการเข้าถึง (Accessibility Statement)
+            </h1>
 
+            <p class="lead" data-i18n="access.lead">
+                เรามุ่งมั่นให้ทุกคนเข้าถึงข้อมูลได้เท่าเทียม โดยคำนึงถึงมาตรฐาน WCAG 2.1 ระดับ AA ตามความเหมาะสม
+            </p>
 
-            <h2>แนวปฏิบัติหลัก</h2>
+            <h2 data-i18n="access.principles.h2">แนวปฏิบัติหลัก</h2>
             <ul class="list">
-                <li>คอนทราสต์สีเพียงพอ ตัวอักษรอ่านง่าย</li>
-                <li>โครงสร้างหัวข้อ (h1–h6) ถูกต้องและสอดคล้อง</li>
-                <li>รองรับคีย์บอร์ด มีสไตล์โฟกัสที่มองเห็นได้ชัด</li>
-                <li>ใส่ข้อความแทนภาพ (alt) สำหรับรูปภาพ</li>
+                <li data-i18n="access.principles.i1">คอนทราสต์สีเพียงพอ ตัวอักษรอ่านง่าย</li>
+                <li data-i18n="access.principles.i2">โครงสร้างหัวข้อ (h1–h6) ถูกต้องและสอดคล้อง</li>
+                <li data-i18n="access.principles.i3">รองรับคีย์บอร์ด มีสไตล์โฟกัสที่มองเห็นได้ชัด</li>
+                <li data-i18n="access.principles.i4">ใส่ข้อความแทนภาพ (alt) สำหรับรูปภาพ</li>
             </ul>
 
+            <h2 data-i18n="access.limitations.h2">ข้อจำกัดที่ทราบ</h2>
+            <p data-i18n="access.limitations.p">
+                หากคุณพบอุปสรรคด้านการเข้าถึง โปรดแจ้งเรา เพื่อให้เราสามารถปรับปรุงได้อย่างต่อเนื่อง
+            </p>
 
-            <h2>ข้อจำกัดที่ทราบ</h2>
-            <p>หากคุณพบอุปสรรคด้านการเข้าถึง โปรดแจ้งเรา เพื่อให้เราสามารถปรับปรุงได้อย่างต่อเนื่อง</p>
+            <h2 data-i18n="access.contact.h2">ติดต่อเรื่องการเข้าถึง</h2>
+            <p>
+                <span data-i18n="access.contact.emailL">อีเมล:</span>
+                <a href="mailto:thanpra@kku.ac.th">thanpra@kku.ac.th</a>
+            </p>
 
-
-            <h2>ติดต่อเรื่องการเข้าถึง</h2>
-            <p>อีเมล: <a href="mailto:thanpra@kku.ac.th">thanpra@kku.ac.th</a></p>
-            <p class="back-top"><a href="index.html">← กลับหน้าแรก</a></p>
+            <p class="back-top">
+                <a href="index.html" data-i18n="access.backHome">← กลับหน้าแรก</a>
+            </p>
         </div>
     </main>
 
-
     <footer class="site-footer">
         <div class="container footer__flex">
-            <p>© 2025 Thanawan Prahadchai — Faculty of Science, KKU</p>
+            <p data-i18n="footer.copy">© 2025 Thanawan Prahadchai — Faculty of Science, KKU</p>
             <nav class="footer__nav" aria-label="ลิงก์ส่วนท้าย">
-                <a href="privacy.html">นโยบายความเป็นส่วนตัว</a>
-                <a href="accessibility.html">การเข้าถึง</a>
-                <a href="sitemap.html">แผนผังเว็บไซต์</a>
+                <a href="privacy.html" data-i18n="footer.privacy">นโยบายความเป็นส่วนตัว</a>
+                <a href="accessibility.html" data-i18n="footer.access">การเข้าถึง</a>
+                <a href="sitemap.html" data-i18n="footer.sitemap">แผนผังเว็บไซต์</a>
             </nav>
         </div>
     </footer>
