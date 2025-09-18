@@ -1020,47 +1020,114 @@ main {
         transform: translateY(-50%) rotate(360deg);
     }
 }
+
 /*/////////////////////////////////////////////////////////////////////////////////////////////////*/
-.hero__media{
+.hero__media {
     border-radius: 18px;
-    overflow:hidden;
+    overflow: hidden;
 }
+
 /* กล่องหลักของ Swiper */
-.mySwiper{
-  width: 100%;
-  max-width: 520px;
-  height: 500px;
-  padding: 0 56px;       /* << ที่ว่างสำหรับรูปซ้าย-ขวาโผล่ */
-  overflow: hidden;      /* ตัดไม่ให้ล้นนอกกรอบ hero__media */
-  border-radius: 18px;   /* ถ้าอยากให้กล่องโค้ง */
+.mySwiper {
+    width: 100%;
+    max-width: 520px;
+    height: 500px;
+    padding: 0 56px;
+    /* << ที่ว่างสำหรับรูปซ้าย-ขวาโผล่ */
+    overflow: hidden;
+    /* ตัดไม่ให้ล้นนอกกรอบ hero__media */
+    border-radius: 18px;
+    /* ถ้าอยากให้กล่องโค้ง */
 }
 
 /* ให้สไลด์กลาง “เต็มใบ” ภายในกรอบที่เหลือ */
-.swiper-slide{
-  width: 100%;           /* สำคัญ: ใบกลางเต็มความกว้างภายในกรอบ */
-  height: 100%;
-  background: #222;      /* ถ้าอยากลบสีพื้น เปลี่ยนเป็น transparent */
-  border-radius: 12px;   /* จะคงไว้/เอาออกก็ได้ */
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 12px 30px rgba(0,0,0,.20);
+.swiper-slide {
+    width: 100%;
+    /* สำคัญ: ใบกลางเต็มความกว้างภายในกรอบ */
+    height: 100%;
+    background: #222;
+    /* ถ้าอยากลบสีพื้น เปลี่ยนเป็น transparent */
+    border-radius: 12px;
+    /* จะคงไว้/เอาออกก็ได้ */
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, .20);
 }
 
-.swiper-slide img{
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
+.swiper-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
 }
 
 /* จุดกลม ๆ ของ page */
-.mySwiper .swiper-pagination{
-  bottom: 10px;
+.mySwiper .swiper-pagination {
+    bottom: 10px;
 }
 
-@media (max-width: 560px){
-  .mySwiper{ padding: 0 24px; }  /* มือถือลดพื้นที่ peek ลง */
+@media (max-width: 560px) {
+    .mySwiper {
+        padding: 0 24px;
+    }
+
+    /* มือถือลดพื้นที่ peek ลง */
 }
+
 /*/////////////////////////////////////////////////////////////////////*/
+/* Readmore */
+.readmore {
+    position: relative;
+    max-width: 68ch;
+}
+
+.readmore__content {
+  --lines: 3;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  white-space: normal;
+  line-height: 1.85;
+  -webkit-line-clamp: 3;                 /* fallback fixed */
+  -webkit-line-clamp: var(--lines, 3);   /* ใช้ตัวแปรถ้ารองรับ */
+  line-clamp: 3;                         /* fallback fixed */
+  line-clamp: var(--lines, 3);           /* ใช้ตัวแปรถ้ารองรับ */
+}
+
+@supports (line-clamp: 3) {
+    .readmore__content {
+        line-clamp: var(--lines, 3);
+    }
+}
+
+.readmore__fade {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 2.4em;
+    height: 4.2em;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0), var(--surface));
+    pointer-events: none;
+}
+
+.readmore.is-open .readmore__content {
+    -webkit-line-clamp: unset;
+    line-clamp: unset;
+}
+
+.readmore.is-open .readmore__fade {
+    display: none;
+}
+
+.readmore__btn {
+    margin-top: 8px;
+}
+
+/* ให้เข้ากับพื้นหลังที่ไม่ใช่ขาวล้วน (เช่นอยู่บนการ์ด) */
+.section .readmore__fade {
+    background: linear-gradient(to bottom, rgba(245, 247, 250, 0), var(--surface));
+}
+.bullets li.no-marker{ list-style: none; }
+.bullets li.no-marker::marker{ content: ""; }  /* กันเบราว์เซอร์บางตัว */
