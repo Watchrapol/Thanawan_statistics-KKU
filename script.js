@@ -24,13 +24,4 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 /*//////////////////////////////////////////////*/
-// Toggle อ่านทั้งหมด / ย่อ
-document.addEventListener('click', (e) => {
-  const btn = e.target.closest('[data-toggle="readmore"]');
-  if (!btn) return;
-  const box = btn.closest('.readmore');
-  const open = box.classList.toggle('is-open');
-  btn.textContent = open ? 'ย่อ' : 'อ่านทั้งหมด';
-  btn.setAttribute('aria-expanded', String(open));
-});
 

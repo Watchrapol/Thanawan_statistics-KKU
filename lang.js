@@ -83,7 +83,7 @@ const I18N = {
 
     // Contact
     "contact.title": "ติดต่ออาจารย์",
-    "contact.addr": "ภาควิชาสถิติ คณะวิทยาศาสตร์ มหาวิทยาลัยขอนแก่น SC06404",
+    "contact.addr": "ภาควิชาสถิติ คณะวิทยาศาสตร์ มหาวิทยาลัยขอนแก่น SC6404",
     "contact.emailL": "อีเมล:",
     "contact.emailBtn": "ส่งอีเมล",
     "contact.cv": "ดาวน์โหลด CV",
@@ -106,6 +106,8 @@ const I18N = {
     "subjectsPage.h1": "รายวิชา",
     "subjectsPage.btn.syllabus": "Syllabus",
     "subjectsPage.btn.materials": "เอกสาร",
+    "subjectsPage.btn.Readmore": "อ่านทั้งหมด",
+    "subjectsPage.btn.Readless": "ย่อ",
     "subjectsPage.info": "ข้อมูลรายวิชา",
     "subjectsPage.learning": "คำอธิบายรายวิชา",
     "subjectsPage.goals": "เป้าหมายรายวิชา",
@@ -120,7 +122,7 @@ const I18N = {
     // Course 1
     "subjectsPage.c1.title": "สถิติขั้นต้น ",
     "subjectsPage.c1.h2": "SC602001 : สถิติขั้นต้น ",
-    "subjectsPage.c1.meta": " เทอมต้น ปีการศึกษา 2568 • 3(3-0-6) หน่วยกิต",
+    "subjectsPage.c1.meta": "เทอมต้น ปีการศึกษา 2568 • 3(3-0-6) หน่วยกิต",
     "subjectsPage.c1.lecturerV": "อ.ดร.ธนวรรณ ประฮาดไชย",
     "subjectsPage.c1.timeV": "จันทร์, พุทธ 9:00 – 10:30 น.",
     "subjectsPage.c1.placeV": "คณะวิทยาศาสตร์ SC9109 มหาวิทยาลัยขอนแก่น",
@@ -147,30 +149,36 @@ const I18N = {
     "subjectsPage.c1.tag1": "R",
     "subjectsPage.c1.tag2": "Excel",
     "subjectsPage.c1.tag3": "SPSS",
+    "course.announcements.title": "ประกาศของวิชานี้",
+    "course.announcements.viewAll": "ดูประกาศทั้งหมดของวิชานี้ →",
 
     // Course 2
-    "subjectsPage.c2.title": "Probability & Statistics",
-    "subjectsPage.c2.h2": "SC602005: Probability & Statistics",
-    "subjectsPage.c2.meta": "ภาคต้น 2568 • 3(2-1-6) หน่วยกิต",
-    "subjectsPage.c2.lecturerV": "Thanawan Prahadchai",
-    "subjectsPage.c2.timeV": "ศุกร์ 09:00–12:00",
-    "subjectsPage.c2.placeV": "คณะวิทยาศาสตร์ มข.",
-    "subjectsPage.c2.toolsV": "Python (pandas, scikit-learn)",
-    "subjectsPage.c2.lo1": "เข้าใจ workflow ของโครงการข้อมูลเชิงสถิติ",
-    "subjectsPage.c2.lo2": "ประยุกต์ ML พื้นฐานกับโจทย์วิจัย",
-    "subjectsPage.c2.lo3": "ทำรายงาน/รีโปรดิวซ์ผลการทดลอง",
-    "subjectsPage.c2.link1": "GitHub Repo",
-    "subjectsPage.c2.link2": "Datasets",
-    "subjectsPage.c2.link3": "Reading List",
-    "subjectsPage.c2.gr1": "Mini-projects 40%",
-    "subjectsPage.c2.gr2": "Quizzes/Labs 30%",
-    "subjectsPage.c2.gr3": "Final Project 30%",
-    "subjectsPage.c2.t1": "Data prep & EDA",
-    "subjectsPage.c2.t2": "Regression/Classification",
-    "subjectsPage.c2.t3": "Model evaluation",
-    "subjectsPage.c2.t4": "Reproducible research",
-    "subjectsPage.c2.tag1": "พื้นฐาน ML",
-    "subjectsPage.c2.tag2": "โปรเจกต์"
+    "subjectsPage.c2.title": "ความน่าจะเป็นและสถิติ",
+    "subjectsPage.c2.h2": "SC602005: ความน่าจะเป็นและสถิติ",
+    "subjectsPage.c2.meta": "เทอมต้น ปีการศึกษา 2568 • 3(3-0-6) หน่วยกิต",
+    "subjectsPage.c2.lecturerV": "อ.ดร.ธนวรรณ ประฮาดไชย",
+    "subjectsPage.c2.timeV": "อังคาร, ศุกร์ 13:00–14:30 น.",
+    "subjectsPage.c2.placeV": "คณะวิทยาศาสตร์ SC8404 มหาวิทยาลัยขอนแก่น",
+    "subjectsPage.c2.toolsV": "R / Excel / SPSS",
+    "subjectsPage.c2.lo1": "แนวคิดพื้นฐานเกี่ยวกับความน่าจะเป็น ตัวแปรเชิงสุ่มและการแจกแจงความน่าจะเป็น การแจกแจงของตัวสถิติ การประมาณค่าช่วงความเชื่อมั่น การทดสอบสมมติฐาน การวิเคราะห์ความแปรปรวนการทดสอบไคกำลังสอง การวิเคราะห์การถดถอยและสหสัมพันธ์สถิติไม่อิงพารามิเตอร์ การวิเคราะห์ข้อมูลโดยใช้โปรแกรมสำเร็จรูปทางสถิติ",
+    "subjectsPage.c2.link1": "R",
+    "subjectsPage.c2.link2": "Excel",
+    "subjectsPage.c2.link3": "SPSS",
+    "subjectsPage.c2.gr1": "สอบย่อย ครั้งที่ 1 10%",
+    "subjectsPage.c2.gr2": "สอบย่อย ครั้งที่ 2 10%",
+    "subjectsPage.c2.gr3": "แบบฝึกหัด/งานย่อย 20%",
+    "subjectsPage.c2.gr4": "MIDTERM 30%",
+    "subjectsPage.c2.gr5": "FINAL 30%",
+    "subjectsPage.c2.t1": "บทที่ 1 ความฉลาดทางข้อมูลและแนวคิดพื้นฐานเกี่ยวกับความน่าจะเป็น",
+    "subjectsPage.c2.t2": "บทที่ 2 ตัวแปรเชิงสุ่มและการแจกแจงความน่าจะเป็น",
+    "subjectsPage.c2.t3": "บทที่ 3 การแจกแจงของตัวสถิติ",
+    "subjectsPage.c2.t4": "บทที่ 4 การประมาณค่าช่วงความเชื่อมั่น",
+    "subjectsPage.c2.t5": "บทที่ 5 การทดสอบสมมติฐาน การวิเคราะห์ความแปรปรวนการทดสอบไคกำลังสอง การทดสอบการแจกแจง",
+    "subjectsPage.c2.t6": "บทที่ 6 การทดสอบแบบไม่ใช้พารามิเตอร์",
+    "subjectsPage.c2.t7": "บทที่ 7 การวิเคราะห์สหสัมพันธ์และการถดถอยเชิงเส้น]",
+    "subjectsPage.c2.tag1": "R",
+    "subjectsPage.c2.tag2": "Excel",
+    "subjectsPage.c2.tag3": "SPSS",
   },
 
   en: {
@@ -279,6 +287,8 @@ const I18N = {
     "subjectsPage.h1": "Subjects",
     "subjectsPage.btn.syllabus": "Syllabus",
     "subjectsPage.btn.materials": "Materials",
+    "subjectsPage.btn.Readmore": "Read more",
+    "subjectsPage.btn.Readless": "Show less",
     "subjectsPage.info": "Course information",
     "subjectsPage.learning": "Course Description",
     "subjectsPage.goals": "Course goals",
@@ -294,18 +304,18 @@ const I18N = {
     "subjectsPage.c1.title": "Introduction to Statistics",
     "subjectsPage.c1.h2": "SC602001: Introduction to Statistics",
     "subjectsPage.c1.meta": "1st semester 2025 • 3(3-0-6) credits",
-    "subjectsPage.c1.lecturerV": "Dr.Thanawan Prahadchai",
+    "subjectsPage.c1.lecturerV": "ThanawaChonnamdchai, Ph.D.",
     "subjectsPage.c1.timeV": "Mon, Wed 09:00–10:30 (ICT)",
     "subjectsPage.c1.placeV": "Faculty of Science SC9109, KKU",
-    "subjectsPage.c1.toolsV": "R / Python / Excel",
+    "subjectsPage.c1.toolsV": "R / Excel / SPSS",
     "subjectsPage.c1.lo1": "Meaning of statistic, data and measurement, procedures for collecting and presentation of data, Measure of central tendency and dispersion, probability, random variables and distribution, sampling distribution, estimation and testing hypothesis, introduction to linear regression and correlation.",
     "subjectsPage.c1.link1": "R",
     "subjectsPage.c1.link2": "Excel",
     "subjectsPage.c1.link3": "SPSS",
     "subjectsPage.c1.link4": "Google Classroom",
-    "subjectsPage.c1.gr1": "Assignments 30%",
-    "subjectsPage.c1.gr2": "MIDTERM 20% • FINAL 30%",
-    "subjectsPage.c1.gr3": "Project/Presentation 20%",
+    "subjectsPage.c1.gr1": "Assignments 35%",
+    "subjectsPage.c1.gr2": "MIDTERM 30%",
+    "subjectsPage.c1.gr3": "FINAL 35%",
     "subjectsPage.c1.t1": "Chapter 1 Introduction to Statistics",
     "subjectsPage.c1.t2": "Chapter 2 Probability",
     "subjectsPage.c1.t3": "Chapter 3 Random Variables and Their Distributions",
@@ -317,33 +327,40 @@ const I18N = {
     "subjectsPage.c1.t9": "Chapter 9 Analysis of Variance",
     "subjectsPage.c1.t10": "Chapter 10 Correlation and Regression Analysis",
     "subjectsPage.c1.t11": "Chapter 11 Categorical Data Analysis",
+    "subjectsPage.c1.tag1": "R",
+    "subjectsPage.c1.tag2": "Excel",
+     "subjectsPage.c1.tag3": "SPSS",
 
-    "subjectsPage.c1.tag1": "Descriptive & Inference",
-    "subjectsPage.c1.tag2": "R/Python",
 
     // Course 2
     "subjectsPage.c2.title": "Probability & Statistics",
-    "subjectsPage.c2.h2": "SC602005: Probability & Statistics",
-    "subjectsPage.c2.meta": "1st semester 2025 • 3(2-1-6) credits",
-    "subjectsPage.c2.lecturerV": "Thanawan Prahadchai",
-    "subjectsPage.c2.timeV": "Fri 09:00–12:00",
-    "subjectsPage.c2.placeV": "Faculty of Science, KKU",
-    "subjectsPage.c2.toolsV": "Python (pandas, scikit-learn)",
-    "subjectsPage.c2.lo1": "Understand the workflow of statistical data projects",
-    "subjectsPage.c2.lo2": "Apply basic ML to research problems",
-    "subjectsPage.c2.lo3": "Write reports / reproduce experiments",
-    "subjectsPage.c2.link1": "GitHub Repo",
-    "subjectsPage.c2.link2": "Datasets",
-    "subjectsPage.c2.link3": "Reading List",
-    "subjectsPage.c2.gr1": "Mini-projects 40%",
-    "subjectsPage.c2.gr2": "Quizzes/Labs 30%",
-    "subjectsPage.c2.gr3": "Final Project 30%",
-    "subjectsPage.c2.t1": "Data prep & EDA",
-    "subjectsPage.c2.t2": "Regression/Classification",
-    "subjectsPage.c2.t3": "Model evaluation",
-    "subjectsPage.c2.t4": "Reproducible research",
-    "subjectsPage.c2.tag1": "ML Basics",
-    "subjectsPage.c2.tag2": "Projects"
+    "subjectsPage.c2.h2": "SC602005: Probability and Statistics",
+    "subjectsPage.c2.meta": "1st semester 2025 • 3(3-0-6) credits",
+    "subjectsPage.c2.lecturerV": "ThanawaChonnamdchai, Ph.D.",
+    "subjectsPage.c2.timeV": "Tue, Fri 13:00–14:30 (ICT)",
+    "subjectsPage.c2.placeV": "Faculty of Science SC8404, KKU",
+    "subjectsPage.c2.toolsV": "R / Excel / SPSS",
+    "subjectsPage.c2.lo1": "Basic concepts of probability, random variable and probability distribution, sampling distribution, estimation, confidence interval, hypothesis testing, analysis of variance, chi-square testing, regression and correlation analysis,nonparametric statistics, data analysis by using statistical package program",
+    "subjectsPage.c2.link1": "R",
+    "subjectsPage.c2.link2": "Excel",
+    "subjectsPage.c2.link3": "SPSS",
+    "subjectsPage.c2.gr1": "Test-1 10%",
+    "subjectsPage.c2.gr2": "Test-2 10%",
+    "subjectsPage.c2.gr3": "Assignments 20%",
+    "subjectsPage.c2.gr4": "MIDTERM 30%",
+    "subjectsPage.c2.gr5": "FINAL 30%",
+    "subjectsPage.c2.t1": "Chapter 1 Data Literacy & Probability Basics",
+    "subjectsPage.c2.t2": "Chapter 2 Random Variables and Probability Distributions",
+    "subjectsPage.c2.t3": "Chapter 3 Sampling Distributions",
+    "subjectsPage.c2.t4": "Chapter 4 Confidence Interval Estimation",
+    "subjectsPage.c2.t5": "Chapter 5 Hypothesis Testing: ANOVA, Chi-Square, and Goodness-of-Fit",
+    "subjectsPage.c2.t6": "Chapter 6 Nonparametric Tests",
+    "subjectsPage.c2.t7": "Correlation and Linear Regression Analysis",
+    "subjectsPage.c2.tag1": "R",
+    "subjectsPage.c2.tag2": "Excel",
+    "subjectsPage.c2.tag3": "SPSS",
+    "course.announcements.title": "Announcements for this course",
+    "course.announcements.viewAll": "View all announcements for this course →"
   }
 };
 
@@ -377,6 +394,8 @@ function setLanguage(lang) {
   });
 
   localStorage.setItem("lang", lang);
+  // ✅ อัปเดตรายการปุ่ม readmore ให้เข้ากับภาษาและสถานะปัจจุบัน
+  refreshAllReadmoreLabels(lang);
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -392,3 +411,37 @@ document.addEventListener("DOMContentLoaded", () => {
     if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 });
+
+/* === Readmore i18n helpers === */
+const READMORE_KEYS = {
+  more: "subjectsPage.btn.Readmore",
+  less: "subjectsPage.btn.Readless",
+};
+
+function currentLang() {
+  return (document.documentElement.lang || localStorage.getItem("lang") || "th").slice(0, 2);
+}
+
+function setReadmoreBtnLabel(btn, lang = currentLang()) {
+  const dict = I18N[lang] || I18N.th;
+  const isOpen = btn.closest(".readmore")?.classList.contains("is-open");
+  const key = isOpen ? READMORE_KEYS.less : READMORE_KEYS.more;
+  btn.textContent = dict[key] || (isOpen ? "ย่อ" : "อ่านทั้งหมด");
+  btn.setAttribute("aria-expanded", String(!!isOpen));
+}
+
+function refreshAllReadmoreLabels(lang = currentLang()) {
+  document.querySelectorAll('[data-toggle="readmore"]').forEach((btn) => {
+    setReadmoreBtnLabel(btn, lang);
+  });
+}
+
+/* === Toggle: เปิด/ย่อ === */
+document.addEventListener("click", (e) => {
+  const btn = e.target.closest('[data-toggle="readmore"]');
+  if (!btn) return;
+  const box = btn.closest(".readmore");
+  box?.classList.toggle("is-open");
+  setReadmoreBtnLabel(btn); // ใช้ภาษาปัจจุบัน
+});
+

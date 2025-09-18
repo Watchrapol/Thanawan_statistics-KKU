@@ -10,7 +10,6 @@
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Thai:wght@400;500;600;700&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="styles.css" />
-    <script src="script.js" defer></script>
     <script defer src="lang.js"></script>
     <script defer src="news.js"></script>
 </head>
@@ -66,8 +65,9 @@
                         <p class="course-meta" data-i18n="subjectsPage.c2.meta"> เทอมต้น ปีการศึกษา 2568 • 3(2-1-6)
                             หน่วยกิต</p>
                         <div class="chips">
-                            <span class="chip" data-i18n="subjectsPage.c2.tag1">ML Basics</span>
-                            <span class="chip" data-i18n="subjectsPage.c2.tag2">Projects</span>
+                            <span class="chip" data-i18n="subjectsPage.c2.tag1"></span>
+                            <span class="chip" data-i18n="subjectsPage.c2.tag2"></span>
+                            <span class="chip" data-i18n="subjectsPage.c2.tag3"></span>
                         </div>
                     </a>
                 </div>
@@ -118,8 +118,8 @@
                                     </div>
                                     <div class="readmore__fade" aria-hidden="true"></div>
                                     <button type="button" class="btn btn--outline btn--sm readmore__btn"
-                                        data-toggle="readmore" aria-controls="c1"
-                                        aria-expanded="false">อ่านทั้งหมด</button>
+                                        data-toggle="readmore" aria-controls="c1" aria-expanded="false">
+                                    </button>
                                 </div>
                             </li>
                         </ul>
@@ -136,9 +136,9 @@
                     <aside class="card">
                         <h3 data-i18n="subjectsPage.assess">การประเมินผล</h3>
                         <ul class="bullets">
-                            <li data-i18n="subjectsPage.c1.gr1">แบบฝึกหัด/งานย่อย 30%</li>
-                            <li data-i18n="subjectsPage.c1.gr2">MIDTERM 20% • FINAL 30%</li>
-                            <li data-i18n="subjectsPage.c1.gr3">โปรเจกต์/พรีเซนต์ 20%</li>
+                            <li data-i18n="subjectsPage.c1.gr1">แบบฝึกหัด/งานย่อย 35%</li>
+                            <li data-i18n="subjectsPage.c1.gr2">MIDTERM 30%</li>
+                            <li data-i18n="subjectsPage.c1.gr3">FINAL 35%</li>
                         </ul>
 
                         <h4 data-i18n="subjectsPage.topics">หัวข้อโดยรวม</h4>
@@ -159,20 +159,16 @@
                                 </div>
                                 <div class="readmore__fade" aria-hidden="true"></div>
                                 <button type="button" class="btn btn--outline btn--sm readmore__btn"
-                                    data-toggle="readmore" aria-controls="c1" aria-expanded="false">อ่านทั้งหมด</button>
-                            </div>
+                                    data-toggle="readmore" aria-controls="c1" aria-expanded="false">
+                                </button>
                         </ul>
                     </aside>
                 </div>
-                <h3>ประกาศของวิชานี้</h3>
+                <h3 class="section-title" data-i18n="course.announcements.title"></h3>
                 <ul class="timeline js-news" data-course="SC602001" data-sort="pinnedThenDate" data-new-days="3"
                     aria-live="polite"></ul>
-
-                <a class="link-more" href="announcements.html?course=SC602001">
-                    ดูประกาศทั้งหมดของวิชานี้ →
-                </a>
-
-
+                <a class="link-more" href="announcements.html?course=SC602001"
+                    data-i18n="course.announcements.viewAll"></a>
                 <div class="back-top"><a href="#top" data-i18n="subjectsPage.backTop">↑ กลับไปด้านบน</a></div>
             </div>
         </section>
@@ -183,14 +179,14 @@
                 <div class="course-header">
                     <div>
                         <h2 data-i18n="subjectsPage.c2.h2">SC602005: Probability &amp; Statistics</h2>
-                        <p class="muted" data-i18n="subjectsPage.c2.meta">ภาคต้น 2568 • 3(2-1-6) หน่วยกิต</p>
+                        <p class="muted" data-i18n="subjectsPage.c2.meta">ภาคต้น 2568 • 3(3-0-6) หน่วยกิต</p>
                     </div>
                     <div class="actions">
                         <a class="btn btn--primary" href="files/SC65xxx-stat-ai-syllabus.pdf" target="_blank"
                             rel="noopener" data-i18n="subjectsPage.btn.syllabus">Syllabus</a>
                         <a class="btn btn--outline" href="#" target="_blank" rel="noopener"
                             data-i18n="subjectsPage.btn.materials">Materials</a>
-                        <a class="btn btn--ghost btn--sm" href="portal.html?course=SC602001">ดูคะแนน</a>
+                        <a class="btn btn--ghost btn--sm" href="portal.html?course=SC602005">ดูคะแนน</a>
                     </div>
                 </div>
 
@@ -208,46 +204,64 @@
                                     data-i18n="subjectsPage.c2.toolsV">Python (pandas, scikit-learn)</span></li>
                         </ul>
 
-                        <h4 data-i18n="subjectsPage.goals">เป้าหมายรายวิชา</h4>
+                        <h4 data-i18n="subjectsPage.learning">Course description</h4>
                         <ul class="bullets">
-                            <li data-i18n="subjectsPage.c2.lo1">เข้าใจ workflow ของโครงการข้อมูลเชิงสถิติ</li>
-                            <li data-i18n="subjectsPage.c2.lo2">ประยุกต์ ML พื้นฐานกับโจทย์วิจัย</li>
-                            <li data-i18n="subjectsPage.c2.lo3">ทำรายงาน/รีโปรดิวซ์ผลการทดลอง</li>
+                            <li class="no-marker">
+                                <div class="readmore" id="c1">
+                                    <div class="readmore__content" style="--lines: 3;">
+                                        <span data-i18n="subjectsPage.c2.lo1">
+                                            Understand the workflow of statistical data projects
+                                            Apply basic ML to research problems
+                                            Write reports / reproduce experiments
+                                        </span>
+                                    </div>
+                                    <div class="readmore__fade" aria-hidden="true"></div>
+                                    <button type="button" class="btn btn--outline btn--sm readmore__btn"
+                                        data-toggle="readmore" aria-controls="c1" aria-expanded="false">
+                                    </button>
+                                </div>
                         </ul>
-
                         <div class="resource-chips chips">
-                            <a class="chip" href="#" data-i18n="subjectsPage.c2.link1">GitHub Repo</a>
-                            <a class="chip" href="#" data-i18n="subjectsPage.c2.link2">Datasets</a>
-                            <a class="chip" href="#" data-i18n="subjectsPage.c2.link3">Reading List</a>
+                            <a class="chip" href="#" data-i18n="subjectsPage.c2.link1"></a>
+                            <a class="chip" href="#" data-i18n="subjectsPage.c2.link2"></a>
+                            <a class="chip" href="#" data-i18n="subjectsPage.c2.link3"></a>
                         </div>
                     </article>
 
                     <aside class="card">
                         <h3 data-i18n="subjectsPage.assess">การประเมินผล</h3>
                         <ul class="bullets">
-                            <li data-i18n="subjectsPage.c2.gr1">Mini-projects 40%</li>
-                            <li data-i18n="subjectsPage.c2.gr2">Quizzes/Labs 30%</li>
-                            <li data-i18n="subjectsPage.c2.gr3">Final Project 30%</li>
+                            <li data-i18n="subjectsPage.c2.gr1">Test-1 10%</li>
+                            <li data-i18n="subjectsPage.c2.gr2">Test-2 10%</li>
+                            <li data-i18n="subjectsPage.c2.gr3">Test-2 10%</li>
+                            <li data-i18n="subjectsPage.c2.gr4">Test-2 10%</li>
+                            <li data-i18n="subjectsPage.c2.gr5">Final Project 30%</li>
                         </ul>
 
                         <h4 data-i18n="subjectsPage.topics">หัวข้อโดยรวม</h4>
                         <ul class="bullets">
-                            <li data-i18n="subjectsPage.c2.t1">Data prep &amp; EDA</li>
-                            <li data-i18n="subjectsPage.c2.t2">Regression/Classification</li>
-                            <li data-i18n="subjectsPage.c2.t3">Model evaluation</li>
-                            <li data-i18n="subjectsPage.c2.t4">Reproducible research</li>
+                            <div class="readmore" id="c1">
+                                <div class="readmore__content" style="--lines: 4;">
+                                    <li data-i18n="subjectsPage.c2.t1">Chapter 1</li>
+                                    <li data-i18n="subjectsPage.c2.t2">Chapter 2</li>
+                                    <li data-i18n="subjectsPage.c2.t3">Chapter 3</li>
+                                    <li data-i18n="subjectsPage.c2.t4">Chapter 4</li>
+                                    <li data-i18n="subjectsPage.c2.t5">Chapter 5</li>
+                                    <li data-i18n="subjectsPage.c2.t6">Chapter 6</li>
+                                    <li data-i18n="subjectsPage.c2.t7">Chapter 7</li>
+                                </div>
+                                <div class="readmore__fade" aria-hidden="true"></div>
+                                <button type="button" class="btn btn--outline btn--sm readmore__btn"
+                                    data-toggle="readmore" aria-controls="c1" aria-expanded="false">
+                                </button>
                         </ul>
                     </aside>
                 </div>
-                <h3>ประกาศของวิชานี้</h3>
+                <h3 class="section-title" data-i18n="course.announcements.title"></h3>
                 <ul class="timeline js-news" data-course="SC602005" data-sort="pinnedThenDate" data-new-days="3"
                     aria-live="polite"></ul>
-
-                <a class="link-more" href="announcements.html?course=SC602005">
-                    ดูประกาศทั้งหมดของวิชานี้ →
-                </a>
-
-
+                <a class="link-more" href="announcements.html?course=SC602005"
+                    data-i18n="course.announcements.viewAll"></a>
                 <div class="back-top"><a href="#top" data-i18n="subjectsPage.backTop">↑ กลับไปด้านบน</a></div>
             </div>
         </section>
