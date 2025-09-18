@@ -1167,3 +1167,24 @@ main {
   }
   .hero .chip{ white-space: normal; }
 }
+
+/* ==== FIX: chips ในกล่องหัวข้อเด่น (#highlights) ไม่ให้ล้นจอบนมือถือ/iPad ==== */
+#highlights .chips{
+  display: grid;
+  gap: 10px;
+  /* ยืดหยุ่น: มือถือซ้อนลง 1 คอลัมน์, iPad/เดสก์ท็อปจะเป็น 2–3 คอลัมน์ตามพื้นที่ */
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  overflow: visible;
+}
+
+#highlights .chip{
+  /* override ของเดิมที่เป็น nowrap */
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  max-width: 100%;
+  display: block;              /* ให้กินความกว้างคอลัมน์เต็ม */
+  padding: 12px 14px;
+  border-radius: 12px;
+}
+
