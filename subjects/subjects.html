@@ -9,9 +9,9 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Thai:wght@400;500;600;700&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="styles.css" />
-    <script defer src="lang.js"></script>
-    <script defer src="news.js"></script>
+    <link rel="stylesheet" href="/styles.css" />
+    <script defer src="/lang.js"></script>
+    <script defer src="/announcements/news.js"></script>
 </head>
 
 <body>
@@ -20,7 +20,7 @@
     <!-- Navbar -->
     <header class="site-header">
         <div class="container nav">
-            <a class="brand" href="index.html" data-i18n="brand"><strong>Thanawan • STAT KKU</strong></a>
+            <a class="brand" href="/index.html" data-i18n="brand"><strong>Thanawan • STAT KKU</strong></a>
 
             <div class="lang-switch" role="group" aria-label="Language switch">
                 <button class="lang-btn" data-lang="th" aria-pressed="true">TH</button>
@@ -31,11 +31,11 @@
             <label for="nav-toggle" class="nav__burger" aria-hidden="true"><span></span></label>
 
             <nav class="nav__menu" aria-label="เมนูหลัก">
-                <a class="nav__link" href="index.html" data-i18n="nav.home">หน้าแรก</a>
-                <a class="nav__link is-active" href="subjects.html" data-i18n="nav.subjects">รายวิชา</a>
-                <a class="nav__link" href="Publications.html" data-i18n="nav.publications">ผลงานวิจัย</a>
-                <a class="nav__link" href="announcements.html" data-i18n="nav.news">ประกาศ</a>
-                <a class="nav__link" href="index.html#contact" data-i18n="nav.contact">ติดต่อ</a>
+                <a class="nav__link" href="/index.html" data-i18n="nav.home">หน้าแรก</a>
+                <a class="nav__link is-active" href="/subjects/subjects.html" data-i18n="nav.subjects">รายวิชา</a>
+                <a class="nav__link" href="/publications/Publications.html" data-i18n="nav.publications">ผลงานวิจัย</a>
+                <a class="nav__link" href="/announcements/announcements.html" data-i18n="nav.news">ประกาศ</a>
+                <a class="nav__link" href="/index.html#contact" data-i18n="nav.contact">ติดต่อ</a>
             </nav>
         </div>
     </header>
@@ -87,7 +87,7 @@
                             rel="noopener" data-i18n="subjectsPage.btn.syllabus">Syllabus</a>
                         <a class="btn btn--outline" href="#" target="_blank" rel="noopener"
                             data-i18n="subjectsPage.btn.materials">Materials</a>
-                        <a class="btn btn--ghost btn--sm" href="portal.html?course=SC602001">ดูคะแนน</a>
+                        <a class="btn btn--ghost btn--sm" href="/subjects/portal.html?course=SC602001">ดูคะแนน</a>
                     </div>
                 </div>
 
@@ -167,7 +167,7 @@
                 <h3 class="section-title" data-i18n="course.announcements.title"></h3>
                 <ul class="timeline js-news" data-course="SC602001" data-sort="pinnedThenDate" data-new-days="3"
                     aria-live="polite"></ul>
-                <a class="link-more" href="announcements.html?course=SC602001"
+                <a class="link-more" href="/announcements/announcements.html?course=SC602001"
                     data-i18n="course.announcements.viewAll"></a>
                 <div class="back-top"><a href="#top" data-i18n="subjectsPage.backTop">↑ กลับไปด้านบน</a></div>
             </div>
@@ -186,7 +186,7 @@
                             rel="noopener" data-i18n="subjectsPage.btn.syllabus">Syllabus</a>
                         <a class="btn btn--outline" href="#" target="_blank" rel="noopener"
                             data-i18n="subjectsPage.btn.materials">Materials</a>
-                        <a class="btn btn--ghost btn--sm" href="portal.html?course=SC602005">ดูคะแนน</a>
+                        <a class="btn btn--ghost btn--sm" href="/subjects/portal.html?course=SC602005">ดูคะแนน</a>
                     </div>
                 </div>
 
@@ -260,7 +260,7 @@
                 <h3 class="section-title" data-i18n="course.announcements.title"></h3>
                 <ul class="timeline js-news" data-course="SC602005" data-sort="pinnedThenDate" data-new-days="3"
                     aria-live="polite"></ul>
-                <a class="link-more" href="announcements.html?course=SC602005"
+                <a class="link-more" href="/announcements/announcements.html?course=SC602005"
                     data-i18n="course.announcements.viewAll"></a>
                 <div class="back-top"><a href="#top" data-i18n="subjectsPage.backTop">↑ กลับไปด้านบน</a></div>
             </div>
@@ -271,9 +271,9 @@
         <div class="container footer__flex">
             <p data-i18n="footer.copy">© 2025 Thanawan Prahadchai — Faculty of Science, KKU</p>
             <nav class="footer__nav">
-                <a href="privacy.html" data-i18n="footer.privacy">Privacy</a>
-                <a href="accessibility.html" data-i18n="footer.access">Accessibility</a>
-                <a href="sitemap.html" data-i18n="footer.sitemap">Sitemap</a>
+                <a href="/privacy/privacy.html" data-i18n="footer.privacy">Privacy</a>
+                <a href="/accessibility/accessibility.html" data-i18n="footer.access">Accessibility</a>
+                <a href="/sitemap/sitemap.html" data-i18n="footer.sitemap">Sitemap</a>
             </nav>
         </div>
     </footer>

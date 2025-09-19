@@ -28,40 +28,52 @@ let resendTimer = null;
 let otpTimer = null;
 
 /* ===== Mode switching ===== */
-function toDashboardMode(){ portalEl?.classList.remove('portal--compact'); portalEl?.classList.add('is-dashboard'); }
-function toCompactMode(){ portalEl?.classList.remove('is-dashboard','has-score'); portalEl?.classList.add('portal--compact'); }
+function toDashboardMode() { portalEl?.classList.remove('portal--compact'); portalEl?.classList.add('is-dashboard'); }
+function toCompactMode() { portalEl?.classList.remove('is-dashboard', 'has-score'); portalEl?.classList.add('portal--compact'); }
 
 /* ===== Boot ===== */
 boot();
-async function boot(){
-  const { data:{ user } } = await sb.auth.getUser();
-  if(user){ showDashboard(user); return; }
-  toCompactMode(); fEmail.hidden=false; fOtp.hidden=true; app.hidden=true;
+async function boot() {
+  const { data: { user } } = await sb.auth.getUser();
+  if (user) { showDashboard(user); return; }
+  toCompactMode(); fEmail.hidden = false; fOtp.hidden = true; app.hidden = true;
 }
 
 /* ===== ปุ่มย้อนกลับไปหน้ารายวิชา ===== */
 btnBackCourses?.addEventListener('click', () => {
-  if(document.referrer && document.referrer !== location.href){ history.back(); return; }
-  location.href = './';
+  try {
+    // ถ้ามี referrer จากหน้าเดิม และเป็น origin เดียวกัน ให้ย้อนจริง ๆ
+    const ref = document.referrer ? new URL(document.referrer) : null;
+    if (ref && ref.origin === location.origin && ref.href !== location.href) {
+      history.back();
+      return;
+    }
+  } catch { }
+
+  // ไม่มี/ใช้ referrer ไม่ได้ → ไปไฟล์ subjects.html ที่อยู่ข้าง ๆ portal.html
+  const u = new URL(location.href);
+  u.pathname = u.pathname.replace(/[^/]+$/, 'subjects.html');  // แทนชื่อไฟล์ท้าย path
+  location.href = u.toString();
 });
+
 
 /* ===== ส่ง OTP ===== */
 fEmail?.addEventListener('submit', async (e) => {
   e.preventDefault();
   const email = new FormData(fEmail).get('email')?.trim();
-  if(!email) return;
+  if (!email) return;
   loginEmail = email;
 
   btnSend.classList.add('is-loading');
   const { error } = await sb.auth.signInWithOtp({
     email,
-    options:{ shouldCreateUser:true, emailRedirectTo: location.origin + location.pathname }
+    options: { shouldCreateUser: true, emailRedirectTo: location.origin + location.pathname }
   });
   btnSend.classList.remove('is-loading');
 
-  if(error){ showMsg(msgEmail,'ส่งรหัสไม่สำเร็จ: '+error.message,'err'); return; }
-  showMsg(msgEmail,'ส่งรหัส 6 หลักไปที่อีเมลแล้ว กรุณาตรวจสอบ','ok');
-  fEmail.hidden=true; fOtp.hidden=false;
+  if (error) { showMsg(msgEmail, 'ส่งรหัสไม่สำเร็จ: ' + error.message, 'err'); return; }
+  showMsg(msgEmail, 'ส่งรหัส 6 หลักไปที่อีเมลแล้ว กรุณาตรวจสอบ', 'ok');
+  fEmail.hidden = true; fOtp.hidden = false;
   startResendCountdown(); startOtpCountdown();
 });
 
@@ -69,33 +81,33 @@ fEmail?.addEventListener('submit', async (e) => {
 fOtp?.addEventListener('submit', async (e) => {
   e.preventDefault();
   const code = new FormData(fOtp).get('code')?.trim();
-  if(!/^\d{6}$/.test(code)){ showMsg(msgOtp,'กรุณากรอกรหัส 6 หลักให้ถูกต้อง','err'); return; }
+  if (!/^\d{6}$/.test(code)) { showMsg(msgOtp, 'กรุณากรอกรหัส 6 หลักให้ถูกต้อง', 'err'); return; }
 
   btnConfirm.classList.add('is-loading');
-  const { error } = await sb.auth.verifyOtp({ email: loginEmail, token: code, type:'email' });
+  const { error } = await sb.auth.verifyOtp({ email: loginEmail, token: code, type: 'email' });
   btnConfirm.classList.remove('is-loading');
 
-  if(error){ showMsg(msgOtp,'รหัสไม่ถูกต้องหรือหมดอายุ','err'); return; }
+  if (error) { showMsg(msgOtp, 'รหัสไม่ถูกต้องหรือหมดอายุ', 'err'); return; }
   stopOtpCountdown();
-  const { data:{ user } } = await sb.auth.getUser();
+  const { data: { user } } = await sb.auth.getUser();
   showDashboard(user);
 });
 
 /* ===== ย้อนกลับจาก OTP ===== */
 btnBack?.addEventListener('click', () => {
-  fOtp.hidden=true; fEmail.hidden=false;
+  fOtp.hidden = true; fEmail.hidden = false;
   stopResendCountdown(); stopOtpCountdown();
-  msgEmail.hidden=true; msgOtp.hidden=true;
-  btnConfirm.textContent='ยืนยัน';
+  msgEmail.hidden = true; msgOtp.hidden = true;
+  btnConfirm.textContent = 'ยืนยัน';
 });
 
 /* ===== Sign out ===== */
-async function doSignOut(){ await sb.auth.signOut(); toCompactMode(); location.reload(); }
+async function doSignOut() { await sb.auth.signOut(); toCompactMode(); location.reload(); }
 
 /* ===== Dashboard ===== */
-async function showDashboard(user){
+async function showDashboard(user) {
   toDashboardMode();
-  fEmail.hidden=true; fOtp.hidden=true; app.hidden=false;
+  fEmail.hidden = true; fOtp.hidden = true; app.hidden = false;
   portalEl.classList.remove('has-score');
 
   const $who = $('#card-who'), $courses = $('#card-courses'), $score = $('#card-score');
@@ -107,7 +119,7 @@ async function showDashboard(user){
              year_level, program, major, section, entry_year, kku_email`)
     .eq('email', user.email).maybeSingle();
 
-  if(!me){
+  if (!me) {
     $who.innerHTML = `
       <div class="card">
         <h3 style="margin:0 0 6px">ไม่พบข้อมูลของอีเมลนี้</h3>
@@ -115,7 +127,7 @@ async function showDashboard(user){
         <div class="row" style="margin-top:10px"><button class="btn btn--outline" id="logout-alone">ออกจากระบบ</button></div>
       </div>`;
     $('#logout-alone')?.addEventListener('click', doSignOut);
-    $courses.innerHTML=''; $score.innerHTML='';
+    $courses.innerHTML = ''; $score.innerHTML = '';
     return;
   }
 
@@ -125,9 +137,9 @@ async function showDashboard(user){
   const { data: enrolls } = await sb.from('enrollments').select('course_id').eq('student_id', me.id);
   const courseIds = (enrolls || []).map(x => x.course_id);
 
-  if(!courseIds.length){
+  if (!courseIds.length) {
     $courses.innerHTML = `<div class="card"><h3 style="margin:0 0 8px">รายวิชาที่ลงทะเบียน</h3><div class="muted">ยังไม่มีรายวิชา</div></div>`;
-    $score.innerHTML=''; return;
+    $score.innerHTML = ''; return;
   }
 
   const { data: courses } = await sb
@@ -168,17 +180,17 @@ async function showDashboard(user){
   // event delegation
   $courses.querySelector('#courses-list')?.addEventListener('click', (ev) => {
     const btn = ev.target.closest('[data-open-course]');
-    if(!btn) return;
+    if (!btn) return;
     openCourse(+btn.dataset.courseId, String(btn.dataset.courseCode), +btn.dataset.studentId);
   });
 
   // ซ่อนการ์ดคะแนน (ยังไม่เปิด)
-  $score.innerHTML=''; portalEl.classList.remove('has-score');
+  $score.innerHTML = ''; portalEl.classList.remove('has-score');
 }
 window.showDashboard = showDashboard;
 
 /* ===== การ์ดข้อมูลนักศึกษา ===== */
-function renderWhoCard(me){
+function renderWhoCard(me) {
   const $who = $('#card-who');
   const emailTxt = me?.kku_email || me?.email || '—';
   const yearTxt = me?.year_level ? `ชั้นปี ${me.year_level}` : 'ชั้นปี —';
@@ -199,7 +211,7 @@ function renderWhoCard(me){
       <div class="row" style="margin-top:10px">
         <button class="btn btn--outline" id="btn-signout">ออกจากระบบ</button>
         <a class="btn btn--primary" id="btn-mail-teacher"
-           href="mailto:thanawan@kku.ac.th?subject=[รายวิชา.....รหัสวิชา...... section] สอบถามผลการเรียน&amp;body=ชื่อนักศึกษา:%0Aรหัสนักศึกษา:%0Aรายละเอียด:">ติดต่ออาจารย์
+           href="mailto:thanpra@kku.ac.th?subject=[รายวิชา.....รหัสวิชา...... section......] สอบถามผลการเรียน&amp;body=ชื่อนักศึกษา:%0Aรหัสนักศึกษา:%0Aรายละเอียด:">ติดต่ออาจารย์
         </a>
       </div>
     </div>`;
@@ -207,19 +219,19 @@ function renderWhoCard(me){
 }
 
 /* ===== กลับไปรายวิชา ===== */
-function backToCourses(){
+function backToCourses() {
   const $score = $('#card-score');
   $score.innerHTML = '';
   portalEl.classList.remove('has-score'); // ซ่อนแถวล่าง
 }
 
 /* ===== เปิดการ์ดคะแนน: แสดงแถวล่างสุดเต็มกว้าง ===== */
-async function openCourse(courseId, code, studentId){
+async function openCourse(courseId, code, studentId) {
   const { data: assess } = await sb
     .from('assessments')
     .select('id, name, weight, max_score')
     .eq('course_id', courseId)
-    .order('id',{ ascending:true });
+    .order('id', { ascending: true });
 
   const assessIds = (assess || []).map(a => a.id);
 
@@ -235,12 +247,12 @@ async function openCourse(courseId, code, studentId){
   const rows = (assess || []).map(a => {
     const sc = Number(byAid[a.id] ?? 0);
     const max = Number(a.max_score ?? 0);
-    const w   = Number(a.weight ?? 0);
-    const pct = max > 0 ? sc/max : 0;
+    const w = Number(a.weight ?? 0);
+    const pct = max > 0 ? sc / max : 0;
     totalPct += w * pct;
 
-    const barWidth = Math.max(0, Math.min(100, pct*100));
-    const pctText  = (pct*100).toFixed(1) + '%';
+    const barWidth = Math.max(0, Math.min(100, pct * 100));
+    const pctText = (pct * 100).toFixed(1) + '%';
 
     return `<tr>
       <td>${a.name}</td>
@@ -263,20 +275,20 @@ async function openCourse(courseId, code, studentId){
     .eq('id', courseId).single();
 
   let letter = '-';
-  if(course?.grade_rules){
-    try{
+  if (course?.grade_rules) {
+    try {
       const rulesObj = typeof course.grade_rules === 'string'
         ? JSON.parse(course.grade_rules)
         : course.grade_rules;
       const pairs = Object.entries(rulesObj)
-        .map(([g,v]) => [g, Number(v) <= 1 ? Number(v)*100 : Number(v)])
-        .sort((a,b) => b[1]-a[1]);
-      const found = pairs.find(([g,cut]) => totalPct >= cut);
+        .map(([g, v]) => [g, Number(v) <= 1 ? Number(v) * 100 : Number(v)])
+        .sort((a, b) => b[1] - a[1]);
+      const found = pairs.find(([g, cut]) => totalPct >= cut);
       letter = found ? found[0] : '-';
-    }catch{}
+    } catch { }
   }
 
-  const published = ('grade_published' in (course||{})) ? !!course.grade_published : false;
+  const published = ('grade_published' in (course || {})) ? !!course.grade_published : false;
   const canShowGrade = !!course?.grade_rules && published && missingCount === 0;
 
   const gradeRow = canShowGrade
@@ -320,43 +332,43 @@ async function openCourse(courseId, code, studentId){
 window.openCourse = openCourse;
 
 /* ===== Helpers ===== */
-function showMsg(el, text, type='ok'){
+function showMsg(el, text, type = 'ok') {
   el.textContent = text;
   el.className = 'notice notice--' + (type === 'err' ? 'err' : 'ok');
   el.hidden = false;
 }
-function startResendCountdown(){
-  let left = RESEND_WINDOW; btnSend.textContent = `ส่งใหม่ใน ${left}s`; btnSend.disabled=true; clearInterval(resendTimer);
+function startResendCountdown() {
+  let left = RESEND_WINDOW; btnSend.textContent = `ส่งใหม่ใน ${left}s`; btnSend.disabled = true; clearInterval(resendTimer);
   resendTimer = setInterval(() => {
     left -= 1;
     btnSend.textContent = left > 0 ? `ส่งใหม่ใน ${left}s` : 'ส่งรหัส OTP';
-    if(left <= 0){ clearInterval(resendTimer); btnSend.disabled=false; }
+    if (left <= 0) { clearInterval(resendTimer); btnSend.disabled = false; }
   }, 1000);
 }
-function stopResendCountdown(){ clearInterval(resendTimer); btnSend.textContent='ส่งรหัส OTP'; btnSend.disabled=false; }
-function startOtpCountdown(){
-  let left = OTP_WINDOW; otpCount.textContent = left; btnConfirm.textContent = `ยืนยัน (${left}s)`; btnConfirm.disabled=false; clearInterval(otpTimer);
+function stopResendCountdown() { clearInterval(resendTimer); btnSend.textContent = 'ส่งรหัส OTP'; btnSend.disabled = false; }
+function startOtpCountdown() {
+  let left = OTP_WINDOW; otpCount.textContent = left; btnConfirm.textContent = `ยืนยัน (${left}s)`; btnConfirm.disabled = false; clearInterval(otpTimer);
   otpTimer = setInterval(() => {
     left -= 1;
     otpCount.textContent = left;
     btnConfirm.textContent = `ยืนยัน (${left}s)`;
-    if(left <= 0){
+    if (left <= 0) {
       clearInterval(otpTimer);
       btnConfirm.textContent = 'หมดเวลา';
       btnConfirm.disabled = true;
-      showMsg(msgOtp,'รหัสหมดอายุ กรุณากดย้อนกลับเพื่อขอรหัสใหม่','err');
+      showMsg(msgOtp, 'รหัสหมดอายุ กรุณากดย้อนกลับเพื่อขอรหัสใหม่', 'err');
     }
   }, 1000);
 }
-function stopOtpCountdown(){
+function stopOtpCountdown() {
   clearInterval(otpTimer);
-  otpCount.textContent='--';
-  btnConfirm.textContent='ยืนยัน';
-  btnConfirm.disabled=false;
+  otpCount.textContent = '--';
+  btnConfirm.textContent = 'ยืนยัน';
+  btnConfirm.disabled = false;
 }
 
 /* อัปเดตวันที่ในการ์ดข้อ 3 */
-(function setUpdatedDate(){
+(function setUpdatedDate() {
   const el = document.querySelector('#app-updated');
-  if(el) el.textContent = new Date().toLocaleDateString('th-TH',{year:'numeric',month:'short',day:'2-digit'});
+  if (el) el.textContent = new Date().toLocaleDateString('th-TH', { year: 'numeric', month: 'short', day: '2-digit' });
 })();

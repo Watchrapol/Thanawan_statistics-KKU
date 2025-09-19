@@ -8,9 +8,9 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Thai:wght@400;500;600;700&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="styles.css" />
-    <script defer src="lang.js"></script>
-    <script defer src="news.js"></script>
+    <link rel="stylesheet" href="/styles.css" />
+    <script defer src="/lang.js"></script>
+    <script defer src="/announcements/news.js"></script>
 </head>
 
 <body>
@@ -18,7 +18,7 @@
 
     <header class="site-header">
         <div class="container nav">
-            <a class="brand" href="index.html" data-i18n="brand"><strong>Thanawan • STAT KKU</strong></a>
+            <a class="brand" href="/index.html" data-i18n="brand"><strong>Thanawan • STAT KKU</strong></a>
             <div class="lang-switch" role="group" aria-label="Language switch">
                 <button class="lang-btn" data-lang="th" aria-pressed="true">TH</button>
                 <button class="lang-btn" data-lang="en" aria-pressed="false">EN</button>
@@ -26,11 +26,11 @@
             <input type="checkbox" id="nav-toggle" class="nav__toggle" aria-label="เปิดเมนู" />
             <label for="nav-toggle" class="nav__burger" aria-hidden="true"><span></span></label>
             <nav class="nav__menu" aria-label="เมนูหลัก">
-                <a class="nav__link" href="index.html" data-i18n="nav.home">หน้าแรก</a>
-                <a class="nav__link" href="subjects.html" data-i18n="nav.subjects">รายวิชา</a>
-                <a class="nav__link" href="Publications.html" data-i18n="nav.publications">ผลงานวิจัย</a>
-                <a class="nav__link is-active" href="announcements.html" data-i18n="nav.news">ประกาศ</a>
-                <a class="nav__link" href="index.html#contact" data-i18n="nav.contact">ติดต่อ</a>
+                <a class="nav__link" href="/index.html" data-i18n="nav.home">หน้าแรก</a>
+                <a class="nav__link" href="/subjects/subjects.html" data-i18n="nav.subjects">รายวิชา</a>
+                <a class="nav__link" href="/publications/Publications.html" data-i18n="nav.publications">ผลงานวิจัย</a>
+                <a class="nav__link is-active" href="/announcements/announcements.html" data-i18n="nav.news">ประกาศ</a>
+                <a class="nav__link" href="/index.html#contact" data-i18n="nav.contact">ติดต่อ</a>
             </nav>
         </div>
     </header>
@@ -50,9 +50,9 @@
         <div class="container footer__flex">
             <p data-i18n="footer.copy">© 2025 Thanawan Prahadchai — Faculty of Science, KKU</p>
             <nav class="footer__nav">
-                <a href="#" data-i18n="footer.privacy">Privacy</a>
-                <a href="#" data-i18n="footer.access">Accessibility</a>
-                <a href="#" data-i18n="footer.sitemap">Sitemap</a>
+                <a href="/privacy/privacy.html" data-i18n="footer.privacy">Privacy</a>
+                <a href="/accessibility/accessibility.html" data-i18n="footer.access">Accessibility</a>
+                <a href="/sitemap/sitemap.html" data-i18n="footer.sitemap">Sitemap</a>
             </nav>
         </div>
     </footer>
