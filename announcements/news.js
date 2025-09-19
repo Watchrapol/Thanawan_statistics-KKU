@@ -26,7 +26,7 @@
 
     async function loadData() {
         // กันแคชแบบง่าย (เปลี่ยน v เมื่อแก้ JSON บ่อย ๆ)
-        const res = await fetch(`/announcements/announcements.json?ts=${Date.now()}`, { cache: 'no-store' });
+        const res = await fetch(`announcements/announcements.json?ts=${Date.now()}`, { cache: 'no-store' });
         if (!res.ok) throw new Error("โหลดประกาศไม่สำเร็จ");
         return res.json();
     }
@@ -89,7 +89,7 @@
 
     // --- โหลด + ผูกกับทุก list ---
     // กันแคชทุกครั้งที่โหลดหน้า (ทางเลือก A ที่คุยกัน)
-    const res = await fetch(`/announcements/announcements.json?=${Date.now()}`, { cache: 'no-store' });
+    const res = await fetch(`announcements/announcements.json?=${Date.now()}`, { cache: 'no-store' });
     let CACHE = [];
     try { CACHE = await res.json(); } catch (e) { console.error(e); }
 
