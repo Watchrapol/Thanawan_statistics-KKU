@@ -37,7 +37,7 @@
   };
 
   async function loadData() {
-    const resp = await fetch('publications/publications.json', { cache: 'no-cache' });
+    const resp = await fetch('publications.json', { cache: 'no-cache' });
     const data = await resp.json();
     return data.items || [];
   }
