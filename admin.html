@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>แดชบอร์ดผู้ดูแล • ระบบคะแนนนักศึกษา</title>
+
+  <!-- ถ้ามี styles.css ใช้ร่วมได้ ไม่บังคับ -->
+  <link rel="stylesheet" href="styles.css" />
+  <!-- สไตล์ของแดชบอร์ดนี้เท่านั้น -->
+  <link rel="stylesheet" href="admin.css" />
+</head>
+
+<body class="page-admin">
+  <header class="admin-header" role="banner">
+    <div class="brand">
+      <div class="brand-mark" aria-hidden="true">KKU</div>
+      <div class="brand-text">
+        <b>แดชบอร์ดผู้ดูแล</b>
+        <span class="muted">สาขาสถิติ • คณะวิทยาศาสตร์</span>
+      </div>
+    </div>
+
+    <nav class="header-actions" aria-label="การทำงานด่วน">
+      <button class="btn btn--outline" data-nav="courses">รายวิชา</button>
+      <button class="btn btn--outline" data-nav="acl">สิทธิ์ผู้ใช้</button>
+      <button class="btn btn--outline" data-nav="pubs">ผลงานวิจัย</button>
+      <div class="divider" aria-hidden="true"></div>
+      <button class="btn btn--secondary" id="btn-signout">ออกจากระบบ</button>
+    </nav>
+  </header>
+
+  <main class="admin" role="main">
+    <!-- การ์ดข้อมูลระบบ -->
+    <section class="card" id="card-info">
+      <h3>ข้อมูลระบบ</h3>
+      <p class="muted">เวอร์ชัน 1.0 • อัปเดตล่าสุด: <span id="app-updated">—</span></p>
+      <p class="disclaimer">
+        หน้านี้สำหรับผู้ดูแล/อาจารย์ ใช้จัดการรายวิชา รายชื่อ คะแนน ประกาศ และสิทธิ์การเข้าถึง
+      </p>
+    </section>
+
+    <!-- แถบเครื่องมือรายวิชา -->
+    <section class="toolbar" aria-label="เครื่องมือรายวิชา">
+      <div class="search">
+        <input class="input" type="search" id="q" placeholder="ค้นหารายวิชา (รหัส/ชื่อ/ภาคการศึกษา)" />
+      </div>
+      <div class="tools">
+        <button class="btn" id="btn-add-course">+ เพิ่มรายวิชา</button>
+        <button class="btn btn--outline" id="btn-refresh-courses">รีเฟรช</button>
+      </div>
+    </section>
+
+    <!-- กริดการ์ดรายวิชา -->
+    <section id="grid-courses" class="grid-courses" aria-label="รายวิชาที่ดูแล">
+      <!-- ตัวอย่างการ์ด (ข้อมูลจริงใส่ด้วย JS ภายหลัง) -->
+      <!--
+      <article class="course">
+        <div class="course-head">
+          <div class="code">STAT101</div>
+          <div class="meta muted">1/2025 • Sec 1</div>
+        </div>
+        <div class="title">Introduction to Statistics</div>
+        <div class="actions">
+          <button class="btn btn--sm" data-open="detail">จัดการ</button>
+          <button class="btn btn--sm btn--outline" data-open="roster">รายชื่อ</button>
+          <button class="btn btn--sm btn--outline" data-open="scores">คะแนน</button>
+        </div>
+      </article>
+      -->
+    </section>
+
+    <!-- กล่องรายละเอียดรายวิชา -->
+    <section id="course-detail" class="card" hidden aria-live="polite">
+      <header class="detail-head">
+        <h3 id="detail-title">จัดการรายวิชา</h3>
+        <div class="row">
+          <label class="file">
+            <input type="file" id="file-import" accept=".csv,.xlsx,.xls" />
+            <span>นำเข้า Excel/CSV</span>
+          </label>
+          <button class="btn btn--outline" id="btn-detail-refresh">รีเฟรช</button>
+          <button class="btn btn--danger" id="btn-delete-course">ลบรายวิชา</button>
+        </div>
+      </header>
+
+      <nav class="tabs" role="tablist" aria-label="แท็บจัดการรายวิชา">
+        <button class="tab is-active" role="tab" aria-selected="true" data-tab="roster">รายชื่อ</button>
+        <button class="tab" role="tab" data-tab="scores">คะแนน</button>
+        <button class="tab" role="tab" data-tab="assess">องค์ประกอบคะแนน</button>
+        <button class="tab" role="tab" data-tab="ann">ประกาศ</button>
+      </nav>
+
+      <div class="tabpanels">
+        <!-- รายชื่อ -->
+        <div class="tabpanel" data-panel="roster">
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th align="left">อีเมล</th>
+                  <th>รหัสนักศึกษา</th>
+                  <th class="right"></th>
+                </tr>
+              </thead>
+              <tbody id="tbody-roster"><!-- เติมด้วย JS --></tbody>
+            </table>
+          </div>
+          <div class="row mt-8">
+            <button class="btn" id="btn-add-blank-student">เพิ่มแถวว่าง</button>
+          </div>
+        </div>
+
+        <!-- คะแนน -->
+        <div class="tabpanel" data-panel="scores" hidden>
+          <div class="table-wrap">
+            <table>
+              <thead id="thead-scores"><!-- เติมหัวคอลัมน์ด้วย JS --></thead>
+              <tbody id="tbody-scores"><!-- เติมแถวด้วย JS --></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- องค์ประกอบคะแนน -->
+        <div class="tabpanel" data-panel="assess" hidden>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th align="left">ชื่อรายการ</th>
+                  <th class="right">สัดส่วน (%)</th>
+                  <th class="right">เต็ม</th>
+                  <th class="right"></th>
+                </tr>
+              </thead>
+              <tbody id="tbody-assess"><!-- JS --></tbody>
+            </table>
+          </div>
+          <div class="row mt-8">
+            <button class="btn" id="btn-add-assess">เพิ่มองค์ประกอบ</button>
+          </div>
+        </div>
+
+        <!-- ประกาศ -->
+        <div class="tabpanel" data-panel="ann" hidden>
+          <div id="list-ann" class="stack"><!-- JS --></div>
+          <div class="row mt-8">
+            <button class="btn" id="btn-new-ann">เพิ่มประกาศ</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- การจัดการสิทธิ์ผู้ใช้ -->
+    <section id="acl" class="card" aria-label="การจัดการสิทธิ์" hidden>
+      <h3>การจัดการสิทธิ์</h3>
+
+      <div class="row wrap">
+        <label class="w-260">
+          อีเมลผู้ใช้
+          <input class="input" id="acl-email" type="email" placeholder="user@kku.ac.th">
+        </label>
+
+        <label>
+          Global role
+          <select class="input" id="acl-global-role">
+            <option value="student">student</option>
+            <option value="instructor">instructor</option>
+            <option value="admin">admin</option>
+          </select>
+        </label>
+
+        <button class="btn" id="btn-set-global">ตั้งบทบาท</button>
+      </div>
+
+      <div class="row wrap mt-8">
+        <label class="w-260">
+          รายวิชา
+          <select class="input" id="acl-course"></select>
+        </label>
+        <label>
+          บทบาทในวิชา
+          <select class="input" id="acl-course-role">
+            <option value="owner">owner</option>
+            <option value="instructor">instructor</option>
+            <option value="ta">ta</option>
+            <option value="viewer">viewer</option>
+          </select>
+        </label>
+        <button class="btn" id="btn-grant-course">ให้สิทธิ์</button>
+        <button class="btn btn--outline" id="btn-revoke-course">ลบสิทธิ์</button>
+      </div>
+
+      <div class="table-wrap mt-12" id="acl-list">
+        <!-- ตารางสรุปสิทธิ์ ใส่ด้วย JS -->
+      </div>
+    </section>
+
+    <!-- ผลงานวิจัย (placeholder) -->
+    <section id="pubs" class="card" hidden>
+      <h3>ผลงานวิจัย</h3>
+      <p class="muted">ส่วนนี้จะแสดง/แก้ไขรายการผลงานของผู้ใช้ที่ล็อกอิน</p>
+      <div id="pubs-list" class="stack"><!-- JS --></div>
+      <div class="row mt-8">
+        <button class="btn" id="btn-add-pub">เพิ่มรายการ</button>
+      </div>
+    </section>
+  </main>
+
+  <noscript>
+    <div class="nojs">หน้านี้ต้องการ JavaScript</div>
+  </noscript>
+</body>
+</html>
