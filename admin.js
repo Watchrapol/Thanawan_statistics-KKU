@@ -209,7 +209,7 @@ async function openCourseDetail(courseId, focusTab = 'detail') {
           <tbody id="tbody-roster"><tr><td colspan="6" class="muted">กำลังโหลด...</td></tr></tbody>
         </table></div>
         <div class="row mt-8">
-          <button class="btn" id="btn-add-blank-student">เพิ่มแถวว่าง</button>
+          <button class="btn" id="btn-add-blank-student">เพิ่มรายชื่อ</button>
         </div>
       </div>
 
@@ -241,6 +241,14 @@ async function openCourseDetail(courseId, focusTab = 'detail') {
     // tabs
     const tabs = $$('.tabs .tab', box);
     tabs.forEach(t => t.addEventListener('click', () => switchTab(box, t.dataset.tab, courseId)));
+
+    // เปลี่ยนชื่อปุ่ม + ผูกให้เปิด modal เพิ่มรายชื่อ
+    const addBtn = $('#btn-add-blank-student', box);
+    if (addBtn) {
+        addBtn.textContent = 'เพิ่มรายชื่อ';
+        addBtn.onclick = () => openAddStudentModal(courseId, box);
+    }
+
 
     // refresh / delete
     $('#btn-detail-refresh', box)?.addEventListener('click', () => {
@@ -393,11 +401,9 @@ function renderRosterPage(el, page = 1) {
             const sid = Number(tr?.dataset.sid);
             const cid = Number(tr?.dataset.cid);
             if (!sid || !cid) return;
-            if (!confirm('ลบรายชื่อแถวนี้?')) return;
-            const { error } = await sb.from('enrollments').delete().match({ student_id: sid, course_id: cid });
-            if (error) return alert('ลบไม่สำเร็จ: ' + error.message);
-            el._rosterRows = (el._rosterRows || []).filter(x => !(x.student_id === sid && x.course_id === cid));
-            renderRosterPage(el, el._rosterPage);
+
+            // เด้งกล่องเลือกวิธีลบ (แทน confirm แบบเดิม)
+            openDeleteStudentModal(sid, cid, el);
         }));
     }
 
@@ -442,6 +448,167 @@ function renderRosterPager(el, page, pages, total) {
     </div>
   `;
 }
+
+function openAddStudentModal(courseId, containerEl) {
+    closeModal('modal-add-student'); // กันซ้ำ
+
+    const html = `
+  <div class="modal" id="modal-add-student" role="dialog" aria-modal="true">
+    <div class="modal__backdrop" data-close></div>
+    <div class="modal__panel" role="document">
+      <header class="modal__head">
+        <h3>เพิ่มรายชื่อนักศึกษา</h3>
+        <button class="modal__close" data-close aria-label="ปิด">×</button>
+      </header>
+
+      <form id="form-add-student" class="stack">
+        <label>อีเมล* (ต้องไม่ว่าง)
+          <input class="input" name="email" type="email" required placeholder="student@kkumail.com">
+        </label>
+
+        <div class="row wrap" style="gap:.75rem">
+          <label class="w-260">ชื่อจริง
+            <input class="input" name="first_name" type="text">
+          </label>
+          <label class="w-260">นามสกุล
+            <input class="input" name="last_name" type="text">
+          </label>
+        </div>
+
+        <label>รหัสนักศึกษา
+          <input class="input" name="student_no" type="text" placeholder="66xxxxxxxx">
+        </label>
+
+        <footer class="row" style="justify-content:flex-end; gap:.5rem; margin-top:12px">
+          <button type="button" class="btn btn--outline" data-close>ยกเลิก</button>
+          <button type="submit" class="btn">บันทึก</button>
+        </footer>
+      </form>
+    </div>
+  </div>`;
+
+    document.body.insertAdjacentHTML('beforeend', html);
+
+    const modal = document.getElementById('modal-add-student');
+    modal.querySelectorAll('[data-close]').forEach(b =>
+        b.addEventListener('click', () => closeModal('modal-add-student'))
+    );
+    modal.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal('modal-add-student'); });
+
+    const form = document.getElementById('form-add-student');
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const fd = new FormData(form);
+        const student = {
+            email: (fd.get('email') || '').trim(),
+            first_name: (fd.get('first_name') || '').trim(),
+            last_name: (fd.get('last_name') || '').trim(),
+            student_no: (fd.get('student_no') || '').trim(),
+        };
+        if (!student.email) { alert('ต้องกรอกอีเมล'); return; }
+
+        const ok = await upsertStudentAndEnroll(student, courseId);
+        if (!ok) return;
+
+        closeModal('modal-add-student');
+        await loadRoster(courseId, containerEl);
+    });
+
+    modal.querySelector('input[name="email"]').focus();
+}
+
+function openDeleteStudentModal(sid, cid, el) {
+    closeModal('modal-del-student'); // กันสร้างซ้ำ
+
+    const html = `
+  <div class="modal" id="modal-del-student" role="dialog" aria-modal="true">
+    <div class="modal__backdrop" data-close></div>
+    <div class="modal__panel" role="document">
+      <header class="modal__head">
+        <h3>ลบนักศึกษา</h3>
+        <button class="modal__close" data-close aria-label="ปิด">×</button>
+      </header>
+
+      <div class="stack">
+        <p>คุณต้องการทำอะไรกับนักศึกษาคนนี้?</p>
+        <ol class="muted" style="margin:0 0 8px 1.25rem">
+          <li>ลบเฉพาะวิชานี้ — เอาออกจากรายวิชานี้เท่านั้น</li>
+          <li>ลบทั้งหมด — ลบข้อมูลนักศึกษาคนนี้ออกจากระบบ (รวมถึงรายวิชา/คะแนนที่เกี่ยวข้อง)</li>
+        </ol>
+
+        <footer class="row" style="justify-content:flex-end; gap:.5rem">
+          <button class="btn btn--outline" data-act="course"> ลบเฉพาะวิชานี้</button>
+          <button class="btn btn--danger"  data-act="all"> ลบทั้งหมด</button>
+          <button class="btn" data-close> ยกเลิก</button>
+        </footer>
+      </div>
+    </div>
+  </div>`;
+    document.body.insertAdjacentHTML('beforeend', html);
+
+    const modal = document.getElementById('modal-del-student');
+    modal.querySelectorAll('[data-close]').forEach(b =>
+        b.addEventListener('click', () => closeModal('modal-del-student'))
+    );
+    modal.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal('modal-del-student'); });
+
+    // จัดการคลิกปุ่ม
+    modal.querySelector('.modal__panel').addEventListener('click', async (ev) => {
+        const btn = ev.target.closest('button[data-act]'); if (!btn) return;
+        btn.disabled = true;
+        try {
+            if (btn.dataset.act === 'course') {
+                // ลบเฉพาะวิชานี้
+                const { error } = await sb.from('enrollments').delete().match({ student_id: sid, course_id: cid });
+                if (error) throw error;
+                el._rosterRows = (el._rosterRows || []).filter(x => !(x.student_id === sid && x.course_id === cid));
+            } else if (btn.dataset.act === 'all') {
+                // ลบทั้งคน (ต้องตั้ง FK เป็น ON DELETE CASCADE ไว้แล้ว)
+                const { error } = await sb.from('students').delete().eq('id', sid);
+                if (error) throw error;
+                el._rosterRows = (el._rosterRows || []).filter(x => x.student_id !== sid);
+            } else {
+                // ยกเลิก
+                closeModal('modal-del-student');
+                return;
+            }
+            closeModal('modal-del-student');
+            renderRosterPage(el, el._rosterPage || 1);
+        } catch (err) {
+            btn.disabled = false;
+            alert('ลบไม่สำเร็จ: ' + (err?.message || err));
+        }
+    });
+}
+
+
+async function upsertStudentAndEnroll(student, courseId) {
+    const { data: stu, error: u1 } = await sb
+        .from('students')
+        .upsert(student, { onConflict: 'email' })
+        .select('id')
+        .single();
+    if (u1) { alert('บันทึกนักศึกษาไม่สำเร็จ: ' + u1.message); return false; }
+
+    const { data: existed, error: chk } = await sb
+        .from('enrollments')
+        .select('student_id')
+        .match({ student_id: stu.id, course_id: courseId })
+        .maybeSingle();
+    if (chk) { alert('ตรวจสอบรายชื่อไม่สำเร็จ: ' + chk.message); return false; }
+
+    if (!existed) {
+        const { error: ins } = await sb
+            .from('enrollments')
+            .insert({ student_id: stu.id, course_id: courseId });
+        if (ins) { alert('เพิ่มรายชื่อเข้าวิชาไม่สำเร็จ: ' + ins.message); return false; }
+    }
+    alert('เพิ่มรายชื่อเรียบร้อย');
+    return true;
+}
+
+function closeModal(id) { const m = document.getElementById(id); if (m) m.remove(); }
+
 
 /* ========= Save multi-edits ========= */
 function toggleRosterEditButtons(el, editing) {
@@ -520,6 +687,83 @@ async function saveRosterEdits(courseId, el) {
     alert('บันทึกแล้ว');
     renderRosterPage(el, el._rosterPage || 1);
 }
+
+// เพิ่มนักศึกษาเข้ารายวิชา: ถ้ามีอยู่แล้วจะใช้คนเดิม, ถ้าไม่มีก็สร้างใหม่แล้ว enroll
+async function addStudentToCourse(courseId, el) {
+    // 1) ขออีเมล (จำเป็น เพราะ students.email เป็น NOT NULL)
+    let email = prompt('อีเมลนักศึกษา (จำเป็น):');
+    if (!email) return;
+    email = email.trim().toLowerCase();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        alert('รูปแบบอีเมลไม่ถูกต้อง');
+        return;
+    }
+
+    // 2) มีนักศึกษาคนนี้อยู่แล้วหรือยัง (เช็คทั้ง email และ kku_email)
+    const { data: stu, error: eFind } = await sb
+        .from('students')
+        .select('id, email, kku_email, first_name, last_name, student_no')
+        .or(`email.eq.${email},kku_email.eq.${email}`)
+        .maybeSingle();
+
+    if (eFind) {
+        alert('ค้นหานักศึกษาไม่สำเร็จ: ' + eFind.message);
+        return;
+    }
+
+    let student = stu;
+    // 3) ถ้าไม่พบ – ขอข้อมูลเพิ่มเล็กน้อย แล้วสร้างนักศึกษาใหม่
+    if (!student) {
+        const first_name = prompt('ชื่อ (ไม่บังคับ):') || '';
+        const last_name = prompt('นามสกุล (ไม่บังคับ):') || '';
+        const student_no = prompt('รหัสนักศึกษา (ไม่บังคับ):') || '';
+
+        const { data: created, error: eInsertStu } = await sb
+            .from('students')
+            .insert({
+                email,                 // จำเป็น
+                kku_email: email,      // จะตั้งให้เท่ากันก่อน
+                first_name,
+                last_name,
+                student_no
+            })
+            .select()
+            .single();
+
+        if (eInsertStu) {
+            alert('เพิ่มนักศึกษาไม่สำเร็จ: ' + eInsertStu.message);
+            return;
+        }
+        student = created;
+    }
+
+    // 4) เช็คว่าลงทะเบียนรายวิชานี้แล้วหรือยัง
+    const { data: dup } = await sb
+        .from('enrollments')
+        .select('student_id')
+        .match({ student_id: student.id, course_id: courseId })
+        .maybeSingle();
+
+    if (dup) {
+        alert('นักศึกษาคนนี้ลงทะเบียนในรายวิชานี้อยู่แล้ว');
+        return;
+    }
+
+    // 5) ลงทะเบียนเข้ารายวิชา
+    const { error: eEnroll } = await sb
+        .from('enrollments')
+        .insert({ student_id: student.id, course_id: courseId });
+
+    if (eEnroll) {
+        alert('เพิ่มรายชื่อไม่สำเร็จ: ' + eEnroll.message);
+        return;
+    }
+
+    // 6) รีเฟรชรายชื่อ
+    await loadRoster(courseId, el);
+    alert('เพิ่มรายชื่อเรียบร้อย');
+}
+
 
 /* ========= Other tabs (placeholder) ========= */
 async function loadScores(courseId, el) {
