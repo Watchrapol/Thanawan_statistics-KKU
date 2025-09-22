@@ -3,74 +3,52 @@ const SUPABASE_URL = "https://uyhhxexhagbcwdtoanly.supabase.co";
 const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV5aGh4ZXhoYWdiY3dkdG9hbmx5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc5MzEyODksImV4cCI6MjA3MzUwNzI4OX0.p0LeCTzk5T1LKqO7IGBmtH7jKwumy_0vxc-FXKZpRz8";
 const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-/* ========= DOM helpers ========= */
+/* ========= Utils ========= */
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => Array.from(el.querySelectorAll(s));
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]));
-
 const ROSTER_PAGE_SIZE = 15;
 
-function displayNameFromStudent(s) {
-    const nm = [s.first_name, s.last_name].filter(Boolean).join(' ');
-    return nm || s.email || s.kku_email || '';
-}
-
-function pickStudentCode(s) {
-    // รองรับหลายชื่อคอลัมน์เท่าที่เจอบ่อย ๆ
-    return s.code ?? s.student_no ?? s.std_code ?? s.studentid ?? s.student_id ?? '—';
-}
-
-
-/* ========= Page boot ========= */
+/* ========= Boot ========= */
 boot();
-
 async function boot() {
-    // แสดงวันที่อัปเดต
+    // วันที่อัปเดต
     const ud = $('#app-updated');
     if (ud) ud.textContent = new Date().toLocaleDateString('th-TH', { year: 'numeric', month: 'short', day: '2-digit' });
 
-    // ปุ่มออกจากระบบ
+    // ออกระบบ
     $('#btn-signout')?.addEventListener('click', async () => {
         await sb.auth.signOut();
         location.href = 'portal.html';
     });
 
-    // สลับเมนูบนหัว
+    // เมนูลัด
     $$('.header-actions [data-nav]').forEach(btn => {
         btn.addEventListener('click', () => showSection(btn.dataset.nav));
     });
 
-    // ตรวจผู้ใช้และบทบาท
+    // ตรวจผู้ใช้ + role
     const { data: { user } } = await sb.auth.getUser();
-    if (!user) {
-        showBlocker('ยังไม่ได้เข้าสู่ระบบ', 'กรุณาไปที่หน้า portal.html เพื่อเข้าสู่ระบบก่อน');
-        return;
-    }
+    if (!user) return showBlocker('ยังไม่ได้เข้าสู่ระบบ', 'กรุณาไปที่หน้า portal.html เพื่อเข้าสู่ระบบก่อน');
 
-    // ดึงโปรไฟล์
     const { data: prof, error } = await sb.from('profiles')
         .select('user_id, email, full_name, role')
         .eq('user_id', user.id).maybeSingle();
 
-    if (error) {
-        showBlocker('ยังไม่ได้ตั้งค่าฐานข้อมูลผู้ใช้ (profiles)',
-            'กรุณารัน SQL สร้างตาราง profiles และ trigger ให้เรียบร้อยก่อนใช้งาน');
-        return;
-    }
+    if (error) return showBlocker('ยังไม่ได้ตั้งค่าฐานข้อมูลผู้ใช้ (profiles)', 'กรุณารัน SQL สร้างตาราง profiles และ trigger ให้เรียบร้อยก่อนใช้งาน');
     if (!prof || !['admin', 'instructor'].includes(prof.role)) {
-        showBlocker('ไม่ได้รับสิทธิ์เข้าถึง', `บัญชี ${user.email} ไม่ใช่ผู้ดูแล/อาจารย์`);
-        return;
+        return showBlocker('ไม่ได้รับสิทธิ์เข้าถึง', `บัญชี ${user.email} ไม่ใช่ผู้ดูแล/อาจารย์`);
     }
 
-    // ผูกเครื่องมือรายวิชา
+    // เครื่องมือรายวิชา
     $('#btn-add-course')?.addEventListener('click', () => createCourse(prof.user_id));
     $('#btn-refresh-courses')?.addEventListener('click', () => loadCourses(prof.user_id));
     $('#q')?.addEventListener('input', () => filterCourses());
 
-    // โหลดรายวิชาของอาจารย์ (owner) ก่อน
+    // โหลดรายวิชา
     await loadCourses(prof.user_id);
 
-    // เปิดแผงสิทธิ์ (ตั้ง global role แบบพื้นฐาน)
+    // หน้าสิทธิ์ผู้ใช้
     wireAclGlobal();
 }
 
@@ -83,26 +61,20 @@ function showSection(name) {
     };
 
     if (name === 'courses') {
-        showCoursesShell();
-        $('#course-detail').hidden = true;
+        showCoursesShell(); $('#course-detail').hidden = true;
     } else if (name === 'detail') {
-        showCoursesShell();
-        $('#course-detail').hidden = false; // แสดงกล่องรายละเอียด
+        showCoursesShell(); $('#course-detail').hidden = false;
     } else if (name === 'acl') {
-        $('#grid-courses').hidden = true;
-        $('#course-detail').hidden = true;
-        $('#acl').hidden = false;
-        $('#pubs').hidden = true;
+        $('#grid-courses').hidden = true; $('#course-detail').hidden = true;
+        $('#acl').hidden = false; $('#pubs').hidden = true;
         renderAclList();
     } else if (name === 'pubs') {
-        $('#grid-courses').hidden = true;
-        $('#course-detail').hidden = true;
-        $('#acl').hidden = true;
-        $('#pubs').hidden = false;
+        $('#grid-courses').hidden = true; $('#course-detail').hidden = true;
+        $('#acl').hidden = true; $('#pubs').hidden = false;
     }
 }
 
-/* ========= Courses list ========= */
+/* ========= Courses grid ========= */
 let _allCourses = [];
 async function loadCourses(ownerId) {
     const grid = $('#grid-courses');
@@ -110,7 +82,7 @@ async function loadCourses(ownerId) {
 
     const { data: courses, error } = await sb
         .from('courses')
-        .select('id, code, title_th, title_en, section, semester')
+        .select('id, code, title_th, title_en, section, semester, created_at')
         .eq('owner_id', ownerId)
         .order('created_at', { ascending: false });
 
@@ -144,13 +116,9 @@ function renderCourseGrid(items) {
     </article>
   `).join('');
 
-    // คลิกในการ์ดครั้งเดียว ผูก handler เดียว
     grid.addEventListener('click', grid._h || (grid._h = (ev) => {
-        const btn = ev.target.closest('button[data-act]');
-        if (!btn) return;
-        const card = btn.closest('.course');
-        const id = card?.dataset.id;
-        if (!id) return;
+        const btn = ev.target.closest('button[data-act]'); if (!btn) return;
+        const card = btn.closest('.course'); const id = card?.dataset.id; if (!id) return;
         openCourseDetail(id, btn.dataset.act);
     }));
 }
@@ -164,7 +132,7 @@ function filterCourses() {
     renderCourseGrid(filtered);
 }
 
-/* ========= Create course (prompt-based) ========= */
+/* ========= Create course ========= */
 async function createCourse(ownerId) {
     const code = prompt('รหัสวิชา (เช่น STAT101)'); if (!code) return;
     const title = prompt('ชื่อวิชา (TH/EN อย่างใดอย่างหนึ่ง)') || '';
@@ -181,13 +149,12 @@ async function createCourse(ownerId) {
     renderCourseGrid(_allCourses);
 }
 
-/* ========= Course detail shell ========= */
+/* ========= Course detail ========= */
 async function openCourseDetail(courseId, focusTab = 'detail') {
     const box = $('#course-detail');
     box.hidden = false;
-    showSection('detail'); // สำคัญ: แสดงกล่อง detail (เดิมซ่อนไว้ในโหมด courses)
+    showSection('detail');
 
-    // โหลดข้อมูลรายวิชา
     const { data: c, error } = await sb.from('courses')
         .select('id, code, title_th, title_en, section, semester')
         .eq('id', courseId).maybeSingle();
@@ -218,26 +185,43 @@ async function openCourseDetail(courseId, focusTab = 'detail') {
     </nav>
 
     <div class="tabpanels">
-        <div class="tabpanel" data-panel="roster">
-            <div class="row" style="gap:.5rem;margin:.25rem 0 8px">
-                <input class="input" id="roster-q" placeholder="ค้นหา ชื่อ/อีเมล/รหัส" style="max-width:300px">
-                <span class="muted" id="roster-count"></span>
-            </div>
-            <div class="table-wrap"><table>
-                 <thead><tr><th align="left">อีเมล</th><th>รหัสนักศึกษา</th><th class="right"></th></tr></thead>
-                 <tbody id="tbody-roster"><tr><td colspan="3" class="muted">กำลังโหลด...</td></tr></tbody>
-                </table></div>
-            <div class="row mt-8"><button class="btn" id="btn-add-blank-student">เพิ่มแถวว่าง</button></div>
+      <!-- รายชื่อ -->
+      <div class="tabpanel" data-panel="roster">
+        <div class="row" style="gap:.5rem;margin:.25rem 0 8px">
+          <input class="input" id="roster-q" placeholder="ค้นหา ชื่อ/อีเมล/รหัส" style="max-width:320px">
+          <span class="muted" id="roster-count"></span>
+          <span style="flex:1"></span>
+          <button class="btn btn--outline" id="btn-roster-edit">แก้ไขหลายรายการ</button>
+          <button class="btn" id="btn-roster-save" hidden>บันทึกทั้งหมด</button>
+          <button class="btn btn--outline" id="btn-roster-cancel" hidden>ยกเลิก</button>
         </div>
+        <div class="table-wrap"><table>
+          <thead>
+            <tr>
+              <th class="right" style="width:72px">ลำดับ</th>
+              <th align="left">ชื่อ</th>
+              <th align="left">นามสกุล</th>
+              <th align="left">อีเมล</th>
+              <th>รหัสนักศึกษา</th>
+              <th class="right"></th>
+            </tr>
+          </thead>
+          <tbody id="tbody-roster"><tr><td colspan="6" class="muted">กำลังโหลด...</td></tr></tbody>
+        </table></div>
+        <div class="row mt-8">
+          <button class="btn" id="btn-add-blank-student">เพิ่มแถวว่าง</button>
+        </div>
+      </div>
 
+      <!-- คะแนน -->
       <div class="tabpanel" data-panel="scores" hidden>
         <div class="table-wrap"><table>
           <thead id="thead-scores"></thead>
           <tbody id="tbody-scores"><tr><td class="muted">ยังไม่โหลด</td></tr></tbody>
         </table></div>
       </div>
-      
 
+      <!-- องค์ประกอบคะแนน -->
       <div class="tabpanel" data-panel="assess" hidden>
         <div class="table-wrap"><table>
           <thead><tr><th align="left">ชื่อรายการ</th><th class="right">สัดส่วน (%)</th><th class="right">เต็ม</th><th class="right"></th></tr></thead>
@@ -246,6 +230,7 @@ async function openCourseDetail(courseId, focusTab = 'detail') {
         <div class="row mt-8"><button class="btn" id="btn-add-assess">เพิ่มองค์ประกอบ</button></div>
       </div>
 
+      <!-- ประกาศ -->
       <div class="tabpanel" data-panel="ann" hidden>
         <div id="list-ann" class="stack"><div class="muted">ยังไม่โหลด</div></div>
         <div class="row mt-8"><button class="btn" id="btn-new-ann">เพิ่มประกาศ</button></div>
@@ -253,9 +238,11 @@ async function openCourseDetail(courseId, focusTab = 'detail') {
     </div>
   `;
 
-    // wire tabs
+    // tabs
     const tabs = $$('.tabs .tab', box);
     tabs.forEach(t => t.addEventListener('click', () => switchTab(box, t.dataset.tab, courseId)));
+
+    // refresh / delete
     $('#btn-detail-refresh', box)?.addEventListener('click', () => {
         const active = $('.tabs .tab.is-active', box)?.dataset.tab || 'roster';
         switchTab(box, active, courseId);
@@ -270,9 +257,13 @@ async function openCourseDetail(courseId, focusTab = 'detail') {
         renderCourseGrid(_allCourses);
     });
 
-    // load default tab ตามปุ่มที่กด
-    const startTab = (focusTab === 'roster' || focusTab === 'scores' || focusTab === 'assess' || focusTab === 'ann')
-        ? focusTab : 'roster';
+    // โหมดแก้ไขหลายแถว
+    $('#btn-roster-edit', box)?.addEventListener('click', () => { box._rosterEditMode = true; toggleRosterEditButtons(box, true); renderRosterPage(box, box._rosterPage || 1); });
+    $('#btn-roster-cancel', box)?.addEventListener('click', () => { box._rosterEditMode = false; box._rosterEdits = {}; toggleRosterEditButtons(box, false); renderRosterPage(box, box._rosterPage || 1); });
+    $('#btn-roster-save', box)?.addEventListener('click', () => saveRosterEdits(courseId, box));
+
+    // เปิดแท็บเริ่มต้น
+    const startTab = (focusTab === 'roster' || focusTab === 'scores' || focusTab === 'assess' || focusTab === 'ann') ? focusTab : 'roster';
     switchTab(box, startTab, courseId);
 }
 
@@ -285,60 +276,44 @@ function switchTab(container, tabName, courseId) {
     else if (tabName === 'ann') loadAnnouncements(courseId, container);
 }
 
-/* ========= Roster (read-only scaffold) ========= */
+/* ========= Roster ========= */
 async function loadRoster(courseId, el) {
-    const thead = $('#thead-scores', el); // ไม่ได้ใช้ใน roster แต่อยู่ใน DOM
     const tbody = $('#tbody-roster', el);
-    tbody.innerHTML = `<tr><td colspan="5" class="muted">กำลังโหลด...</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="6" class="muted">กำลังโหลด...</td></tr>`;
 
-    // 1) ดึง student_id จาก enrollments
+    // รายชื่อที่ลงทะเบียนในวิชานี้
     const { data: enrolls, error: e1 } = await sb.from('enrollments')
         .select('student_id, course_id')
         .eq('course_id', courseId)
         .order('student_id', { ascending: true });
 
-    if (e1) {
-        tbody.innerHTML = `<tr><td colspan="5" class="muted">โหลดไม่สำเร็จ: ${esc(e1.message)}</td></tr>`;
-        return;
-    }
-    if (!enrolls?.length) {
-        tbody.innerHTML = `<tr><td colspan="5" class="muted">ยังไม่มีรายชื่อ</td></tr>`;
-        renderRosterPager(el, 0, 0, 0); // ซ่อนเพจเจอร์
-        return;
-    }
+    if (e1) { tbody.innerHTML = `<tr><td colspan="6" class="muted">โหลดไม่สำเร็จ: ${esc(e1.message)}</td></tr>`; return; }
+    if (!enrolls?.length) { tbody.innerHTML = `<tr><td colspan="6" class="muted">ยังไม่มีรายชื่อ</td></tr>`; renderRosterPager(el, 0, 0, 0); return; }
 
-    // 2) ดึงข้อมูลนักศึกษาตาม id ที่ได้มา
+    // ดึงข้อมูลนักศึกษาตาม id
     const ids = [...new Set(enrolls.map(r => r.student_id))];
     const { data: students, error: e2 } = await sb.from('students')
-        // 🟢 เอา full_name ออก เหลือ first_name/last_name
-        .select('id, email, kku_email, first_name, last_name, student_no, major')
+        .select('id, first_name, last_name, email, kku_email, student_no')
         .in('id', ids);
 
-    if (e2) {
-        tbody.innerHTML = `<tr><td colspan="5" class="muted">โหลดนักศึกษาไม่สำเร็จ: ${esc(e2.message)}</td></tr>`;
-        renderRosterPager(el, 0, 0, 0);
-        return;
-    }
+    if (e2) { tbody.innerHTML = `<tr><td colspan="6" class="muted">โหลดนักศึกษาไม่สำเร็จ: ${esc(e2.message)}</td></tr>`; renderRosterPager(el, 0, 0, 0); return; }
 
-
-
-    // 3) สร้าง map id -> student แล้วประกอบแถวที่ต้องแสดง
     const byId = Object.fromEntries((students || []).map(s => [String(s.id), s]));
     const rows = enrolls.map(r => {
         const s = byId[String(r.student_id)] || {};
         return {
             student_id: r.student_id,
             course_id: r.course_id,
-            email: s.email || s.kku_email || r.student_email || '—',
-            name: displayNameFromStudent(s),                 // ถ้าไม่มีชื่อ จะ fallback เป็นอีเมลในฟังก์ชัน
-            code: pickStudentCode(s) || r.student_code || '—',
+            first_name: s.first_name || '',
+            last_name: s.last_name || '',
+            email: s.email || s.kku_email || '',
+            student_no: s.student_no || '',
         };
     });
 
-    // เก็บลง cache
+    // cache + search
     el._rosterRows = rows;
     el._rosterQuery = '';
-    // ค้นหา
     const q = $('#roster-q', el);
     q?.removeEventListener('input', el._rosterSearchH);
     q?.addEventListener('input', (el._rosterSearchH = () => {
@@ -346,18 +321,19 @@ async function loadRoster(courseId, el) {
         renderRosterPage(el, 1);
     }));
 
+    // สถานะแก้ไข
+    el._rosterEditMode = el._rosterEditMode || false;
+    el._rosterEdits = el._rosterEdits || {};
+    toggleRosterEditButtons(el, el._rosterEditMode);
 
-    // เก็บไว้ใน container เพื่อใช้ตอนเปลี่ยนหน้า
-    el._rosterRows = rows;
-    renderRosterPage(el, 1); // เปิดหน้าที่ 1
+    renderRosterPage(el, 1);
 }
-
 
 function renderRosterPage(el, page = 1) {
     const all = el._rosterRows || [];
     const q = (el._rosterQuery || '').toLowerCase();
     const rows = q
-        ? all.filter(r => `${r.name} ${r.email} ${r.code}`.toLowerCase().includes(q))
+        ? all.filter(r => `${r.first_name} ${r.last_name} ${r.email} ${r.student_no}`.toLowerCase().includes(q))
         : all;
 
     const total = rows.length;
@@ -373,67 +349,75 @@ function renderRosterPage(el, page = 1) {
     const start = (page - 1) * pageSize;
     const slice = rows.slice(start, start + pageSize);
 
-    // หัวตาราง
-    const theadEl = $('table thead', $('.tabpanel[data-panel="roster"]', el));
-    if (theadEl) {
-        theadEl.innerHTML = `
-      <tr>
-        <th class="right" style="width:72px">ลำดับ</th>
-        <th align="left">ชื่อ–นามสกุล</th>
-        <th align="left">อีเมล</th>
-        <th>รหัสนักศึกษา</th>
-        <th class="right"></th>
+    const editMode = !!el._rosterEditMode;
+    const edits = el._rosterEdits || {};
+
+    tbody.innerHTML = slice.map((r, i) => {
+        const sid = r.student_id;
+        const cur = edits[sid] ? { ...r, ...edits[sid] } : r;
+
+        if (!editMode) {
+            return `
+        <tr data-sid="${sid}" data-cid="${r.course_id}">
+          <td class="right muted">${start + i + 1}</td>
+          <td>${esc(cur.first_name)}</td>
+          <td>${esc(cur.last_name)}</td>
+          <td>${esc(cur.email)}</td>
+          <td><code>${esc(cur.student_no || '—')}</code></td>
+          <td class="right">
+            <button class="btn btn--outline btn--sm" data-act="del">ลบ</button>
+          </td>
+        </tr>
+      `;
+        }
+
+        // edit mode: ใส่ input ทุกคอลัมน์
+        return `
+      <tr data-sid="${sid}" data-cid="${r.course_id}">
+        <td class="right muted">${start + i + 1}</td>
+        <td><input class="input input--sm" data-field="first_name" value="${esc(cur.first_name)}" /></td>
+        <td><input class="input input--sm" data-field="last_name"  value="${esc(cur.last_name)}" /></td>
+        <td><input class="input input--sm" data-field="email"      value="${esc(cur.email)}" /></td>
+        <td><input class="input input--sm" data-field="student_no" value="${esc(cur.student_no)}" /></td>
+        <td class="right"><span class="muted">แก้ไข</span></td>
       </tr>
     `;
-    }
+    }).join('') || `<tr><td colspan="6" class="muted">ไม่พบข้อมูล</td></tr>`;
 
-    tbody.innerHTML = slice.map((r, i) => `
-    <tr data-sid="${r.student_id}" data-cid="${r.course_id}">
-      <td class="right muted">${start + i + 1}</td>
-      <td>${esc(r.name)}</td>
-      <td>${esc(r.email)}</td>
-      <td><code>${esc(r.code)}</code></td>
-      <td class="right">
-        <button class="btn btn--outline btn--sm" data-act="edit">แก้รหัส</button>
-        <button class="btn btn--outline btn--sm" data-act="del">ลบ</button>
-      </td>
-    </tr>
-  `).join('');
-
-    // handler
-    tbody.removeEventListener('click', tbody._h);
-    tbody.addEventListener('click', (tbody._h = async (ev) => {
-        const btn = ev.target.closest('button[data-act]'); if (!btn) return;
-        const tr = btn.closest('tr');
-        const sid = Number(tr?.dataset.sid);
-        const cid = Number(tr?.dataset.cid);
-        if (!sid || !cid) return;
-
-        if (btn.dataset.act === 'del') {
+    // ลบ (เฉพาะโหมดดู)
+    tbody.removeEventListener('click', tbody._clickH);
+    if (!editMode) {
+        tbody.addEventListener('click', (tbody._clickH = async (ev) => {
+            const btn = ev.target.closest('button[data-act="del"]'); if (!btn) return;
+            const tr = btn.closest('tr');
+            const sid = Number(tr?.dataset.sid);
+            const cid = Number(tr?.dataset.cid);
+            if (!sid || !cid) return;
             if (!confirm('ลบรายชื่อแถวนี้?')) return;
             const { error } = await sb.from('enrollments').delete().match({ student_id: sid, course_id: cid });
             if (error) return alert('ลบไม่สำเร็จ: ' + error.message);
             el._rosterRows = (el._rosterRows || []).filter(x => !(x.student_id === sid && x.course_id === cid));
             renderRosterPage(el, el._rosterPage);
-        }
+        }));
+    }
 
-        if (btn.dataset.act === 'edit') {
-            const cur = slice.find(x => x.student_id === sid)?.code || '';
-            const val = prompt('แก้ไขรหัสนักศึกษา', cur); if (val === null) return;
-            const code = val.trim();
-            const { error } = await sb.from('students').update({ student_no: code }).eq('id', sid);
-            if (error) return alert('บันทึกไม่สำเร็จ: ' + error.message);
-
-            // อัปเดต cache
-            const idxAll = (el._rosterRows || []).findIndex(x => x.student_id === sid);
-            if (idxAll >= 0) el._rosterRows[idxAll].code = code;
-            renderRosterPage(el, el._rosterPage);
-        }
-    }));
+    // เก็บค่าแก้ไข (เฉพาะโหมดแก้ไข)
+    tbody.removeEventListener('input', tbody._inputH);
+    if (editMode) {
+        tbody.addEventListener('input', (tbody._inputH = (ev) => {
+            const inp = ev.target.closest('input[data-field]'); if (!inp) return;
+            const tr = inp.closest('tr');
+            const sid = Number(tr?.dataset.sid);
+            const field = inp.dataset.field;
+            const val = inp.value;
+            const cur = el._rosterEdits[sid] || { id: sid };
+            cur[field] = val;
+            el._rosterEdits[sid] = cur;
+        }));
+    }
 
     renderRosterPager(el, page, pages, total);
 }
-
 
 function renderRosterPager(el, page, pages, total) {
     const panel = $('.tabpanel[data-panel="roster"]', el);
@@ -445,18 +429,12 @@ function renderRosterPager(el, page, pages, total) {
         panel.appendChild(pager);
         pager.addEventListener('click', (ev) => {
             const b = ev.target.closest('button[data-pg]'); if (!b) return;
-            const dir = b.dataset.pg;
             const cur = el._rosterPage || 1;
-            if (dir === 'prev') renderRosterPage(el, cur - 1);
-            else if (dir === 'next') renderRosterPage(el, cur + 1);
+            if (b.dataset.pg === 'prev') renderRosterPage(el, cur - 1);
+            if (b.dataset.pg === 'next') renderRosterPage(el, cur + 1);
         });
     }
-
-    if (!pages || pages <= 1) {
-        pager.innerHTML = ''; // ไม่มีหน้าให้เปลี่ยน – ซ่อน
-        return;
-    }
-    pager.innerHTML = `
+    pager.innerHTML = (!pages || pages <= 1) ? '' : `
     <div class="row" style="gap:.5rem">
       <button class="btn btn--outline" data-pg="prev" ${page <= 1 ? 'disabled' : ''}>ก่อนหน้า</button>
       <span class="muted">หน้า ${page} / ${pages} • ทั้งหมด ${total} คน</span>
@@ -465,9 +443,85 @@ function renderRosterPager(el, page, pages, total) {
   `;
 }
 
+/* ========= Save multi-edits ========= */
+function toggleRosterEditButtons(el, editing) {
+    const panel = $('.tabpanel[data-panel="roster"]', el);
+    $('#btn-roster-edit', panel).hidden = !!editing;
+    $('#btn-roster-save', panel).hidden = !editing;
+    $('#btn-roster-cancel', panel).hidden = !editing;
+}
 
+async function saveRosterEdits(courseId, el) {
+    const editsMap = el._rosterEdits || {};
+    const ids = Object.keys(editsMap).map(n => Number(n)).filter(Boolean);
 
-/* ========= Scores / Assessments / Announcements (placeholder loaders) ========= */
+    if (!ids.length) {
+        alert('ไม่มีการแก้ไข');
+        el._rosterEditMode = false;
+        toggleRosterEditButtons(el, false);
+        renderRosterPage(el, el._rosterPage || 1);
+        return;
+    }
+
+    // ตรวจว่ามี id เหล่านี้อยู่จริง (กันกรณีเผลอ insert)
+    const { data: existing, error: e0 } = await sb
+        .from('students')
+        .select('id, email')
+        .in('id', ids);
+    if (e0) { alert('โหลดเพื่อยืนยันแถวที่จะแก้ไขไม่สำเร็จ: ' + e0.message); return; }
+    const existingSet = new Set((existing || []).map(r => String(r.id)));
+
+    // สร้างงานอัปเดตแบบ UPDATE ทีละแถว
+    const jobs = [];
+    for (const id of ids) {
+        if (!existingSet.has(String(id))) continue; // ข้าม id ที่ไม่มีจริง (กัน insert)
+        const e = editsMap[id];
+        const update = {};
+
+        if ('first_name' in e) update.first_name = e.first_name ?? '';
+        if ('last_name' in e) update.last_name = e.last_name ?? '';
+        if ('email' in e) update.email = (e.email ?? '').trim();
+        if ('student_no' in e) update.student_no = (e.student_no ?? '').trim();
+
+        // กันอีเมลว่างสำหรับแถวที่มีการแก้คอลัมน์ email
+        if ('email' in e && update.email === '') {
+            alert(`แถว id ${id}: อีเมลห้ามว่าง`);
+            return;
+        }
+
+        if (Object.keys(update).length === 0) continue; // ไม่มีอะไรเปลี่ยนจริง ๆ
+        jobs.push(sb.from('students').update(update).eq('id', id));
+    }
+
+    try {
+        const results = await Promise.all(jobs);
+        const bad = results.find(r => r.error);
+        if (bad) throw bad.error;
+    } catch (err) {
+        alert('บันทึกไม่สำเร็จ: ' + err.message);
+        return;
+    }
+
+    // อัปเดต cache หน้าจอ
+    el._rosterRows = (el._rosterRows || []).map(r => {
+        const e = editsMap[r.student_id];
+        return e ? {
+            ...r,
+            first_name: ('first_name' in e) ? e.first_name : r.first_name,
+            last_name: ('last_name' in e) ? e.last_name : r.last_name,
+            email: ('email' in e) ? e.email : r.email,
+            student_no: ('student_no' in e) ? e.student_no : r.student_no,
+        } : r;
+    });
+
+    el._rosterEdits = {};
+    el._rosterEditMode = false;
+    toggleRosterEditButtons(el, false);
+    alert('บันทึกแล้ว');
+    renderRosterPage(el, el._rosterPage || 1);
+}
+
+/* ========= Other tabs (placeholder) ========= */
 async function loadScores(courseId, el) {
     $('#thead-scores', el).innerHTML = `<tr><th align="left">อีเมล</th><th>รหัส</th></tr>`;
     $('#tbody-scores', el).innerHTML = `<tr><td class="muted">จะเติมภายหลัง</td></tr>`;
@@ -479,18 +533,18 @@ async function loadAnnouncements(courseId, el) {
     $('#list-ann', el).innerHTML = `<div class="muted">จะเติมภายหลัง</div>`;
 }
 
-/* ========= ACL: ตั้ง global role พื้นฐาน ========= */
+/* ========= ACL: ตั้ง global role ========= */
 function wireAclGlobal() {
     $('#btn-set-global')?.addEventListener('click', async () => {
         const email = $('#acl-email')?.value?.trim();
         const role = $('#acl-global-role')?.value || 'student';
         if (!email) return alert('กรอกอีเมลก่อน');
 
-        // หาโปรไฟล์ ถ้าไม่มีให้ insert แถว placeholder
+        // หาโปรไฟล์ ถ้าไม่มีให้สร้างแถวว่าง
         const { data: prof } = await sb.from('profiles').select('user_id').eq('email', email).maybeSingle();
         let user_id = prof?.user_id;
         if (!user_id) {
-            user_id = crypto.randomUUID(); // ghost row
+            user_id = crypto.randomUUID();
             const { error: e1 } = await sb.from('profiles').insert({ user_id, email, role: 'student' });
             if (e1) return alert('สร้างโปรไฟล์ไม่สำเร็จ: ' + e1.message);
         }
@@ -515,7 +569,7 @@ async function renderAclList() {
   `;
 }
 
-/* ========= Misc ========= */
+/* ========= Blocker ========= */
 function showBlocker(title, msg) {
     const main = document.querySelector('main.admin');
     main.innerHTML = `
