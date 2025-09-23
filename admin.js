@@ -54,35 +54,35 @@ async function boot() {
 
 /* ========= Section switching ========= */
 function showSection(name) {
-  const main = document.querySelector('main.admin');
+    const main = document.querySelector('main.admin');
 
-  const showCoursesShell = () => {
-    $('#grid-courses').hidden = false;
-    $('#acl').hidden = true;
-    $('#pubs').hidden = true;
-  };
+    const showCoursesShell = () => {
+        $('#grid-courses').hidden = false;
+        $('#acl').hidden = true;
+        $('#pubs').hidden = true;
+    };
 
-  if (name === 'courses') {
-    showCoursesShell();
-    $('#course-detail').hidden = true;
-    main?.classList.remove('detail-mode');   // <— สำคัญ
-  } else if (name === 'detail') {
-    showCoursesShell();
-    $('#course-detail').hidden = false;
-    main?.classList.add('detail-mode');      // <— สำคัญ
-  } else if (name === 'acl') {
-    $('#grid-courses').hidden = true;
-    $('#course-detail').hidden = true;
-    $('#acl').hidden = false;
-    $('#pubs').hidden = true;
-    main?.classList.remove('detail-mode');   // <— สำคัญ
-  } else if (name === 'pubs') {
-    $('#grid-courses').hidden = true;
-    $('#course-detail').hidden = true;
-    $('#acl').hidden = true;
-    $('#pubs').hidden = false;
-    main?.classList.remove('detail-mode');   // <— สำคัญ
-  }
+    if (name === 'courses') {
+        showCoursesShell();
+        $('#course-detail').hidden = true;
+        main?.classList.remove('detail-mode');   // <— สำคัญ
+    } else if (name === 'detail') {
+        showCoursesShell();
+        $('#course-detail').hidden = false;
+        main?.classList.add('detail-mode');      // <— สำคัญ
+    } else if (name === 'acl') {
+        $('#grid-courses').hidden = true;
+        $('#course-detail').hidden = true;
+        $('#acl').hidden = false;
+        $('#pubs').hidden = true;
+        main?.classList.remove('detail-mode');   // <— สำคัญ
+    } else if (name === 'pubs') {
+        $('#grid-courses').hidden = true;
+        $('#course-detail').hidden = true;
+        $('#acl').hidden = true;
+        $('#pubs').hidden = false;
+        main?.classList.remove('detail-mode');   // <— สำคัญ
+    }
 }
 
 
@@ -782,10 +782,19 @@ async function addStudentToCourse(courseId, el) {
 
 
 /* ========= Other tabs (placeholder) ========= */
+// admin.js
 async function loadScores(courseId, el) {
-    $('#thead-scores', el).innerHTML = `<tr><th align="left">อีเมล</th><th>รหัส</th></tr>`;
-    $('#tbody-scores', el).innerHTML = `<tr><td class="muted">จะเติมภายหลัง</td></tr>`;
+    // หา panel ของแท็บคะแนน
+    const panel = $('.tabpanel[data-panel="scores"]', el);
+    if (!panel) return;
+
+    // เคลียร์ของเก่าแล้ว mount gradebook
+    panel.innerHTML = `
+    <div id="scores-root"></div>
+  `;
+    window.Scores.mount($('#scores-root', panel), courseId);
 }
+
 async function loadAssess(courseId, el) {
     $('#tbody-assess', el).innerHTML = `<tr><td colspan="4" class="muted">จะเติมภายหลัง</td></tr>`;
 }
