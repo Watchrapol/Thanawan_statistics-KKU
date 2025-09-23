@@ -54,25 +54,37 @@ async function boot() {
 
 /* ========= Section switching ========= */
 function showSection(name) {
-    const showCoursesShell = () => {
-        $('#grid-courses').hidden = false;
-        $('#acl').hidden = true;
-        $('#pubs').hidden = true;
-    };
+  const main = document.querySelector('main.admin');
 
-    if (name === 'courses') {
-        showCoursesShell(); $('#course-detail').hidden = true;
-    } else if (name === 'detail') {
-        showCoursesShell(); $('#course-detail').hidden = false;
-    } else if (name === 'acl') {
-        $('#grid-courses').hidden = true; $('#course-detail').hidden = true;
-        $('#acl').hidden = false; $('#pubs').hidden = true;
-        renderAclList();
-    } else if (name === 'pubs') {
-        $('#grid-courses').hidden = true; $('#course-detail').hidden = true;
-        $('#acl').hidden = true; $('#pubs').hidden = false;
-    }
+  const showCoursesShell = () => {
+    $('#grid-courses').hidden = false;
+    $('#acl').hidden = true;
+    $('#pubs').hidden = true;
+  };
+
+  if (name === 'courses') {
+    showCoursesShell();
+    $('#course-detail').hidden = true;
+    main?.classList.remove('detail-mode');   // <— สำคัญ
+  } else if (name === 'detail') {
+    showCoursesShell();
+    $('#course-detail').hidden = false;
+    main?.classList.add('detail-mode');      // <— สำคัญ
+  } else if (name === 'acl') {
+    $('#grid-courses').hidden = true;
+    $('#course-detail').hidden = true;
+    $('#acl').hidden = false;
+    $('#pubs').hidden = true;
+    main?.classList.remove('detail-mode');   // <— สำคัญ
+  } else if (name === 'pubs') {
+    $('#grid-courses').hidden = true;
+    $('#course-detail').hidden = true;
+    $('#acl').hidden = true;
+    $('#pubs').hidden = false;
+    main?.classList.remove('detail-mode');   // <— สำคัญ
+  }
 }
+
 
 /* ========= Courses grid ========= */
 let _allCourses = [];
@@ -153,6 +165,10 @@ async function createCourse(ownerId) {
 async function openCourseDetail(courseId, focusTab = 'detail') {
     const box = $('#course-detail');
     box.hidden = false;
+    const main = document.querySelector('main.admin');
+    main?.classList.add('detail-mode');
+    document.getElementById('course-detail')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
     showSection('detail');
 
     const { data: c, error } = await sb.from('courses')

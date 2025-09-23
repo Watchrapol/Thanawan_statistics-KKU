@@ -11,13 +11,11 @@
     <!-- สไตล์ของแดชบอร์ดนี้เท่านั้น -->
     <link rel="stylesheet" href="admin.css" />
 
-    <!-- Supabase SDK + สคริปต์ของหน้านี้ -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script defer src="admin.js"></script>
 </head>
 
 <body class="page-admin">
-    <!-- ============== Header ============== -->
     <header class="admin-header" role="banner">
         <div class="brand">
             <div class="brand-mark" aria-hidden="true">KKU</div>
@@ -36,9 +34,8 @@
         </nav>
     </header>
 
-    <!-- ============== Main ============== -->
     <main class="admin" role="main">
-        <!-- ข้อมูลระบบ -->
+        <!-- การ์ดข้อมูลระบบ -->
         <section class="card" id="card-info">
             <h3>ข้อมูลระบบ</h3>
             <p class="muted">เวอร์ชัน 1.0 • อัปเดตล่าสุด: <span id="app-updated">—</span></p>
@@ -60,10 +57,24 @@
 
         <!-- กริดการ์ดรายวิชา -->
         <section id="grid-courses" class="grid-courses" aria-label="รายวิชาที่ดูแล">
-            <!-- เนื้อหาเติมด้วย admin.js -->
+            <!-- ตัวอย่างการ์ด (ข้อมูลจริงใส่ด้วย JS ภายหลัง) -->
+            <!--
+      <article class="course">
+        <div class="course-head">
+          <div class="code">STAT101</div>
+          <div class="meta muted">1/2025 • Sec 1</div>
+        </div>
+        <div class="title">Introduction to Statistics</div>
+        <div class="actions">
+          <button class="btn btn--sm" data-open="detail">จัดการ</button>
+          <button class="btn btn--sm btn--outline" data-open="roster">รายชื่อ</button>
+          <button class="btn btn--sm btn--outline" data-open="scores">คะแนน</button>
+        </div>
+      </article>
+      -->
         </section>
 
-        <!-- รายละเอียดรายวิชา -->
+        <!-- กล่องรายละเอียดรายวิชา -->
         <section id="course-detail" class="card" hidden aria-live="polite">
             <header class="detail-head">
                 <h3 id="detail-title">จัดการรายวิชา</h3>
@@ -96,7 +107,7 @@
                                     <th class="right"></th>
                                 </tr>
                             </thead>
-                            <tbody id="tbody-roster"></tbody>
+                            <tbody id="tbody-roster"><!-- เติมด้วย JS --></tbody>
                         </table>
                     </div>
                     <div class="row mt-8">
@@ -108,8 +119,8 @@
                 <div class="tabpanel" data-panel="scores" hidden>
                     <div class="table-wrap">
                         <table>
-                            <thead id="thead-scores"></thead>
-                            <tbody id="tbody-scores"></tbody>
+                            <thead id="thead-scores"><!-- เติมหัวคอลัมน์ด้วย JS --></thead>
+                            <tbody id="tbody-scores"><!-- เติมแถวด้วย JS --></tbody>
                         </table>
                     </div>
                 </div>
@@ -126,7 +137,7 @@
                                     <th class="right"></th>
                                 </tr>
                             </thead>
-                            <tbody id="tbody-assess"></tbody>
+                            <tbody id="tbody-assess"><!-- JS --></tbody>
                         </table>
                     </div>
                     <div class="row mt-8">
@@ -136,7 +147,7 @@
 
                 <!-- ประกาศ -->
                 <div class="tabpanel" data-panel="ann" hidden>
-                    <div id="list-ann" class="stack"></div>
+                    <div id="list-ann" class="stack"><!-- JS --></div>
                     <div class="row mt-8">
                         <button class="btn" id="btn-new-ann">เพิ่มประกาศ</button>
                     </div>
@@ -144,7 +155,7 @@
             </div>
         </section>
 
-        <!-- การจัดการสิทธิ์ -->
+        <!-- การจัดการสิทธิ์ผู้ใช้ -->
         <section id="acl" class="card" aria-label="การจัดการสิทธิ์" hidden>
             <h3>การจัดการสิทธิ์</h3>
 
@@ -189,11 +200,11 @@
             </div>
         </section>
 
-        <!-- ผลงานวิจัย -->
+        <!-- ผลงานวิจัย (placeholder) -->
         <section id="pubs" class="card" hidden>
             <h3>ผลงานวิจัย</h3>
             <p class="muted">ส่วนนี้จะแสดง/แก้ไขรายการผลงานของผู้ใช้ที่ล็อกอิน</p>
-            <div id="pubs-list" class="stack"></div>
+            <div id="pubs-list" class="stack"><!-- JS --></div>
             <div class="row mt-8">
                 <button class="btn" id="btn-add-pub">เพิ่มรายการ</button>
             </div>
