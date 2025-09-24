@@ -94,7 +94,7 @@ async function loadCourses(ownerId) {
 
     const { data: courses, error } = await sb
         .from('courses')
-        .select('id, code, title_th, title_en, section, semester, created_at')
+        .select('id, code, title_th, title_en, section, term, year, semester_label')
         .eq('owner_id', ownerId)
         .order('created_at', { ascending: false });
 
@@ -117,11 +117,11 @@ function renderCourseGrid(items) {
     <article class="course" data-id="${c.id}">
       <div class="course-head">
         <div class="code">${esc(c.code)}</div>
-        <div class="meta muted">${esc(c.semester || '—')} • Sec ${esc(c.section || '-')}</div>
+        <div class="meta muted">${esc(c.semester_label || (c.term && c.year ? `${c.term}/${c.year}` : '—'))}• Sec ${esc(c.section || '-')}</div>
       </div>
       <div class="title">${esc(c.title_th || c.title_en || '')}</div>
       <div class="actions">
-        <button class="btn btn--sm" data-act="detail">จัดการ</button>
+        <button class="btn btn--sm" data-act="settings">จัดการ</button>
         <button class="btn btn--sm btn--outline" data-act="roster">รายชื่อ</button>
         <button class="btn btn--sm btn--outline" data-act="scores">คะแนน</button>
       </div>
@@ -131,35 +131,227 @@ function renderCourseGrid(items) {
     grid.addEventListener('click', grid._h || (grid._h = (ev) => {
         const btn = ev.target.closest('button[data-act]'); if (!btn) return;
         const card = btn.closest('.course'); const id = card?.dataset.id; if (!id) return;
-        openCourseDetail(id, btn.dataset.act);
+        const act = btn.dataset.act;
+        if (act === 'settings') openCourseSettings(id);
+        else openCourseDetail(id, act);   // roster / scores ยังเหมือนเดิม
     }));
+
 }
 
 function filterCourses() {
     const q = ($('#q')?.value || '').trim().toLowerCase();
     if (!q) return renderCourseGrid(_allCourses);
     const filtered = _allCourses.filter(c =>
-        `${c.code} ${c.title_th || ''} ${c.title_en || ''} ${c.section || ''} ${c.semester || ''}`.toLowerCase().includes(q)
+        `${c.code} ${c.title_th || ''} ${c.title_en || ''} ${c.section || ''} ${c.semester_label || ''} ${c.term || ''}/${c.year || ''}`.toLowerCase().includes(q)
     );
     renderCourseGrid(filtered);
 }
 
+function parseSemLabel(sem) {
+    // "1/2025" -> {term:1, year:2025} หรือ {term:null, year:null}
+    const m = String(sem || '').match(/^\s*(\d{1,2})\s*\/\s*(\d{4})\s*$/);
+    return m ? { term: Number(m[1]), year: Number(m[2]) } : { term: null, year: null };
+}
+
+function rulesToInputs(rules) {
+    const r = rules || {};
+    return {
+        'A': r['A'] ?? 80,
+        'B+': r['B+'] ?? 75,
+        'B': r['B'] ?? 70,
+        'C+': r['C+'] ?? 65,
+        'C': r['C'] ?? 60,
+        'D+': r['D+'] ?? 55,
+        'D': r['D'] ?? 50,
+        'F': r['F'] ?? 0,
+    };
+}
+
+function inputsToRules(form) {
+    const keys = ['A', 'B+', 'B', 'C+', 'C', 'D+', 'D', 'F'];
+    const out = {};
+    for (const k of keys) out[k] = Number(form[`gr_${k}`].value) || 0;
+    return out;
+}
+
+async function openCourseSettings(courseId) {
+    // โหลดข้อมูลรายวิชา
+    const { data: c, error } = await sb.from('courses')
+        .select('id, code, title_th, title_en, section, term, year, semester_label, grade_rules, grade_published')
+        .eq('id', courseId).maybeSingle();
+    if (error || !c) { alert('โหลดรายวิชาไม่สำเร็จ'); return; }
+
+    const semLabel = c.semester_label || (c.term && c.year ? `${c.term}/${c.year}` : '');
+    const R = rulesToInputs(c.grade_rules);
+
+    // ลบโมดาลเก่าและสร้างใหม่
+    const mid = 'modal-course-settings';
+    document.getElementById(mid)?.remove();
+    document.body.insertAdjacentHTML('beforeend', `
+  <div class="modal" id="${mid}" role="dialog" aria-modal="true">
+    <div class="modal__backdrop" data-close></div>
+    <div class="modal__panel" role="document">
+      <header class="modal__head">
+        <h3>ตั้งค่ารายวิชา</h3>
+        <button class="modal__close" data-close aria-label="ปิด">×</button>
+      </header>
+
+      <form id="form-course-settings" class="stack">
+        <fieldset class="stack">
+          <legend><b>ข้อมูลทั่วไป</b></legend>
+          <div class="row wrap" style="gap:.75rem">
+            <label class="w-220">รหัสวิชา*
+              <input class="input" name="code" required value="${esc(c.code)}">
+            </label>
+            <label class="w-220">Sec.
+              <input class="input" name="section" value="${esc(c.section || '')}">
+            </label>
+            <label class="w-220">ภาคการศึกษา
+              <input class="input" name="semester" placeholder="1/2025" value="${esc(semLabel)}">
+            </label>
+          </div>
+          <label>ชื่อวิชา (TH)
+            <input class="input" name="title_th" value="${esc(c.title_th || '')}">
+          </label>
+          <label>ชื่อวิชา (EN)
+            <input class="input" name="title_en" value="${esc(c.title_en || '')}">
+          </label>
+        </fieldset>
+
+        <fieldset class="stack">
+          <legend><b>เกณฑ์ตัดเกรด (คะแนนขั้นต่ำแต่ละเกรด)</b></legend>
+          <div class="row wrap" style="gap:.5rem">
+            ${['A', 'B+', 'B', 'C+', 'C', 'D+', 'D', 'F'].map(k => `
+              <label class="w-100">${k}
+                <input class="input" type="number" step="1" min="0" max="100" name="gr_${k}" value="${R[k]}">
+              </label>
+            `).join('')}
+          </div>
+        </fieldset>
+
+        <label class="row" style="align-items:center; gap:.5rem">
+          <input type="checkbox" name="published" ${c.grade_published ? 'checked' : ''}>
+          เผยแพร่เกรดให้ผู้เรียนเห็น
+        </label>
+
+        <footer class="row" style="justify-content:flex-end; gap:.5rem">
+          <button type="button" class="btn btn--outline" data-close>ยกเลิก</button>
+          <button type="submit" class="btn">บันทึก</button>
+        </footer>
+      </form>
+    </div>
+  </div>`);
+
+    const modal = document.getElementById(mid);
+    modal.querySelectorAll('[data-close]').forEach(b => b.addEventListener('click', () => modal.remove()));
+    modal.addEventListener('keydown', e => { if (e.key === 'Escape') modal.remove(); });
+
+    // บันทึก
+    document.getElementById('form-course-settings').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const f = new FormData(e.target);
+
+        const code = String(f.get('code') || '').trim();
+        const section = String(f.get('section') || '').trim() || null;
+        const title_th = String(f.get('title_th') || '').trim() || null;
+        const title_en = String(f.get('title_en') || '').trim() || null;
+        const semRaw = String(f.get('semester') || '').trim();
+        const { term, year } = parseSemLabel(semRaw);
+        const grade_rules = inputsToRules(e.target);
+        const grade_published = !!f.get('published');
+
+        if (!code) { alert('ต้องกรอกรหัสวิชา'); return; }
+
+        const payload = { code, section, title_th, title_en, term, year, grade_rules, grade_published };
+
+        const { data, error: updErr } = await sb.from('courses').update(payload).eq('id', courseId).select().single();
+        if (updErr) { alert('บันทึกไม่สำเร็จ: ' + updErr.message); return; }
+
+        // อัปเดตการ์ดในกริดให้ทันสมัย
+        _allCourses = _allCourses.map(x => x.id === courseId ? { ...x, ...data } : x);
+        renderCourseGrid(_allCourses);
+
+        alert('บันทึกแล้ว');
+        modal.remove();
+    });
+}
+
+
+
 /* ========= Create course ========= */
 async function createCourse(ownerId) {
-    const code = prompt('รหัสวิชา (เช่น STAT101)'); if (!code) return;
-    const title = prompt('ชื่อวิชา (TH/EN อย่างใดอย่างหนึ่ง)') || '';
-    const section = prompt('ตอนเรียน (Sec.) เช่น 1') || null;
-    const semester = prompt('ภาคการศึกษา เช่น 1/2025') || null;
+    const mid = 'modal-new-course';
+    document.getElementById(mid)?.remove();
+    document.body.insertAdjacentHTML('beforeend', `
+    <div class="modal" id="${mid}" role="dialog" aria-modal="true">
+      <div class="modal__backdrop" data-close></div>
+      <div class="modal__panel" role="document">
+        <header class="modal__head">
+          <h3>เพิ่มรายวิชา</h3>
+          <button class="modal__close" data-close aria-label="ปิด">×</button>
+        </header>
+        <form id="form-new-course" class="stack">
+          <label>รหัสวิชา* <input class="input" name="code" required placeholder="STAT101"></label>
+          <label>ชื่อวิชา (TH/EN อย่างใดอย่างหนึ่ง)
+            <input class="input" name="title" placeholder="Introduction to Statistics">
+          </label>
+          <div class="row wrap" style="gap:.75rem">
+            <label class="w-220">Sec.
+              <input class="input" name="section" type="text" placeholder="1">
+            </label>
+            <label class="w-220">ภาคการศึกษา
+              <input class="input" name="semester" type="text" placeholder="1/2025">
+            </label>
+          </div>
+          <footer class="row" style="justify-content:flex-end; gap:.5rem; margin-top:12px">
+            <button type="button" class="btn btn--outline" data-close>ยกเลิก</button>
+            <button type="submit" class="btn">บันทึก</button>
+          </footer>
+        </form>
+      </div>
+    </div>
+  `);
 
-    const { data, error } = await sb.from('courses')
-        .insert({ code, title_th: title, section, semester, owner_id: ownerId })
-        .select().single();
+    const modal = document.getElementById(mid);
+    modal.querySelectorAll('[data-close]').forEach(b => b.addEventListener('click', () => modal.remove()));
+    modal.addEventListener('keydown', (e) => { if (e.key === 'Escape') modal.remove(); });
 
-    if (error) return alert('สร้างรายวิชาไม่สำเร็จ: ' + error.message);
-    alert('สร้างรายวิชาแล้ว');
-    _allCourses = [data, ..._allCourses];
-    renderCourseGrid(_allCourses);
+    document.getElementById('form-new-course').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const fd = new FormData(e.target);
+        const code = String(fd.get('code') || '').trim();
+        const title = String(fd.get('title') || '').trim();
+        const section = String(fd.get('section') || '').trim() || null;
+        const semRaw = String(fd.get('semester') || '').trim(); // เช่น "1/2025"
+
+        if (!code) { alert('ต้องกรอกรหัสวิชา'); return; }
+
+        // แปลง "1/2025" → term=1, year=2025, semester_label="1/2025"
+        // แปลง "1/2025" → term, year
+        let term = null, year = null;
+        if (semRaw) {
+            const m = semRaw.match(/^\s*(\d{1,2})\s*\/\s*(\d{4})\s*$/);
+            if (!m) { alert('รูปแบบภาคการศึกษาควรเป็น 1/2025'); return; }
+            term = Number(m[1]);
+            year = Number(m[2]);
+        }
+
+        // ❌ ห้ามใส่ semester_label
+        const payload = { code, title_th: title || null, section, term, year, owner_id: ownerId };
+
+        const { data, error } = await sb.from('courses').insert(payload).select().single();
+        if (error) { alert('เพิ่มรายวิชาไม่สำเร็จ: ' + error.message); return; }
+
+        alert('เพิ่มรายวิชาแล้ว');
+        _allCourses = [data, ..._allCourses];
+        renderCourseGrid(_allCourses);
+        modal.remove();
+    });
+
+    modal.querySelector('input[name="code"]').focus();
 }
+
+
 
 /* ========= Course detail ========= */
 async function openCourseDetail(courseId, focusTab = 'detail') {
@@ -172,8 +364,9 @@ async function openCourseDetail(courseId, focusTab = 'detail') {
     showSection('detail');
 
     const { data: c, error } = await sb.from('courses')
-        .select('id, code, title_th, title_en, section, semester')
+        .select('id, code, title_th, title_en, section, term, year, semester_label')
         .eq('id', courseId).maybeSingle();
+
 
     if (error || !c) {
         box.innerHTML = `<div class="card" style="color:#b91c1c">ไม่พบรายวิชา/โหลดไม่ได้</div>`;
@@ -243,7 +436,6 @@ async function openCourseDetail(courseId, focusTab = 'detail') {
           <thead><tr><th align="left">ชื่อรายการ</th><th class="right">สัดส่วน (%)</th><th class="right">เต็ม</th><th class="right"></th></tr></thead>
           <tbody id="tbody-assess"><tr><td colspan="4" class="muted">ยังไม่โหลด</td></tr></tbody>
         </table></div>
-        <div class="row mt-8"><button class="btn" id="btn-add-assess">เพิ่มองค์ประกอบ</button></div>
       </div>
 
       <!-- ประกาศ -->
@@ -253,6 +445,13 @@ async function openCourseDetail(courseId, focusTab = 'detail') {
       </div>
     </div>
   `;
+    // ผูกปุ่มนำเข้า CSV หลังจาก DOM ของ detail ถูกสร้างแล้ว
+    const fileEl = $('#file-import', box);
+    if (fileEl) {
+        fileEl.value = ''; // รีเซ็ตให้เลือกไฟล์เดิมซ้ำได้
+        fileEl.addEventListener('change', (ev) => importRosterCSV(ev, courseId, box));
+    }
+
 
     // tabs
     const tabs = $$('.tabs .tab', box);
@@ -290,6 +489,28 @@ async function openCourseDetail(courseId, focusTab = 'detail') {
     const startTab = (focusTab === 'roster' || focusTab === 'scores' || focusTab === 'assess' || focusTab === 'ann') ? focusTab : 'roster';
     switchTab(box, startTab, courseId);
 }
+
+// แยก 1 บรรทัดของ CSV แบบรองรับเครื่องหมาย " และ "" (escape)
+function parseCSVLine(line) {
+    const out = [];
+    let cur = "", q = false;
+    for (let i = 0; i < line.length; i++) {
+        const ch = line[i];
+        if (q) {
+            if (ch === '"') {
+                if (line[i + 1] === '"') { cur += '"'; i++; }
+                else q = false;
+            } else cur += ch;
+        } else {
+            if (ch === '"') q = true;
+            else if (ch === ',') { out.push(cur); cur = ""; }
+            else cur += ch;
+        }
+    }
+    out.push(cur);
+    return out;
+}
+
 
 function switchTab(container, tabName, courseId) {
     $$('.tabs .tab', container).forEach(b => b.classList.toggle('is-active', b.dataset.tab === tabName));
@@ -352,6 +573,67 @@ async function loadRoster(courseId, el) {
 
     renderRosterPage(el, 1);
 }
+
+async function importRosterCSV(ev, courseId, containerEl) {
+    const file = ev.target.files?.[0];
+    ev.target.value = ""; // เคลียร์ให้เลือกไฟล์เดิมซ้ำได้
+    if (!file) return;
+
+    const name = file.name.toLowerCase();
+    if (!name.endsWith(".csv")) {
+        alert('กรุณาอัปโหลดไฟล์ CSV (UTF-8). ไฟล์ .xlsx ยังไม่รองรับในหน้านี้');
+        return;
+    }
+
+    let text = await file.text();
+    // ตัดบรรทัดว่างหัว/ท้าย
+    const lines = text.split(/\r?\n/).map(s => s.trim()).filter(Boolean);
+    if (!lines.length) { alert('ไฟล์ว่าง'); return; }
+
+    // header
+    const header = parseCSVLine(lines.shift()).map(h => h.trim().toLowerCase());
+
+    // map ชื่อคอลัมน์
+    const idxEmail = header.findIndex(h => ["email", "kku_email"].includes(h));
+    const idxFirst = header.findIndex(h => ["first_name", "ชื่อ"].includes(h));
+    const idxLast = header.findIndex(h => ["last_name", "นามสกุล"].includes(h));
+    const idxCode = header.findIndex(h => ["student_no", "student_code", "std_code", "studentid", "รหัส", "รหัสนักศึกษา"].includes(h));
+
+    if (idxEmail < 0) {
+        alert('ไฟล์ต้องมีคอลัมน์ "email"');
+        return;
+    }
+
+    let ok = 0, skip = 0, fail = 0;
+
+    // ทำทีละบรรทัด (ชัวร์สุด), ถ้าข้อมูลเยอะค่อยปรับเป็น batch
+    for (const ln of lines) {
+        const cols = parseCSVLine(ln);
+        if (!cols.length) { skip++; continue; }
+
+        const email = (cols[idxEmail] || "").trim().toLowerCase();
+        if (!email) { skip++; continue; }
+
+        const student = {
+            email,
+            first_name: idxFirst >= 0 ? (cols[idxFirst] || "").trim() : "",
+            last_name: idxLast >= 0 ? (cols[idxLast] || "").trim() : "",
+            student_no: idxCode >= 0 ? (cols[idxCode] || "").trim() : "",
+        };
+
+        try {
+            const done = await upsertStudentAndEnroll(student, courseId);
+            if (done) ok++; else fail++;
+        } catch {
+            fail++;
+        }
+    }
+
+    // รีเฟรชตาราง
+    await loadRoster(courseId, containerEl);
+    alert(`นำเข้าสำเร็จ: ${ok} แถว • ข้าม: ${skip} • ผิดพลาด: ${fail}`);
+}
+
 
 function renderRosterPage(el, page = 1) {
     const all = el._rosterRows || [];
