@@ -30,7 +30,6 @@
 
         <nav class="header-actions" aria-label="การทำงานด่วน">
             <button class="btn btn--outline" data-nav="courses">รายวิชา</button>
-            <button class="btn btn--outline" data-nav="acl">สิทธิ์ผู้ใช้</button>
             <button class="btn btn--outline" data-nav="pubs">ผลงานวิจัย</button>
             <div class="divider" aria-hidden="true"></div>
             <button class="btn btn--secondary" id="btn-signout">ออกจากระบบ</button>
@@ -155,41 +154,6 @@
                         <button class="btn" id="btn-new-ann">เพิ่มประกาศ</button>
                     </div>
                 </div>
-            </div>
-        </section>
-
-        <!-- การจัดการสิทธิ์ผู้ใช้ -->
-        <section id="acl" class="card" aria-label="การจัดการสิทธิ์" hidden>
-            <h3>การจัดการสิทธิ์</h3>
-
-            <div class="row wrap">
-                <button class="btn" id="btn-set-global">ตั้งบทบาท</button>
-                <input class="input" id="acl-email" placeholder="อีเมลผู้ใช้">
-                <button class="btn btn--outline" id="btn-find-user">ค้นหา</button>
-                <div id="acl-user-info" class="mt-4"></div>
-
-            </div>
-
-            <div class="row wrap mt-8">
-                <label class="w-260">
-                    รายวิชา
-                    <select class="input" id="acl-course"></select>
-                </label>
-                <label>
-                    บทบาทในวิชา
-                    <select class="input" id="acl-course-role">
-                        <option value="owner">owner</option>
-                        <option value="instructor">instructor</option>
-                        <option value="ta">ta</option>
-                        <option value="viewer">viewer</option>
-                    </select>
-                </label>
-                <button class="btn" id="btn-grant-course">ให้สิทธิ์</button>
-                <button class="btn btn--outline" id="btn-revoke-course">ลบสิทธิ์</button>
-            </div>
-
-            <div class="table-wrap mt-12" id="acl-list">
-                <!-- ตารางสรุปสิทธิ์ ใส่ด้วย JS -->
             </div>
         </section>
 

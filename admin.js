@@ -53,12 +53,6 @@ async function boot() {
   // โหลดรายวิชา
   await loadCourses(prof.user_id);
 
-  // ✅ เพิ่มสองบรรทัดนี้
-  wireAclCourses(prof.user_id);   // เติมรายการวิชา + ผูกปุ่ม ให้สิทธิ์/ไม่สิทธิ์
-  renderAclList();                // โหลดตารางสรุปสิทธิ์ครั้งแรก
-
-  // หน้าสิทธิ์ผู้ใช้
-  wireAclGlobal();
 }
 
 // สร้างหรืออัปเดตโปรไฟล์จากอีเมล (ไม่บังคับให้มี user_id)
@@ -154,32 +148,25 @@ function showSection(name) {
 
   const showCoursesShell = () => {
     $('#grid-courses').hidden = false;
-    $('#acl').hidden = true;
     $('#pubs').hidden = true;
   };
 
   if (name === 'courses') {
     showCoursesShell();
     $('#course-detail').hidden = true;
-    main?.classList.remove('detail-mode');   // <— สำคัญ
+    main?.classList.remove('detail-mode');
   } else if (name === 'detail') {
     showCoursesShell();
     $('#course-detail').hidden = false;
-    main?.classList.add('detail-mode');      // <— สำคัญ
-  } else if (name === 'acl') {
-    $('#grid-courses').hidden = true;
-    $('#course-detail').hidden = true;
-    $('#acl').hidden = false;
-    $('#pubs').hidden = true;
-    main?.classList.remove('detail-mode');   // <— สำคัญ
+    main?.classList.add('detail-mode');
   } else if (name === 'pubs') {
     $('#grid-courses').hidden = true;
     $('#course-detail').hidden = true;
-    $('#acl').hidden = true;
     $('#pubs').hidden = false;
-    main?.classList.remove('detail-mode');   // <— สำคัญ
+    main?.classList.remove('detail-mode');
   }
 }
+
 
 
 /* ========= Courses grid ========= */
@@ -188,48 +175,30 @@ async function loadCourses(ownerId) {
   const grid = $('#grid-courses');
   grid.innerHTML = '<div class="card">กำลังโหลดรายวิชา...</div>';
 
-  const meEmail = String(window._me?.email || '').toLowerCase();
+  const me = window._me; // โปรไฟล์ผู้ใช้ปัจจุบัน
 
-  // 1) ของตัวเอง (owner)
-  const ownQ = sb.from('courses')
-    .select('id, code, title_th, title_en, section, term, year, semester_label')
-    .eq('owner_id', ownerId)
-    .order('created_at', { ascending: false });
-
-  // 2) รายวิชาที่ถูกให้สิทธิ์ผ่าน course_acl ด้วยอีเมล
-  const aclIdsQ = sb.from('course_acl')
-    .select('course_id')
-    .eq('email', meEmail);
-
-  const [{ data: own = [], error: e1 }, { data: aclRows = [], error: e2 }] =
-    await Promise.all([ownQ, aclIdsQ]);
-
-  if (e1 || e2) {
-    grid.innerHTML = `<div class="card" style="color:#b91c1c">โหลดข้อมูลไม่สำเร็จ: ${esc((e1 || e2).message)}</div>`;
-    return;
-  }
-
-  const aclIds = [...new Set((aclRows || []).map(r => r.course_id))].filter(id => !!id);
-
-  let aclCourses = [];
-  if (aclIds.length) {
-    const { data, error } = await sb.from('courses')
+  let rows = [];
+  if (me?.role === 'admin') {
+    const { data, error } = await sb
+      .from('courses')
       .select('id, code, title_th, title_en, section, term, year, semester_label')
-      .in('id', aclIds);
-    if (error) {
-      grid.innerHTML = `<div class="card" style="color:#b91c1c">โหลด ACL ไม่สำเร็จ: ${esc(error.message)}</div>`;
-      return;
-    }
-    aclCourses = data || [];
+      .order('created_at', { ascending: false });
+    if (error) { grid.innerHTML = `<div class="card" style="color:#b91c1c">โหลดไม่สำเร็จ: ${error.message}</div>`; return; }
+    rows = data || [];
+  } else {
+    const { data, error } = await sb
+      .from('courses')
+      .select('id, code, title_th, title_en, section, term, year, semester_label')
+      .eq('owner_id', ownerId)
+      .order('created_at', { ascending: false });
+    if (error) { grid.innerHTML = `<div class="card" style="color:#b91c1c">โหลดไม่สำเร็จ: ${error.message}</div>`; return; }
+    rows = data || [];
   }
 
-  // รวม+ตัดซ้ำ (กรณีเป็น owner เองด้วย)
-  const byId = new Map();
-  [...own, ...aclCourses].forEach(c => byId.set(c.id, c));
-  _allCourses = Array.from(byId.values()).sort((a, b) => (b.id - a.id));
-
-  renderCourseGrid(_allCourses);
+  _allCourses = rows;
+  renderCourseGrid(rows);
 }
+
 
 
 function renderCourseGrid(items) {
@@ -1006,29 +975,81 @@ function openDeleteStudentModal(sid, cid, el) {
 
 
 async function upsertStudentAndEnroll(student, courseId) {
-  const { data: stu, error: u1 } = await sb
-    .from('students')
-    .upsert(student, { onConflict: 'email' })
-    .select('id')
-    .single();
-  if (u1) { alert('บันทึกนักศึกษาไม่สำเร็จ: ' + u1.message); return false; }
+  try {
+    const email = String(student.email || '').trim().toLowerCase();
+    if (!email) { alert('ต้องกรอกอีเมล'); return false; }
 
-  const { data: existed, error: chk } = await sb
-    .from('enrollments')
-    .select('student_id')
-    .match({ student_id: stu.id, course_id: courseId })
-    .maybeSingle();
-  if (chk) { alert('ตรวจสอบรายชื่อไม่สำเร็จ: ' + chk.message); return false; }
+    // เตรียม payload สำหรับ students
+    const payload = {
+      email,
+      kku_email: email,
+      first_name: student.first_name?.trim() || '',
+      last_name: student.last_name?.trim() || '',
+      student_no: student.student_no?.trim() || ''
+    };
 
-  if (!existed) {
-    const { error: ins } = await sb
-      .from('enrollments')
-      .insert({ student_id: stu.id, course_id: courseId });
-    if (ins) { alert('เพิ่มรายชื่อเข้าวิชาไม่สำเร็จ: ' + ins.message); return false; }
+    // 1) พยายาม INSERT ลง students ก่อน
+    let stuId = null;
+    let ins = await sb.from('students').insert(payload).select('id').single();
+
+    if (ins.error) {
+      // ถ้าชน UNIQUE (email เดิม) → หา id เดิม
+      if (ins.error.code === '23505') {
+        const found = await sb.from('students').select('id').eq('email', email).maybeSingle();
+        if (!found.data) { alert('หาแถวเดิมไม่พบ'); return false; }
+        stuId = found.data.id;
+
+        // อัปเดตรายละเอียดเงียบ ๆ
+        const upd = await sb.from('students').update({
+          first_name: payload.first_name,
+          last_name: payload.last_name,
+          student_no: payload.student_no,
+          kku_email: payload.kku_email
+        }).eq('id', stuId);
+        if (upd.error) { alert('อัปเดตนักศึกษาไม่สำเร็จ: ' + upd.error.message); return false; }
+      } else {
+        alert('เพิ่มนักศึกษาไม่สำเร็จ: ' + ins.error.message);
+        return false;
+      }
+    } else {
+      stuId = ins.data.id;
+    }
+
+    // 2) ดึง owner_id ของรายวิชานี้ (กันเคสคอลัมน์ owner_id เป็น NOT NULL)
+    const cr = await sb.from('courses').select('owner_id').eq('id', courseId).single();
+    if (cr.error || !cr.data) { alert('โหลด owner_id ของรายวิชาไม่สำเร็จ'); return false; }
+
+    // 3) เช็คว่าลงทะเบียนซ้ำหรือยัง
+    const existed = await sb.from('enrollments')
+      .select('student_id')
+      .match({ student_id: stuId, course_id: courseId })
+      .maybeSingle();
+    if (existed.error) { alert('ตรวจสอบรายชื่อไม่สำเร็จ: ' + existed.error.message); return false; }
+
+    // 4) ถ้ายังไม่อยู่ → INSERT (ไม่ใช้ upsert) แล้ว “มองข้าม” error 23505 ถ้าเผลอกดซ้ำเร็ว ๆ
+    if (!existed.data) {
+      const insEnr = await sb.from('enrollments').insert({
+        student_id: stuId,
+        course_id: courseId,
+        owner_id: cr.data.owner_id ?? null
+      });
+      if (insEnr.error && insEnr.error.code !== '23505') {
+        alert('เพิ่มรายชื่อเข้าวิชาไม่สำเร็จ: ' + insEnr.error.message);
+        return false;
+      }
+    }
+
+    alert('เพิ่มรายชื่อเรียบร้อย');
+    return true;
+  } catch (err) {
+    alert('ผิดพลาด: ' + (err?.message || err));
+    return false;
   }
-  alert('เพิ่มรายชื่อเรียบร้อย');
-  return true;
 }
+
+
+
+
 
 function closeModal(id) { const m = document.getElementById(id); if (m) m.remove(); }
 
