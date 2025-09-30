@@ -159,7 +159,7 @@
         <th class="right" style="position:sticky;left:0;background:var(--surface);z-index:2;width:64px">ลำดับ</th>
         <th style="position:sticky;left:64px;background:var(--surface);z-index:2;min-width:220px" align="left">ชื่อ–นามสกุล</th>
         <th style="position:sticky;left:284px;background:var(--surface);z-index:2;min-width:140px" align="left">อีเมล</th>
-        <th style="position:sticky;left:424px;background:var(--surface);z-index:2;width:120px">รหัส นศ.</th>
+        <th style="position:sticky;left:424px;background:var(--surface);z-index:2;width:120px;white-space:nowrap">รหัส นศ.</th>
         ${state.assessments
                 .map(
                     (a) => `
@@ -191,7 +191,7 @@
                 [s.first_name, s.last_name].filter(Boolean).join(" ") || "-"
             )}</td>
         <td style="position:sticky;left:284px;background:var(--surface);z-index:1">${esc(s.email || "-")}</td>
-        <td style="position:sticky;left:424px;background:var(--surface);z-index:1"><code>${esc(s.student_no || "—")}</code></td>
+        <td style="position:sticky;left:424px;background:var(--surface);z-index:1;white-space:nowrap"><code>${esc(s.student_no || "—")}</code></td>
       `;
 
             const cells = state.assessments
