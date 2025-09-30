@@ -42,17 +42,14 @@ async function boot() {
 /* ===== ปุ่มย้อนกลับไปหน้ารายวิชา ===== */
 btnBackCourses?.addEventListener('click', () => {
   try {
-    // ถ้ามี referrer จากหน้าเดิม และเป็น origin เดียวกัน ให้ย้อนจริง ๆ
     const ref = document.referrer ? new URL(document.referrer) : null;
     if (ref && ref.origin === location.origin && ref.href !== location.href) {
       history.back();
       return;
     }
   } catch { }
-
-  // ไม่มี/ใช้ referrer ไม่ได้ → ไปไฟล์ subjects.html ที่อยู่ข้าง ๆ portal.html
   const u = new URL(location.href);
-  u.pathname = u.pathname.replace(/[^/]+$/, 'subjects.html');  // แทนชื่อไฟล์ท้าย path
+  u.pathname = u.pathname.replace(/[^/]+$/, 'subjects.html');
   location.href = u.toString();
 });
 
@@ -144,7 +141,7 @@ async function showDashboard(user) {
 
   const { data: courses } = await sb
     .from('courses')
-    .select('id, code, title_th, title_en')
+    .select('id, code, title_th, title_en, section') // CHANGED: ดึง section จาก courses
     .in('id', courseIds);
 
   // แสดงเป็นแถวแนวนอนเต็มกว้าง
@@ -159,8 +156,8 @@ async function showDashboard(user) {
               <div class="course-title">${c.title_th || c.title_en || ''}</div>
               <div class="course-sub">${c.title_en || ''}</div>
               <div class="course-meta">
-                ${me?.section ? `<span class="pill pill--muted">Section ${me.section}</span>` : ``}
-                ${me?.year_level ? `<span class="pill pill--muted">ชั้นปี ${me.year_level}</span>` : ``}
+                ${c?.section ? `<span class="pill pill--muted">Section ${c.section}</span>` : ``}   <!-- CHANGED: ใช้ section จาก courses -->
+                <!-- CHANGED: ตัด pill ชั้นปีออกจากการ์ดรายวิชา -->
               </div>
             </div>
             <div class="course-actions">
@@ -205,7 +202,7 @@ function renderWhoCard(me) {
           <span class="pill pill--muted">${yearTxt}</span>
           ${me?.program ? `<span class="pill pill--muted">${me.program}</span>` : ''}
           ${me?.major ? `<span class="pill pill--muted">${me.major}</span>` : ''}
-          ${me?.section ? `<span class="pill pill--muted">Section ${me.section}</span>` : ''}
+          <!-- CHANGED: ตัด Section ออกจากการ์ดข้อมูลนักศึกษา -->
         </div>
       </div>
       <div class="row" style="margin-top:10px">
@@ -222,7 +219,7 @@ function renderWhoCard(me) {
 function backToCourses() {
   const $score = $('#card-score');
   $score.innerHTML = '';
-  portalEl.classList.remove('has-score'); // ซ่อนแถวล่าง
+  portalEl.classList.remove('has-score');
 }
 
 /* ===== เปิดการ์ดคะแนน: แสดงแถวล่างสุดเต็มกว้าง ===== */
@@ -299,7 +296,6 @@ async function openCourse(courseId, code, studentId) {
     ? `<tr><td colspan="4" class="muted right"><small>ยังไม่ประกาศเกรด (คะแนนยังไม่ครบ / ยังไม่เผยแพร่)</small></td></tr>`
     : '';
 
-  // แสดงในแถวล่างสุด (score score)
   $('#card-score').innerHTML = `
     <div class="card">
       <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
@@ -325,7 +321,7 @@ async function openCourse(courseId, code, studentId) {
         </table>
       </div>
     </div>`;
-  portalEl.classList.add('has-score'); // ทำให้แถวล่างแสดง
+  portalEl.classList.add('has-score');
 
   $('#btn-back-to-courses')?.addEventListener('click', backToCourses);
 }
