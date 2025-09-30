@@ -33,6 +33,9 @@
     padding: 12px 18px;
     background: linear-gradient(180deg, #f0f4ff, #fff);
     border-bottom: 1px solid var(--border);
+    /* เพิ่มมิติ */
+    backdrop-filter: saturate(130%) blur(6px);
+    box-shadow: 0 1px 0 var(--border);
 }
 
 .page-admin .brand {
@@ -110,14 +113,21 @@
 
 .page-admin .btn--sm {
     padding: 7px 10px;
-    font-size: .92rem
+    font-size: .92rem;
 }
 
 .page-admin .divider {
     width: 1px;
     height: 28px;
     background: var(--border);
-    margin: 0 8px
+    margin: 0 8px;
+}
+
+/* Focus (a11y) */
+.page-admin .btn:focus-visible,
+.page-admin .input:focus-visible {
+    outline: 0;
+    box-shadow: 0 0 0 3px rgba(90, 123, 255, .3);
 }
 
 /* Inputs */
@@ -144,7 +154,7 @@
 
 .page-admin .file {
     position: relative;
-    overflow: hidden
+    overflow: hidden;
 }
 
 .page-admin .file>input[type=file] {
@@ -159,12 +169,12 @@
     padding: 9px 14px;
     border: 1px dashed var(--border);
     border-radius: 10px;
-    background: #fff
+    background: #fff;
 }
 
 /* Layout */
 .page-admin .admin {
-    max-width: min(1320px, calc(100% - 64px));
+    max-width: min(1200px, calc(100% - 64px));
     margin: 24px auto;
     display: grid;
     gap: 16px;
@@ -186,12 +196,12 @@
 }
 
 .page-admin .toolbar .search {
-    flex: 1 1 380px
+    flex: 1 1 380px;
 }
 
 .page-admin .toolbar .tools {
     display: flex;
-    gap: 8px
+    gap: 8px;
 }
 
 .page-admin .disclaimer {
@@ -231,7 +241,7 @@
     display: flex;
     justify-content: space-between;
     align-items: baseline;
-    gap: 8px
+    gap: 8px;
 }
 
 .page-admin .code {
@@ -247,7 +257,22 @@
 .page-admin .actions {
     display: flex;
     gap: 8px;
-    flex-wrap: wrap
+    flex-wrap: wrap;
+}
+
+/* เมตาบนการ์ด */
+.page-admin .course .meta {
+    display: flex;
+    gap: 6px;
+    color: var(--muted);
+}
+
+.page-admin .course .chip {
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: 12px;
+    background: #f1f5ff;
+    border: 1px solid #e4e9ff;
 }
 
 /* Detail */
@@ -256,14 +281,14 @@
     justify-content: space-between;
     gap: 12px;
     align-items: center;
-    flex-wrap: wrap
+    flex-wrap: wrap;
 }
 
 .page-admin .tabs {
     display: flex;
     gap: 6px;
     border-bottom: 1px solid var(--border);
-    margin-top: 8px
+    margin-top: 8px;
 }
 
 .page-admin .tab {
@@ -287,7 +312,7 @@
     border-top: none;
     border-radius: 0 10px 10px 10px;
     padding: 12px;
-    background: #fff
+    background: #fff;
 }
 
 /* Tables */
@@ -295,14 +320,14 @@
     overflow: auto;
     border-radius: 12px;
     box-shadow: inset 0 0 0 1px var(--border);
-    background: #fff
+    background: #fff;
 }
 
 .page-admin table {
     width: 100%;
     border-collapse: separate;
     border-spacing: 0;
-    font-variant-numeric: tabular-nums
+    font-variant-numeric: tabular-nums;
 }
 
 .page-admin thead th {
@@ -311,50 +336,50 @@
     z-index: 1;
     background: #f2f6ff;
     border-bottom: 1px solid #e3e9f7;
-    font-weight: 700
+    font-weight: 700;
 }
 
 .page-admin th,
 .page-admin td {
-    padding: 12px 14px
+    padding: 12px 14px;
 }
 
 .page-admin tbody tr {
-    border-bottom: 1px solid #eef2f7
+    border-bottom: 1px solid #eef2f7;
 }
 
 .page-admin tbody tr:nth-child(odd) {
-    background: #fbfcff
+    background: #fbfcff;
 }
 
 .page-admin tbody tr:hover {
-    background: #f5f8ff
+    background: #f5f8ff;
 }
 
 .page-admin .right {
-    text-align: right
+    text-align: right;
 }
 
 .page-admin .row {
     display: flex;
     gap: 12px;
-    align-items: center
+    align-items: center;
 }
 
 .page-admin .wrap {
-    flex-wrap: wrap
+    flex-wrap: wrap;
 }
 
 .page-admin .mt-8 {
-    margin-top: 8px
+    margin-top: 8px;
 }
 
 .page-admin .mt-12 {
-    margin-top: 12px
+    margin-top: 12px;
 }
 
 .page-admin .w-260 {
-    flex: 1 1 260px
+    flex: 1 1 260px;
 }
 
 /* No-JS */
@@ -406,6 +431,7 @@
     margin: 6px 0;
 }
 
+/* ===== โหมดสองพาเนล ================================================== */
 /* พื้นฐาน: แสดงแบบปกติ */
 #courses-shell {
     display: block;
@@ -414,7 +440,6 @@
 /* โหมดแสดงรายละเอียด: สองพาเนล ซ้ายแคบ ขวากินพื้นที่ที่เหลือ */
 main.admin.detail-mode {
     max-width: 100%;
-    /* ไม่ให้ศูนย์กลางแบบแคบ */
     margin: 0;
     padding-inline: 24px;
     /* กันชิดขอบเกินไป */
@@ -423,7 +448,6 @@ main.admin.detail-mode {
 main.admin.detail-mode #courses-shell {
     display: grid;
     grid-template-columns: 380px 1fr;
-    /* ซ้ายคงที่ ~380px, ขวาเต็มที่เหลือ */
     gap: 24px;
     align-items: start;
 }
@@ -433,7 +457,7 @@ main.admin.detail-mode #course-detail {
     top: 16px;
     max-height: calc(100vh - 120px);
     overflow: auto;
-    /* ให้แผงรายละเอียดเลื่อนเองได้ */
+    /* แผงรายละเอียดเลื่อนเอง */
 }
 
 main.admin.detail-mode #grid-courses {

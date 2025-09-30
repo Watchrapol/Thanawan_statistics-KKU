@@ -15,7 +15,6 @@
     <script defer src="admin.js"></script>
     <script defer src="scores.js"></script>
     <script defer src="assessments.js"></script>
-
 </head>
 
 <body class="page-admin">
@@ -57,104 +56,93 @@
             </div>
         </section>
 
-        <!-- กริดการ์ดรายวิชา -->
-        <section id="grid-courses" class="grid-courses" aria-label="รายวิชาที่ดูแล">
-            <!-- ตัวอย่างการ์ด (ข้อมูลจริงใส่ด้วย JS ภายหลัง) -->
-            <!--
-      <article class="course">
-        <div class="course-head">
-          <div class="code">STAT101</div>
-          <div class="meta muted">1/2025 • Sec 1</div>
-        </div>
-        <div class="title">Introduction to Statistics</div>
-        <div class="actions">
-          <button class="btn btn--sm" data-open="detail">จัดการ</button>
-          <button class="btn btn--sm btn--outline" data-open="roster">รายชื่อ</button>
-          <button class="btn btn--sm btn--outline" data-open="scores">คะแนน</button>
-        </div>
-      </article>
-      -->
-        </section>
+        <!-- ✅ ห่อสองพาเนล: รายวิชา (ซ้าย) + รายละเอียด (ขวา) -->
+        <section id="courses-shell">
+            <!-- กริดการ์ดรายวิชา -->
+            <section id="grid-courses" class="grid-courses" aria-label="รายวิชาที่ดูแล">
+                <!-- ข้อมูลจริงจะถูกเติมด้วย JS -->
+            </section>
 
-        <!-- กล่องรายละเอียดรายวิชา -->
-        <section id="course-detail" class="card" hidden aria-live="polite">
-            <header class="detail-head">
-                <h3 id="detail-title">จัดการรายวิชา</h3>
-                <div class="row">
-                    <label class="file">
-                        <input type="file" id="file-import" accept=".csv,.xlsx,.xls" />
-                        <span>นำเข้า Excel/CSV</span>
-                    </label>
-                    <button class="btn btn--outline" id="btn-detail-refresh">รีเฟรช</button>
-                    <button class="btn btn--danger" id="btn-delete-course">ลบรายวิชา</button>
-                </div>
-            </header>
-
-            <nav class="tabs" role="tablist" aria-label="แท็บจัดการรายวิชา">
-                <button class="tab is-active" role="tab" aria-selected="true" data-tab="roster">รายชื่อ</button>
-                <button class="tab" role="tab" data-tab="scores">คะแนน</button>
-                <button class="tab" role="tab" data-tab="assess">องค์ประกอบคะแนน</button>
-                <button class="tab" role="tab" data-tab="ann">ประกาศ</button>
-            </nav>
-
-            <div class="tabpanels">
-                <!-- รายชื่อ -->
-                <div class="tabpanel" data-panel="roster">
-                    <div class="table-wrap">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th align="left">อีเมล</th>
-                                    <th>รหัสนักศึกษา</th>
-                                    <th class="right"></th>
-                                </tr>
-                            </thead>
-                            <tbody id="tbody-roster"><!-- เติมด้วย JS --></tbody>
-                        </table>
+            <!-- กล่องรายละเอียดรายวิชา -->
+            <section id="course-detail" class="card" hidden aria-live="polite">
+                <header class="detail-head">
+                    <h3 id="detail-title">จัดการรายวิชา</h3>
+                    <div class="row">
+                        <label class="file">
+                            <input type="file" id="file-import" accept=".csv,.xlsx,.xls" />
+                            <span>นำเข้า Excel/CSV</span>
+                        </label>
+                        <button class="btn btn--outline" id="btn-detail-refresh">รีเฟรช</button>
+                        <button class="btn btn--danger" id="btn-delete-course">ลบรายวิชา</button>
                     </div>
-                    <div class="row mt-8">
-                        <button class="btn" id="btn-add-blank-student">เพิ่มแถวว่าง</button>
-                    </div>
-                </div>
+                </header>
 
-                <!-- คะแนน -->
-                <div class="tabpanel" data-panel="scores" hidden>
-                    <div class="table-wrap">
-                        <table>
-                            <thead id="thead-scores"><!-- เติมหัวคอลัมน์ด้วย JS --></thead>
-                            <tbody id="tbody-scores"><!-- เติมแถวด้วย JS --></tbody>
-                        </table>
-                    </div>
-                </div>
+                <nav class="tabs" role="tablist" aria-label="แท็บจัดการรายวิชา">
+                    <button class="tab is-active" role="tab" aria-selected="true" data-tab="roster">รายชื่อ</button>
+                    <button class="tab" role="tab" data-tab="scores">คะแนน</button>
+                    <button class="tab" role="tab" data-tab="assess">องค์ประกอบคะแนน</button>
+                    <button class="tab" role="tab" data-tab="ann">ประกาศ</button>
+                </nav>
 
-                <!-- องค์ประกอบคะแนน -->
-                <div class="tabpanel" data-panel="assess" hidden>
-                    <div class="table-wrap">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th align="left">ชื่อรายการ</th>
-                                    <th class="right">สัดส่วน (%)</th>
-                                    <th class="right">เต็ม</th>
-                                    <th class="right"></th>
-                                </tr>
-                            </thead>
-                            <tbody id="tbody-assess"><!-- JS --></tbody>
-                        </table>
+                <div class="tabpanels">
+                    <!-- รายชื่อ -->
+                    <div class="tabpanel" data-panel="roster">
+                        <div class="table-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th align="left">อีเมล</th>
+                                        <th>รหัสนักศึกษา</th>
+                                        <th class="right"></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody-roster"><!-- เติมด้วย JS --></tbody>
+                            </table>
+                        </div>
+                        <div class="row mt-8">
+                            <button class="btn" id="btn-add-blank-student">เพิ่มแถวว่าง</button>
+                        </div>
                     </div>
-                    <div class="row mt-8">
-                        <button class="btn" id="btn-add-assess">เพิ่มองค์ประกอบ</button>
+
+                    <!-- คะแนน -->
+                    <div class="tabpanel" data-panel="scores" hidden>
+                        <div class="table-wrap">
+                            <table>
+                                <thead id="thead-scores"><!-- เติมหัวคอลัมน์ด้วย JS --></thead>
+                                <tbody id="tbody-scores"><!-- เติมแถวด้วย JS --></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- องค์ประกอบคะแนน -->
+                    <div class="tabpanel" data-panel="assess" hidden>
+                        <div class="table-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th align="left">ชื่อรายการ</th>
+                                        <th class="right">สัดส่วน (%)</th>
+                                        <th class="right">เต็ม</th>
+                                        <th class="right"></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody-assess"><!-- JS --></tbody>
+                            </table>
+                        </div>
+                        <div class="row mt-8">
+                            <button class="btn" id="btn-add-assess">เพิ่มองค์ประกอบ</button>
+                        </div>
+                    </div>
+
+                    <!-- ประกาศ -->
+                    <div class="tabpanel" data-panel="ann" hidden>
+                        <div id="list-ann" class="stack"><!-- JS --></div>
+                        <div class="row mt-8">
+                            <button class="btn" id="btn-new-ann">เพิ่มประกาศ</button>
+                        </div>
                     </div>
                 </div>
-
-                <!-- ประกาศ -->
-                <div class="tabpanel" data-panel="ann" hidden>
-                    <div id="list-ann" class="stack"><!-- JS --></div>
-                    <div class="row mt-8">
-                        <button class="btn" id="btn-new-ann">เพิ่มประกาศ</button>
-                    </div>
-                </div>
-            </div>
+            </section>
         </section>
 
         <!-- ผลงานวิจัย (placeholder) -->

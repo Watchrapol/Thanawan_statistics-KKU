@@ -6,8 +6,7 @@
     // ---------- Utils ----------
     const $ = (s, el = document) => el.querySelector(s);
     const $$ = (s, el = document) => Array.from(el.querySelectorAll(s));
-    const esc = (s) =>
-        String(s ?? "").replace(/[&<>"']/g, (m) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[m]));
+    const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (m) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[m]));
     const PAGE_SIZE = 15;
 
     function h(tag, attrs = {}, html = "") {
@@ -21,55 +20,6 @@
         else if (Array.isArray(html)) html.forEach((c) => (c instanceof Node ? el.appendChild(c) : el.insertAdjacentHTML("beforeend", c)));
         else if (html) el.insertAdjacentHTML("beforeend", html);
         return el;
-    }
-
-    // ---------- Save-status helpers ----------
-    function fmtTimeTH(d = new Date()) {
-        return d.toLocaleTimeString("th-TH", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
-    }
-    function lastSavedKey(courseId) {
-        return `scores:lastSaved:${courseId}`;
-    }
-    function setSaving(container, saving = false) {
-        const btn = $("#btn-save", container);
-        const st = $("#save-status", container);
-        if (!btn || !st) return;
-
-        if (saving) {
-            btn.disabled = true;
-            btn.dataset._label = btn.textContent;
-            btn.textContent = "กำลังบันทึก...";
-            st.textContent = "กำลังบันทึก...";
-            st.classList.remove("text-ok", "text-err");
-        } else {
-            btn.disabled = false;
-            if (btn.dataset._label) btn.textContent = btn.dataset._label;
-        }
-    }
-    function showSavedOK(container, courseId) {
-        const st = $("#save-status", container);
-        const ts = Date.now();
-        localStorage.setItem(lastSavedKey(courseId), String(ts));
-        if (st) {
-            st.textContent = "บันทึกล่าสุด: " + fmtTimeTH(new Date(ts));
-            st.classList.add("text-ok");
-            st.classList.remove("text-err");
-        }
-    }
-    function showSavedError(container, msg) {
-        const st = $("#save-status", container);
-        if (st) {
-            st.textContent = "บันทึกไม่สำเร็จ: " + msg;
-            st.classList.add("text-err");
-            st.classList.remove("text-ok");
-        }
-    }
-    function initSavedStatus(container, courseId) {
-        const st = $("#save-status", container);
-        const last = localStorage.getItem(lastSavedKey(courseId));
-        if (st && last) {
-            st.textContent = "บันทึกล่าสุด: " + fmtTimeTH(new Date(Number(last)));
-        }
     }
 
     // ---------- Public API ----------
@@ -112,18 +62,17 @@
             // state
             const state = {
                 courseId,
-                students: [],      // [{id, first_name, last_name, email, student_no}]
-                assessments: [],   // [{id, name, weight, max_score}]
-                scores: {},        // key `${sid}:${aid}` -> number|null
-                edits: {},         // เก็บค่าที่แก้ไข ยังไม่บันทึก
-                gradeRules: null,  // {A:80,"B+":75,...}
+                students: [],       // [{id, first_name, last_name, email, student_no}]
+                assessments: [],    // [{id, name, weight, max_score}]
+                scores: {},         // key `${sid}:${aid}` -> number|null
+                edits: {},          // เก็บค่าที่แก้ไข ยังไม่บันทึก
+                gradeRules: null,   // {A:80,"B+":75,...}
                 q: "",
                 page: 1
             };
 
             await loadAll(state);
             renderTable(container, state);
-            initSavedStatus(container, state.courseId); // ← โหลดเวลาบันทึกล่าสุดถ้ามี
             wireToolbar(container, state);
         }
     };
@@ -174,10 +123,8 @@
 
     // ---------- Grade helpers ----------
     function normalizeGradeRules(rules) {
-        // default ใช้สเกลทั่วไป
         const def = { A: 80, "B+": 75, B: 70, "C+": 65, C: 60, "D+": 55, D: 50, F: 0 };
         if (!rules || typeof rules !== "object") return def;
-        // ensure number & fallback
         const out = { ...def };
         for (const [k, v] of Object.entries(rules)) {
             const n = Number(v);
@@ -185,9 +132,9 @@
         }
         return out;
     }
+
     function gradeFrom(totalPct, state) {
         const gr = state.gradeRules || normalizeGradeRules();
-        // ไล่จากค่าสูงไปต่ำ
         const order = Object.entries(gr)
             .map(([k, v]) => [k, Number(v)])
             .sort((a, b) => b[1] - a[1]);
@@ -197,32 +144,74 @@
         return "F";
     }
 
+    // ---------- Width helpers (บีบให้ชิด + ไดนามิกตามข้อความยาวสุด) ----------
+    function approxWidthByStrings(arr, charPx = 8.6, pad = 30, min = 140, max = 280) {
+        const len = Math.max(1, ...arr.map((s) => String(s || "").length));
+        const px = Math.round(len * charPx) + pad;
+        return Math.max(min, Math.min(max, px));
+    }
+    function calcNameColWidth(state) {
+        const names = (state.students || []).map((s) => `${s.first_name || ""} ${s.last_name || ""}`.trim());
+        return approxWidthByStrings(names, 8.8, 30, 170, 280); // ชิดกว่าเดิม
+    }
+    function calcEmailColWidth(state) {
+        const emails = (state.students || []).map((s) => s.email || "");
+        return approxWidthByStrings(emails, 8.2, 26, 150, 260); // ลด min/max เพื่อมาชิดชื่อ
+    }
+    function calcAssessColWidth(a) {
+        // หัวคอลัมน์ 2 บรรทัด: ชื่อ + (w% / max)
+        // ให้กว้างพอสำหรับอินพุต 1 บรรทัด
+        const label = `${a.name} ${Number(a.weight) || 0}% / ${a.max_score ?? "-"}`;
+        const px = Math.round(label.length * 7.8) + 34;
+        return Math.max(128, Math.min(210, px));
+    }
+
     // ---------- Render ----------
     function renderTable(container, state) {
         const thead = $("#scores-thead", container);
         const tbody = $("#scores-tbody", container);
 
+        // กำหนดความกว้างหลัก (บีบชื่อ/อีเมล/รหัสให้ชิดกัน)
+        const W_IDX = 64;
+        const W_NAME = calcNameColWidth(state);
+        const W_EMAIL = calcEmailColWidth(state);
+        const W_STUID = 100;
+
+        // ตำแหน่ง sticky ต่อเนื่อง (ชิดขึ้น)
+        const L_NAME = W_IDX;
+        const L_EMAIL = W_IDX + W_NAME;
+        const L_STUID = W_IDX + W_NAME + W_EMAIL;
+
+        const assessWidths = state.assessments.map((a) => calcAssessColWidth(a));
         const totalWeight = (state.assessments || []).reduce((s, a) => s + (Number(a.weight) || 0), 0);
+
+        // หัวตาราง — องค์ประกอบคะแนน 2 บรรทัด (ชื่อ / สัดส่วน-เต็ม)
         thead.innerHTML = `
       <tr>
-        <th class="right" style="position:sticky;left:0;background:var(--surface);z-index:2;width:64px">ลำดับ</th>
-        <th style="position:sticky;left:64px;background:var(--surface);z-index:2;min-width:220px" align="left">ชื่อ–นามสกุล</th>
-        <th style="position:sticky;left:284px;background:var(--surface);z-index:2;min-width:140px" align="left">อีเมล</th>
-        <th style="position:sticky;left:424px;background:var(--surface);z-index:2;width:120px;white-space:nowrap">รหัส นศ.</th>
+        <th class="right" style="position:sticky;left:0;background:var(--surface);z-index:2;width:${W_IDX}px">ลำดับ</th>
+        <th align="left" style="position:sticky;left:${L_NAME}px;background:var(--surface);z-index:2;min-width:${W_NAME}px">ชื่อ–นามสกุล</th>
+        <th align="left" style="position:sticky;left:${L_EMAIL}px;background:var(--surface);z-index:2;min-width:${W_EMAIL}px">อีเมล</th>
+        <th style="position:sticky;left:${L_STUID}px;background:var(--surface);z-index:2;min-width:${W_STUID}px;white-space:nowrap">รหัส นศ.</th>
         ${state.assessments
-                .map(
-                    (a) => `
-          <th title="เต็ม ${a.max_score ?? "-"} • weight ${a.weight ?? 0}%">
-            ${esc(a.name)}<div class="muted" style="font-weight:normal">${Number(a.weight) || 0}% / ${a.max_score ?? "-"}</div>
-          </th>`
-                )
+                .map((a, i) => {
+                    const w = Number(a.weight) || 0;
+                    const max = a.max_score ?? "-";
+                    const aw = assessWidths[i];
+                    return `
+              <th style="min-width:${aw}px">
+                <div style="display:flex;flex-direction:column;gap:2px;line-height:1.05">
+                  <span>${esc(a.name)}</span>
+                  <span class="muted" style="font-weight:normal">${w}% / ${max}</span>
+                </div>
+              </th>`;
+                })
                 .join("")}
-        <th>รวม (${totalWeight || 0}%)</th>
-        <th>เกรด</th>
+        <th style="min-width:96px">รวม (${totalWeight || 0}%)</th>
+        <th style="min-width:72px">เกรด</th>
       </tr>
     `;
 
-        // filter + paging
+        // กรอง + เพจ
         const ALL = applyFilter(state);
         const total = ALL.length;
         const pages = Math.max(1, Math.ceil(total / PAGE_SIZE));
@@ -233,28 +222,25 @@
         const cnt = $("#scores-count", container);
         if (cnt) cnt.textContent = total ? `ทั้งหมด ${total} คน` : "";
 
+        // แถวข้อมูล (คอลัมน์ด้านซ้าย sticky ให้ชิดกัน)
         const rows = SHOW.map((s, idx) => {
             const fixed = `
-        <td class="right" style="position:sticky;left:0;background:var(--surface);z-index:1">${start + idx + 1}</td>
-        <td style="position:sticky;left:64px;background:var(--surface);z-index:1">${esc(
-                [s.first_name, s.last_name].filter(Boolean).join(" ") || "-"
-            )}</td>
-        <td style="position:sticky;left:284px;background:var(--surface);z-index:1">${esc(s.email || "-")}</td>
-        <td style="position:sticky;left:424px;background:var(--surface);z-index:1;white-space:nowrap"><code>${esc(
-                s.student_no || "—"
-            )}</code></td>
+        <td class="right" style="position:sticky;left:0;background:var(--surface);z-index:1;width:${W_IDX}px">${start + idx + 1}</td>
+        <td style="position:sticky;left:${L_NAME}px;background:var(--surface);z-index:1;min-width:${W_NAME}px">${esc([s.first_name, s.last_name].filter(Boolean).join(" ") || "-")}</td>
+        <td style="position:sticky;left:${L_EMAIL}px;background:var(--surface);z-index:1;min-width:${W_EMAIL}px">${esc(s.email || "-")}</td>
+        <td style="position:sticky;left:${L_STUID}px;background:var(--surface);z-index:1;min-width:${W_STUID}px;white-space:nowrap"><code>${esc(s.student_no || "—")}</code></td>
       `;
 
             const cells = state.assessments
-                .map((a) => {
+                .map((a, i) => {
                     const key = `${s.id}:${a.id}`;
                     const val = key in state.edits ? state.edits[key] : state.scores[key];
                     const shown = val ?? "";
                     const max = Number(a.max_score) || undefined;
                     return `
-            <td>
+            <td style="min-width:${assessWidths[i]}px">
               <input class="input input--sm score-cell" data-sid="${s.id}" data-aid="${a.id}" type="number"
-                     step="0.01" ${max ? `max="${max}"` : ""} value="${esc(shown)}" />
+                     step="0.01" ${max ? `max="${max}"` : ""} value="${esc(shown)}" style="width:100%" />
             </td>
           `;
                 })
@@ -344,41 +330,40 @@
 
     // ---------- Toolbar actions ----------
     function wireToolbar(container, state) {
-        // save all (+ แถบสถานะ & เวลาบันทึกล่าสุด)
+        // save all
         $("#btn-save", container)?.addEventListener("click", async () => {
             const rows = [];
             for (const [key, val] of Object.entries(state.edits)) {
                 const [sid, aid] = key.split(":").map(Number);
                 rows.push({ student_id: sid, assessment_id: aid, score: val });
             }
-
             if (!rows.length) {
-                // ไม่มีการแก้ไข แต่แสดงเวลาที่กดบันทึกเพื่อให้ผู้ใช้เห็น feedback
-                showSavedOK(container, state.courseId);
                 alert("ไม่มีการแก้ไข");
                 return;
             }
 
-            try {
-                setSaving(container, true);
-                const { error } = await sb.from("scores").upsert(rows, { onConflict: "student_id,assessment_id" });
-                if (error) throw error;
+            const btn = $("#btn-save", container);
+            const stat = $("#save-status", container);
+            btn.disabled = true;
+            stat.textContent = "กำลังบันทึก…";
 
-                // sync state
-                for (const r of rows) state.scores[`${r.student_id}:${r.assessment_id}`] = r.score;
-                state.edits = {};
+            const { error } = await sb.from("scores").upsert(rows, { onConflict: "student_id,assessment_id" });
 
-                showSavedOK(container, state.courseId);
-                alert("บันทึกคะแนนเรียบร้อย");
-            } catch (err) {
-                showSavedError(container, err?.message || String(err));
-                alert("บันทึกไม่สำเร็จ: " + (err?.message || err));
-            } finally {
-                setSaving(container, false);
+            btn.disabled = false;
+            if (error) {
+                stat.textContent = "";
+                alert("บันทึกไม่สำเร็จ: " + error.message);
+                return;
             }
+
+            for (const r of rows) state.scores[`${r.student_id}:${r.assessment_id}`] = r.score;
+            state.edits = {};
+            const ts = new Date().toLocaleTimeString("th-TH", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+            stat.textContent = `บันทึกล่าสุด ${ts}`;
+            alert("บันทึกคะแนนเรียบร้อย");
         });
 
-        // add assessment (แบบง่าย)
+        // add assessment
         $("#btn-add-assessment", container)?.addEventListener("click", async () => {
             const name = prompt("ชื่อองค์ประกอบ (เช่น Quiz, MID)");
             if (!name) return;
@@ -487,22 +472,17 @@
     // CSV parser เบา ๆ
     function parseCSVLine(line) {
         const out = [];
-        let cur = "",
-            inQ = false;
+        let cur = "", inQ = false;
         for (let i = 0; i < line.length; i++) {
             const ch = line[i];
             if (inQ) {
-                if (ch === '"' && line[i + 1] === '"') {
-                    cur += '"';
-                    i++;
-                } else if (ch === '"') inQ = false;
+                if (ch === '"' && line[i + 1] === '"') { cur += '"'; i++; }
+                else if (ch === '"') inQ = false;
                 else cur += ch;
             } else {
                 if (ch === '"') inQ = true;
-                else if (ch === ",") {
-                    out.push(cur);
-                    cur = "";
-                } else cur += ch;
+                else if (ch === ",") { out.push(cur); cur = ""; }
+                else cur += ch;
             }
         }
         out.push(cur);
