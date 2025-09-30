@@ -156,8 +156,10 @@
     }
     function calcEmailColWidth(state) {
         const emails = (state.students || []).map((s) => s.email || "");
-        return approxWidthByStrings(emails, 8.2, 26, 150, 260); // ลด min/max เพื่อมาชิดชื่อ
+        return approxWidthByStrings(emails, 7.7, 18, 130, 200);
+        //                        ^^^  ^^^  ^^^  ^^^
     }
+
     function calcAssessColWidth(a) {
         // หัวคอลัมน์ 2 บรรทัด: ชื่อ + (w% / max)
         // ให้กว้างพอสำหรับอินพุต 1 บรรทัด
@@ -172,10 +174,12 @@
         const tbody = $("#scores-tbody", container);
 
         // กำหนดความกว้างหลัก (บีบชื่อ/อีเมล/รหัสให้ชิดกัน)
-        const W_IDX = 64;
-        const W_NAME = calcNameColWidth(state);
-        const W_EMAIL = calcEmailColWidth(state);
-        const W_STUID = 100;
+        // (บีบให้ชิดขึ้น)
+        const W_IDX = 56;  // เลขลำดับ แคบลงนิด
+        const W_NAME = Math.max(150, calcNameColWidth(state) - 30);  // ชื่อ–นามสกุล ชิดขึ้น
+        const W_EMAIL = Math.max(130, calcEmailColWidth(state) - 40); // อีเมล ชิดขึ้นอีก
+        const W_STUID = 84;  // รหัส นศ. แคบลง
+
 
         // ตำแหน่ง sticky ต่อเนื่อง (ชิดขึ้น)
         const L_NAME = W_IDX;
