@@ -23,6 +23,55 @@
         return el;
     }
 
+    // ---------- Save-status helpers ----------
+    function fmtTimeTH(d = new Date()) {
+        return d.toLocaleTimeString("th-TH", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+    }
+    function lastSavedKey(courseId) {
+        return `scores:lastSaved:${courseId}`;
+    }
+    function setSaving(container, saving = false) {
+        const btn = $("#btn-save", container);
+        const st = $("#save-status", container);
+        if (!btn || !st) return;
+
+        if (saving) {
+            btn.disabled = true;
+            btn.dataset._label = btn.textContent;
+            btn.textContent = "กำลังบันทึก...";
+            st.textContent = "กำลังบันทึก...";
+            st.classList.remove("text-ok", "text-err");
+        } else {
+            btn.disabled = false;
+            if (btn.dataset._label) btn.textContent = btn.dataset._label;
+        }
+    }
+    function showSavedOK(container, courseId) {
+        const st = $("#save-status", container);
+        const ts = Date.now();
+        localStorage.setItem(lastSavedKey(courseId), String(ts));
+        if (st) {
+            st.textContent = "บันทึกล่าสุด: " + fmtTimeTH(new Date(ts));
+            st.classList.add("text-ok");
+            st.classList.remove("text-err");
+        }
+    }
+    function showSavedError(container, msg) {
+        const st = $("#save-status", container);
+        if (st) {
+            st.textContent = "บันทึกไม่สำเร็จ: " + msg;
+            st.classList.add("text-err");
+            st.classList.remove("text-ok");
+        }
+    }
+    function initSavedStatus(container, courseId) {
+        const st = $("#save-status", container);
+        const last = localStorage.getItem(lastSavedKey(courseId));
+        if (st && last) {
+            st.textContent = "บันทึกล่าสุด: " + fmtTimeTH(new Date(Number(last)));
+        }
+    }
+
     // ---------- Public API ----------
     const Scores = {
         async mount(container, courseId) {
@@ -46,6 +95,7 @@
             <label class="file"><input type="file" id="btn-import-csv" accept=".csv" /><span>นำเข้า CSV</span></label>
             <span style="flex:1"></span>
             <button class="btn" id="btn-save">บันทึกทั้งหมด</button>
+            <span id="save-status" class="muted" aria-live="polite" style="margin-left:.5rem"></span>
           </div>
         </header>
         <div class="table-wrap" style="overflow:auto">
@@ -62,18 +112,18 @@
             // state
             const state = {
                 courseId,
-                students: [], // [{id, first_name, last_name, email, student_no}]
-                assessments: [], // [{id, name, weight, max_score}]
-                scores: {}, // key `${sid}:${aid}` -> number|null
-                edits: {}, // เก็บค่าที่แก้ไข ยังไม่บันทึก
-                gradeRules: null, // {A:80,"B+":75,...}
-
+                students: [],      // [{id, first_name, last_name, email, student_no}]
+                assessments: [],   // [{id, name, weight, max_score}]
+                scores: {},        // key `${sid}:${aid}` -> number|null
+                edits: {},         // เก็บค่าที่แก้ไข ยังไม่บันทึก
+                gradeRules: null,  // {A:80,"B+":75,...}
                 q: "",
                 page: 1
             };
 
             await loadAll(state);
             renderTable(container, state);
+            initSavedStatus(container, state.courseId); // ← โหลดเวลาบันทึกล่าสุดถ้ามี
             wireToolbar(container, state);
         }
     };
@@ -135,7 +185,6 @@
         }
         return out;
     }
-
     function gradeFrom(totalPct, state) {
         const gr = state.gradeRules || normalizeGradeRules();
         // ไล่จากค่าสูงไปต่ำ
@@ -191,7 +240,9 @@
                 [s.first_name, s.last_name].filter(Boolean).join(" ") || "-"
             )}</td>
         <td style="position:sticky;left:284px;background:var(--surface);z-index:1">${esc(s.email || "-")}</td>
-        <td style="position:sticky;left:424px;background:var(--surface);z-index:1;white-space:nowrap"><code>${esc(s.student_no || "—")}</code></td>
+        <td style="position:sticky;left:424px;background:var(--surface);z-index:1;white-space:nowrap"><code>${esc(
+                s.student_no || "—"
+            )}</code></td>
       `;
 
             const cells = state.assessments
@@ -293,25 +344,38 @@
 
     // ---------- Toolbar actions ----------
     function wireToolbar(container, state) {
-        // save all
+        // save all (+ แถบสถานะ & เวลาบันทึกล่าสุด)
         $("#btn-save", container)?.addEventListener("click", async () => {
             const rows = [];
             for (const [key, val] of Object.entries(state.edits)) {
                 const [sid, aid] = key.split(":").map(Number);
                 rows.push({ student_id: sid, assessment_id: aid, score: val });
             }
+
             if (!rows.length) {
+                // ไม่มีการแก้ไข แต่แสดงเวลาที่กดบันทึกเพื่อให้ผู้ใช้เห็น feedback
+                showSavedOK(container, state.courseId);
                 alert("ไม่มีการแก้ไข");
                 return;
             }
-            const { error } = await sb.from("scores").upsert(rows, { onConflict: "student_id,assessment_id" });
-            if (error) {
-                alert("บันทึกไม่สำเร็จ: " + error.message);
-                return;
+
+            try {
+                setSaving(container, true);
+                const { error } = await sb.from("scores").upsert(rows, { onConflict: "student_id,assessment_id" });
+                if (error) throw error;
+
+                // sync state
+                for (const r of rows) state.scores[`${r.student_id}:${r.assessment_id}`] = r.score;
+                state.edits = {};
+
+                showSavedOK(container, state.courseId);
+                alert("บันทึกคะแนนเรียบร้อย");
+            } catch (err) {
+                showSavedError(container, err?.message || String(err));
+                alert("บันทึกไม่สำเร็จ: " + (err?.message || err));
+            } finally {
+                setSaving(container, false);
             }
-            for (const r of rows) state.scores[`${r.student_id}:${r.assessment_id}`] = r.score;
-            state.edits = {};
-            alert("บันทึกคะแนนเรียบร้อย");
         });
 
         // add assessment (แบบง่าย)
