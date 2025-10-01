@@ -31,11 +31,67 @@ let otpTimer = null;
 function toDashboardMode() { portalEl?.classList.remove('portal--compact'); portalEl?.classList.add('is-dashboard'); }
 function toCompactMode() { portalEl?.classList.remove('is-dashboard', 'has-score'); portalEl?.classList.add('portal--compact'); }
 
+/* ===== ตรวจสิทธิ์: ถ้าเป็น admin/instructor ให้พาไปหน้า admin ===== */
+async function maybeRedirectAdmin(user) {
+  try {
+    const email = String(user?.email || "").trim().toLowerCase();
+    const uid = user?.id;
+
+    // 1) พยายามจาก profiles (ใช้เหมือนฝั่ง admin.js)
+    if (uid) {
+      const { data: profById } = await sb
+        .from("profiles")
+        .select("role")
+        .eq("user_id", uid)
+        .maybeSingle();
+      if (profById && ["admin", "instructor"].includes(String(profById.role))) {
+        location.href = "admin.html";
+        return true;
+      }
+    }
+
+    // 2) ถ้าไม่พบ/ยังไม่มี user_id ให้ลองจาก email
+    if (email) {
+      const { data: profByEmail } = await sb
+        .from("profiles")
+        .select("role")
+        .eq("email", email)
+        .maybeSingle();
+      if (profByEmail && ["admin", "instructor"].includes(String(profByEmail.role))) {
+        location.href = "admin.html";
+        return true;
+      }
+    }
+
+    // 3) สำรอง: app_admins (เผื่อยังใช้ตารางนี้)
+    if (email) {
+      const { data: adminRow } = await sb
+        .from("app_admins")
+        .select("email")
+        .eq("email", email)
+        .maybeSingle();
+      if (adminRow) {
+        location.href = "admin.html";
+        return true;
+      }
+    }
+  } catch { /* เงียบไว้ แล้วไปโหมดนักศึกษาแทน */ }
+  return false;
+}
+
 /* ===== Boot ===== */
 boot();
 async function boot() {
   const { data: { user } } = await sb.auth.getUser();
-  if (user) { showDashboard(user); return; }
+  if (user) {
+    // ถ้าเป็น admin/instructor → ไป admin.html
+    const jumped = await maybeRedirectAdmin(user);
+    if (jumped) return;
+
+    // ไม่ใช่แอดมิน → โหมดนักศึกษา
+    showDashboard(user);
+    return;
+  }
   toCompactMode(); fEmail.hidden = false; fOtp.hidden = true; app.hidden = true;
 }
 
@@ -52,7 +108,6 @@ btnBackCourses?.addEventListener('click', () => {
   u.pathname = u.pathname.replace(/[^/]+$/, 'subjects.html');
   location.href = u.toString();
 });
-
 
 /* ===== ส่ง OTP ===== */
 fEmail?.addEventListener('submit', async (e) => {
@@ -86,7 +141,13 @@ fOtp?.addEventListener('submit', async (e) => {
 
   if (error) { showMsg(msgOtp, 'รหัสไม่ถูกต้องหรือหมดอายุ', 'err'); return; }
   stopOtpCountdown();
+
+  // ได้ session แล้ว → เช็คสิทธิ์ก่อน
   const { data: { user } } = await sb.auth.getUser();
+  const jumped = await maybeRedirectAdmin(user);
+  if (jumped) return;
+
+  // ไม่ใช่แอดมิน → โหมดนักศึกษา
   showDashboard(user);
 });
 
@@ -101,7 +162,7 @@ btnBack?.addEventListener('click', () => {
 /* ===== Sign out ===== */
 async function doSignOut() { await sb.auth.signOut(); toCompactMode(); location.reload(); }
 
-/* ===== Dashboard ===== */
+/* ===== Dashboard (นักศึกษา) ===== */
 async function showDashboard(user) {
   toDashboardMode();
   fEmail.hidden = true; fOtp.hidden = true; app.hidden = false;
@@ -141,10 +202,9 @@ async function showDashboard(user) {
 
   const { data: courses } = await sb
     .from('courses')
-    .select('id, code, title_th, title_en, section') // CHANGED: ดึง section จาก courses
+    .select('id, code, title_th, title_en, section')
     .in('id', courseIds);
 
-  // แสดงเป็นแถวแนวนอนเต็มกว้าง
   $courses.innerHTML = `
     <div class="card">
       <h3 style="margin:0 0 8px">รายวิชาที่ลงทะเบียน</h3>
@@ -156,8 +216,7 @@ async function showDashboard(user) {
               <div class="course-title">${c.title_th || c.title_en || ''}</div>
               <div class="course-sub">${c.title_en || ''}</div>
               <div class="course-meta">
-                ${c?.section ? `<span class="pill pill--muted">Section ${c.section}</span>` : ``}   <!-- CHANGED: ใช้ section จาก courses -->
-                <!-- CHANGED: ตัด pill ชั้นปีออกจากการ์ดรายวิชา -->
+                ${c?.section ? `<span class="pill pill--muted">Section ${c.section}</span>` : ``}
               </div>
             </div>
             <div class="course-actions">
@@ -174,14 +233,12 @@ async function showDashboard(user) {
       </div>
     </div>`;
 
-  // event delegation
   $courses.querySelector('#courses-list')?.addEventListener('click', (ev) => {
     const btn = ev.target.closest('[data-open-course]');
     if (!btn) return;
     openCourse(+btn.dataset.courseId, String(btn.dataset.courseCode), +btn.dataset.studentId);
   });
 
-  // ซ่อนการ์ดคะแนน (ยังไม่เปิด)
   $score.innerHTML = ''; portalEl.classList.remove('has-score');
 }
 window.showDashboard = showDashboard;
@@ -202,7 +259,6 @@ function renderWhoCard(me) {
           <span class="pill pill--muted">${yearTxt}</span>
           ${me?.program ? `<span class="pill pill--muted">${me.program}</span>` : ''}
           ${me?.major ? `<span class="pill pill--muted">${me.major}</span>` : ''}
-          <!-- CHANGED: ตัด Section ออกจากการ์ดข้อมูลนักศึกษา -->
         </div>
       </div>
       <div class="row" style="margin-top:10px">
@@ -222,7 +278,7 @@ function backToCourses() {
   portalEl.classList.remove('has-score');
 }
 
-/* ===== เปิดการ์ดคะแนน: แสดงแถวล่างสุดเต็มกว้าง ===== */
+/* ===== เปิดการ์ดคะแนน ===== */
 async function openCourse(courseId, code, studentId) {
   const { data: assess } = await sb
     .from('assessments')
