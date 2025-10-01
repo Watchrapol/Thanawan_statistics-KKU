@@ -7,7 +7,7 @@
     const $ = (s, el = document) => el.querySelector(s);
     const $$ = (s, el = document) => Array.from(el.querySelectorAll(s));
     const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (m) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[m]));
-    const PAGE_SIZE = 15;
+    const PAGE_SIZE = 10;
 
     function h(tag, attrs = {}, html = "") {
         const el = document.createElement(tag);
