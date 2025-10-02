@@ -5,11 +5,19 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title data-i18n="pageNews.title">ประกาศทั้งหมด — Thanawan • STAT KKU</title>
+
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Thai:wght@400;500;600;700&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="styles.css" />
+
+    <!-- i18n -->
     <script defer src="lang.js"></script>
+
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <!-- ดึงข่าวจากฐานข้อมูล -->
     <script defer src="news.js"></script>
 </head>
 
@@ -39,9 +47,15 @@
         <section class="section">
             <div class="container">
                 <h1 class="section__title" data-i18n="pageNews.h1">ประกาศทั้งหมด</h1>
-                <!-- ทั้งหมด, เรียงล่าสุดก่อน (รองรับ pinned ให้อยู่บนสุดได้) -->
-                <ul id="news-list" class="timeline" data-sort="pinnedThenDate" data-new-days="3" aria-live="polite"></ul>
-                <!-- ปักหมุดก่อน แล้วค่อยวันที่ใหม่ -->
+
+                <!-- รายการประกาศ (จะถูกเรนเดอร์ด้วย news.js) -->
+                <ul id="news-list" class="timeline js-news" data-sort="pinnedThenDate" data-new-days="7"
+                    aria-live="polite">
+                    <li>
+                        <div class="time">—</div>
+                        <div class="event"><i>กำลังโหลด…</i></div>
+                    </li>
+                </ul>
             </div>
         </section>
     </main>

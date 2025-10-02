@@ -626,7 +626,10 @@ function switchTab(container, tabName, courseId) {
   if (tabName === "roster") loadRoster(courseId, container);
   else if (tabName === "scores") loadScores(courseId, container);
   else if (tabName === "assess") loadAssess(courseId, container);
-  else if (tabName === "ann") loadAnnouncements(courseId, container);
+  else if (tabName === "ann") {
+    const panel = $('.tabpanel[data-panel="ann"]', container);
+    if (panel) window.Announcements.mount(panel, courseId);
+  }
 }
 
 /* ========= Roster ========= */
@@ -1222,9 +1225,6 @@ async function loadScores(courseId, el) {
 }
 async function loadAssess(courseId, el) {
   $("#tbody-assess", el).innerHTML = `<tr><td colspan="4" class="muted">จะเติมภายหลัง</td></tr>`;
-}
-async function loadAnnouncements(courseId, el) {
-  $("#list-ann", el).innerHTML = `<div class="muted">จะเติมภายหลัง</div>`;
 }
 
 /* ========= Blocker ========= */
