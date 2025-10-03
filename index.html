@@ -13,6 +13,7 @@
 
     <link rel="stylesheet" href="styles.css" />
     <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-YBT7317T98"></script>
     <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js" defer></script>
     <script src="script.js" defer></script>
@@ -76,23 +77,26 @@
                 </div>
 
                 <aside class="hero__media" aria-label="Profile / opportunities">
-                        <div class="swiper mySwiper rerun">
-                            <div class="swiper-wrapper">
-                                <div class="swiper-slide"><img src="assets/images/ft01.jpg" alt="1"></div>
-                                <div class="swiper-slide"><img src="assets/images/ft02.jpg" alt="2"></div>
-                                <div class="swiper-slide"><img src="assets/images/ft03.jpg" alt="3"></div>
-                                <div class="swiper-slide"><img src="assets/images/ft04.jpg" alt="4"></div>
-                                <div class="swiper-slide"><img src="assets/images/ft05.jpg" alt="5"></div>
-                                <div class="swiper-slide"><img src="assets/images/ft06.jpg" alt="6"></div>
-                            </div>
-                            <div class="swiper-pagination"></div>
+                    <div class="swiper mySwiper rerun">
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide"><img src="assets/images/ft01.jpg" alt="1"></div>
+                            <div class="swiper-slide"><img src="assets/images/ft02.jpg" alt="2"></div>
+                            <div class="swiper-slide"><img src="assets/images/ft03.jpg" alt="3"></div>
+                            <div class="swiper-slide"><img src="assets/images/ft04.jpg" alt="4"></div>
+                            <div class="swiper-slide"><img src="assets/images/ft05.jpg" alt="5"></div>
+                            <div class="swiper-slide"><img src="assets/images/ft06.jpg" alt="6"></div>
                         </div>
+                        <div class="swiper-pagination"></div>
+                    </div>
 
                     <ul class="class-info">
                         <li><strong data-i18n="hero.openTitle">EDUCATION:</strong></li>
-                        <li data-i18n="hero.openPhD">(2021 - 2025) Ph.D. in Statistics, Chonnam National University, Republic of Korea</li>
-                        <li data-i18n="hero.openMSc">(2019 - 2021) M.Sc. in Statistics, Chonnam National University, Republic of Korea</li>
-                        <li data-i18n="hero.openBsc">(2015 - 2019)B.Sc. in Statistics, Mahasarakham University, Thailand</li>
+                        <li data-i18n="hero.openPhD">(2021 - 2025) Ph.D. in Statistics, Chonnam National University,
+                            Republic of Korea</li>
+                        <li data-i18n="hero.openMSc">(2019 - 2021) M.Sc. in Statistics, Chonnam National University,
+                            Republic of Korea</li>
+                        <li data-i18n="hero.openBsc">(2015 - 2019)B.Sc. in Statistics, Mahasarakham University, Thailand
+                        </li>
                     </ul>
                 </aside>
 
@@ -168,13 +172,13 @@
 
 
         <!-- Announcements -->
-        <section id="news" class="section">
+        <section class="section">
             <div class="container">
-                <h2 class="section__title" data-i18n="news.title">ประกาศ</h2>
-                <!-- Announcements on Home -->
-                <ul id="news-list" class="timeline" data-limit="3" data-sort="latest" data-new-days="3"
-                    aria-live="polite"></ul>
-                <!-- ดึงมาแค่ 3 อัน · เรียงล่าสุดก่อน -->
+                <h2 class="section__title">ประกาศ</h2>
+
+                <!-- news.js จะเติมรายการให้เอง -->
+                <ul class="timeline js-news" data-limit="3" data-new-days="3"> <!-- แสดงป้าย NEW ภายใน 3 วัน -->
+                </ul>
                 <a href="announcements.html" class="link-more" data-i18n="news.more">
                     ดูประกาศทั้งหมด →
                 </a>
