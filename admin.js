@@ -202,7 +202,7 @@ function renderCourseGrid(items) {
       </div>
       <div class="title">${esc(c.title_th || c.title_en || "")}</div>
       <div class="actions">
-        <button class="btn btn--sm" data-act="grading">เกณฑ์ตัดเกรด</button>
+        <button class="btn btn--sm" data-act="grading">📊 เกรด</button>
         <button class="btn btn--sm btn--outline" data-act="roster">รายชื่อ</button>
         <button class="btn btn--sm btn--outline" data-act="scores">คะแนน</button>
       </div>

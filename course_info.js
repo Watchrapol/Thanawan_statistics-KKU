@@ -15,7 +15,7 @@
             const btn = document.createElement('button');
             btn.className = 'btn btn--sm btn--outline';
             btn.dataset.act = 'info';
-            btn.textContent = 'ข้อมูลรายวิชา';
+            btn.textContent = '📘 ข้อมูลรายวิชา';
             const after = act.querySelector('button[data-act="scores"]');
             after ? after.after(btn) : act.appendChild(btn);
         });
