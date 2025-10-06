@@ -10,6 +10,11 @@ const esc = (s) =>
   String(s ?? "").replace(/[&<>"']/g, (m) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[m]));
 const ROSTER_PAGE_SIZE = 10;
 
+window.openCourseDetail = openCourseDetail;
+window.switchTab = switchTab;
+window.sb = sb; // (อันนี้คุณใส่แล้ว)
+
+
 /* ========= Boot ========= */
 boot();
 async function boot() {
