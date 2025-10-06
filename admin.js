@@ -14,7 +14,6 @@ window.openCourseDetail = openCourseDetail;
 window.switchTab = switchTab;
 window.sb = sb; // (อันนี้คุณใส่แล้ว)
 
-
 /* ========= Boot ========= */
 boot();
 async function boot() {
@@ -203,7 +202,7 @@ function renderCourseGrid(items) {
       </div>
       <div class="title">${esc(c.title_th || c.title_en || "")}</div>
       <div class="actions">
-        <button class="btn btn--sm" data-act="settings">จัดการ</button>
+        <button class="btn btn--sm" data-act="grading">เกณฑ์ตัดเกรด</button>
         <button class="btn btn--sm btn--outline" data-act="roster">รายชื่อ</button>
         <button class="btn btn--sm btn--outline" data-act="scores">คะแนน</button>
       </div>
@@ -221,7 +220,7 @@ function renderCourseGrid(items) {
       const id = card?.dataset.id;
       if (!id) return;
       const act = btn.dataset.act;
-      if (act === "settings") openCourseSettings(id);
+      if (act === "grading") openGradeSettings(id);          // ← เปลี่ยนให้เปิดเกณฑ์ตัดเกรด
       else openCourseDetail(id, act); // roster / scores
     })
   );
@@ -265,7 +264,8 @@ function inputsToRules(form) {
   return out;
 }
 
-async function openCourseSettings(courseId) {
+/* ========= Grade Settings (ONLY) ========= */
+async function openGradeSettings(courseId) {
   const { data: c, error } = await sb
     .from("courses")
     .select("id, code, title_th, title_en, section, term, year, semester_label, grade_rules, grade_published")
@@ -279,7 +279,7 @@ async function openCourseSettings(courseId) {
   const semLabel = c.semester_label || (c.term && c.year ? `${c.term}/${c.year}` : "");
   const R = rulesToInputs(c.grade_rules);
 
-  const mid = "modal-course-settings";
+  const mid = "modal-grade-settings";
   document.getElementById(mid)?.remove();
   document.body.insertAdjacentHTML(
     "beforeend",
@@ -288,34 +288,17 @@ async function openCourseSettings(courseId) {
     <div class="modal__backdrop" data-close></div>
     <div class="modal__panel" role="document">
       <header class="modal__head">
-        <h3>ตั้งค่ารายวิชา</h3>
+        <h3>เกณฑ์ตัดเกรด</h3>
         <button class="modal__close" data-close aria-label="ปิด">×</button>
       </header>
 
-      <form id="form-course-settings" class="stack">
-        <fieldset class="stack">
-          <legend><b>ข้อมูลทั่วไป</b></legend>
-          <div class="row wrap" style="gap:.75rem">
-            <label class="w-220">รหัสวิชา*
-              <input class="input" name="code" required value="${esc(c.code)}">
-            </label>
-            <label class="w-220">Sec.
-              <input class="input" name="section" value="${esc(c.section || "")}">
-            </label>
-            <label class="w-220">ภาคการศึกษา
-              <input class="input" name="semester" placeholder="1/2025" value="${esc(semLabel)}">
-            </label>
-          </div>
-          <label>ชื่อวิชา (TH)
-            <input class="input" name="title_th" value="${esc(c.title_th || "")}">
-          </label>
-          <label>ชื่อวิชา (EN)
-            <input class="input" name="title_en" value="${esc(c.title_en || "")}">
-          </label>
-        </fieldset>
+      <form id="form-grade-settings" class="stack">
+        <div class="muted" style="margin-top:-4px">
+          ${esc(c.code)} • ${esc(c.title_th || c.title_en || "")} • Sec ${esc(c.section || "-")} • ${esc(semLabel || "—")}
+        </div>
 
         <fieldset class="stack">
-          <legend><b>เกณฑ์ตัดเกรด (คะแนนขั้นต่ำแต่ละเกรด)</b></legend>
+          <legend><b>คะแนนขั้นต่ำของแต่ละเกรด</b></legend>
           <div class="row wrap" style="gap:.5rem">
             ${["A", "B+", "B", "C+", "C", "D+", "D", "F"]
       .map(
@@ -345,29 +328,16 @@ async function openCourseSettings(courseId) {
 
   const modal = document.getElementById(mid);
   modal.querySelectorAll("[data-close]").forEach((b) => b.addEventListener("click", () => modal.remove()));
-  modal.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") modal.remove();
-  });
+  modal.addEventListener("keydown", (e) => { if (e.key === "Escape") modal.remove(); });
 
-  document.getElementById("form-course-settings").addEventListener("submit", async (e) => {
+  document.getElementById("form-grade-settings").addEventListener("submit", async (e) => {
     e.preventDefault();
-    const f = new FormData(e.target);
+    const f = e.target;
 
-    const code = String(f.get("code") || "").trim();
-    const section = String(f.get("section") || "").trim() || null;
-    const title_th = String(f.get("title_th") || "").trim() || null;
-    const title_en = String(f.get("title_en") || "").trim() || null;
-    const semRaw = String(f.get("semester") || "").trim();
-    const { term, year } = parseSemLabel(semRaw);
-    const grade_rules = inputsToRules(e.target);
-    const grade_published = !!f.get("published");
+    const grade_rules = inputsToRules(f);
+    const grade_published = !!f.querySelector('input[name="published"]').checked;
 
-    if (!code) {
-      alert("ต้องกรอกรหัสวิชา");
-      return;
-    }
-
-    const payload = { code, section, title_th, title_en, term, year, grade_rules, grade_published };
+    const payload = { grade_rules, grade_published };
 
     const { data, error: updErr } = await sb.from("courses").update(payload).eq("id", courseId).select().single();
     if (updErr) {
@@ -375,6 +345,7 @@ async function openCourseSettings(courseId) {
       return;
     }
 
+    // อัปเดตกริด (ข้อมูลโชว์บางส่วน เช่น เผยแพร่ ไม่แสดง แต่เผื่ออนาคต)
     _allCourses = _allCourses.map((x) => (x.id === courseId ? { ...x, ...data } : x));
     renderCourseGrid(_allCourses);
 
@@ -598,7 +569,6 @@ async function openCourseDetail(courseId, focusTab = 'detail') {
   switchTab(box, startTab, courseId);
 }
 
-
 // แยก 1 บรรทัดของ CSV (รองรับ " และ "")
 function parseCSVLine(line) {
   const out = [];
@@ -688,7 +658,6 @@ async function loadRoster(courseId, el) {
   renderRosterPage(el, 1);
 }
 
-
 async function importRosterCSV(ev, courseId, containerEl) {
   const file = ev.target.files?.[0];
   ev.target.value = "";
@@ -743,7 +712,6 @@ async function importRosterCSV(ev, courseId, containerEl) {
   await loadRoster(courseId, containerEl);
   alert(`นำเข้าสำเร็จ: ${ok} แถว • ข้าม: ${skip} • ผิดพลาด: ${fail}`);
 }
-
 
 function renderRosterPage(el, page = 1) {
   const all = el._rosterRows || [];
@@ -831,7 +799,6 @@ function renderRosterPage(el, page = 1) {
 
   renderRosterPager(el, page, pages, total);
 }
-
 
 function renderRosterPager(el, page, pages, total) {
   const panel = $('.tabpanel[data-panel="roster"]', el);
@@ -936,7 +903,6 @@ function openAddStudentModal(courseId, containerEl) {
 
   modal.querySelector('input[name="email"]').focus();
 }
-
 
 function openDeleteStudentModal(sid, cid, el) {
   closeModal("modal-del-student");
@@ -1072,7 +1038,6 @@ async function upsertStudentAndEnroll(student, courseId) {
   }
 }
 
-
 function closeModal(id) {
   const m = document.getElementById(id);
   if (m) m.remove();
@@ -1160,65 +1125,6 @@ async function saveRosterEdits(courseId, el) {
   toggleRosterEditButtons(el, false);
   alert('บันทึกแล้ว');
   renderRosterPage(el, el._rosterPage || 1);
-}
-
-
-// เพิ่มนักศึกษาเข้ารายวิชาแบบ quick-add (เผื่อเรียกจากที่อื่น)
-async function addStudentToCourse(courseId, el) {
-  let email = prompt("อีเมลนักศึกษา (จำเป็น):");
-  if (!email) return;
-  email = email.trim().toLowerCase();
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    alert("รูปแบบอีเมลไม่ถูกต้อง");
-    return;
-  }
-
-  const { data: stu, error: eFind } = await sb
-    .from("students")
-    .select("id, email, kku_email, first_name, last_name, student_no")
-    .or(`email.eq.${email},kku_email.eq.${email}`)
-    .maybeSingle();
-  if (eFind) {
-    alert("ค้นหานักศึกษาไม่สำเร็จ: " + eFind.message);
-    return;
-  }
-
-  let student = stu;
-  if (!student) {
-    const first_name = prompt("ชื่อ (ไม่บังคับ):") || "";
-    const last_name = prompt("นามสกุล (ไม่บังคับ):") || "";
-    const student_no = prompt("รหัสนักศึกษา (ไม่บังคับ):") || "";
-
-    const { data: created, error: eInsertStu } = await sb
-      .from("students")
-      .insert({ email, kku_email: email, first_name, last_name, student_no })
-      .select()
-      .single();
-    if (eInsertStu) {
-      alert("เพิ่มนักศึกษาไม่สำเร็จ: " + eInsertStu.message);
-      return;
-    }
-    student = created;
-  }
-
-  const { data: dup } = await sb
-    .from("enrollments")
-    .select("student_id")
-    .match({ student_id: student.id, course_id: courseId })
-    .maybeSingle();
-  if (dup) {
-    alert("นักศึกษาคนนี้ลงทะเบียนในรายวิชานี้อยู่แล้ว");
-    return;
-  }
-
-  const { error: eEnroll } = await sb.from("enrollments").insert({ student_id: student.id, course_id: courseId });
-  if (eEnroll) {
-    alert("เพิ่มรายชื่อไม่สำเร็จ: " + eEnroll.message);
-    return;
-  }
-
-  await loadRoster(courseId, el);
-  alert("เพิ่มรายชื่อเรียบร้อย");
 }
 
 /* ========= Other tabs (placeholder) ========= */
