@@ -10,13 +10,18 @@
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Thai:wght@400;500;600;700&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="styles.css" />
+     <!-- ลำดับสคริปต์สำคัญ: โหลด SDK ก่อน subjects.js -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script defer src="subjects.js"></script>
+
+    <!-- ระบบภาษา/ข่าว (เดิม) -->
     <script defer src="lang.js"></script>
-    <script defer src="news.js"></script>
 </head>
 
 <body>
     <a class="skip-link" href="#main" data-i18n="skip">ข้ามไปยังเนื้อหา</a>
     <div id="top"></div>
+
     <!-- Navbar -->
     <header class="site-header">
         <div class="container nav">
@@ -41,230 +46,18 @@
     </header>
 
     <main id="main">
-        <!-- การ์ดนำให้กด 2 รายวิชา -->
+        <!-- การ์ดรายวิชา (ดึงจาก Supabase) -->
         <section class="section">
             <div class="container">
                 <h1 class="section__title" data-i18n="subjectsPage.h1">รายวิชา</h1>
-                <div class="grid grid--2 toc-cards">
-                    <!-- การ์ด 1 -->
-                    <a class="card course-link" href="#SC602001">
-                        <div class="course-code">SC602001</div>
-                        <div class="course-title" data-i18n="subjectsPage.c1.title">Introduction to Statistics</div>
-                        <p class="course-meta" data-i18n="subjectsPage.c1.meta">เทอมต้น ปีการศึกษา 2568 • 3(3-0-6)
-                            หน่วยกิต</p>
-                        <div class="chips">
-                            <span class="chip" data-i18n="subjectsPage.c1.tag1">R</span>
-                            <span class="chip" data-i18n="subjectsPage.c1.tag2">Excel</span>
-                            <span class="chip" data-i18n="subjectsPage.c1.tag3">SPSS</span>
-                        </div>
-                    </a>
-                    <!-- การ์ด 2 -->
-                    <a class="card course-link" href="#SC602005">
-                        <div class="course-code">SC602005</div>
-                        <div class="course-title" data-i18n="subjectsPage.c2.title">Probability &amp; Statistics</div>
-                        <p class="course-meta" data-i18n="subjectsPage.c2.meta"> เทอมต้น ปีการศึกษา 2568 • 3(2-1-6)
-                            หน่วยกิต</p>
-                        <div class="chips">
-                            <span class="chip" data-i18n="subjectsPage.c2.tag1"></span>
-                            <span class="chip" data-i18n="subjectsPage.c2.tag2"></span>
-                            <span class="chip" data-i18n="subjectsPage.c2.tag3"></span>
-                        </div>
-                    </a>
+                <div id="courses-cards" class="grid grid--2 toc-cards">
+                    <div class="card muted">กำลังโหลดรายวิชา...</div>
                 </div>
             </div>
         </section>
 
-        <!-- รายละเอียดวิชา 1 -->
-        <section id="SC602001" class="section anchor-section">
-            <div class="container">
-                <div class="course-header">
-                    <div>
-                        <h2 data-i18n="subjectsPage.c1.h2">SC602001: Introduction to Statistics</h2>
-                        <p class="muted" data-i18n="subjectsPage.c1.meta">ภาคต้น 2568 • 3(3-0-6) หน่วยกิต</p>
-                    </div>
-                    <div class="actions">
-                        <a class="btn btn--primary" href="files/SC651001-syllabus-2568-2.pdf" target="_blank"
-                            rel="noopener" data-i18n="subjectsPage.btn.syllabus">Syllabus</a>
-                        <a class="btn btn--outline" href="#" target="_blank" rel="noopener"
-                            data-i18n="subjectsPage.btn.materials">Materials</a>
-                        <a class="btn btn--ghost btn--sm" href="portal.html?course=SC602001">ดูคะแนน</a>
-                    </div>
-                </div>
-
-                <div class="detail-grid">
-                    <article class="card">
-                        <h3 data-i18n="subjectsPage.info">ข้อมูลรายวิชา</h3>
-                        <ul class="kv">
-                            <li><b data-i18n="subjectsPage.labels.lecturerL">ผู้สอน</b> : <span
-                                    data-i18n="subjectsPage.c1.lecturerV">Thanawan Prahadchai</span></li>
-                            <li><b data-i18n="subjectsPage.labels.timeL">เวลา</b> : <span
-                                    data-i18n="subjectsPage.c1.timeV">Tue, Mon 09:00 – 10:30</span></li>
-                            <li><b data-i18n="subjectsPage.labels.placeL">สถานที่</b> : <span
-                                    data-i18n="subjectsPage.c1.placeV">Faculty of Science SC9109</span></li>
-                            <li><b data-i18n="subjectsPage.labels.toolsL">เครื่องมือ</b> : <span
-                                    data-i18n="subjectsPage.c1.toolsV">R / Excel / SPSS</span></li>
-                        </ul>
-
-                        <h4 data-i18n="subjectsPage.learning">Course description</h4>
-                        <ul class="bullets">
-                            <li class="no-marker">
-                                <div class="readmore" id="c1">
-                                    <div class="readmore__content" style="--lines: 3;">
-                                        <span data-i18n="subjectsPage.c1.lo1">
-                                            ความหมายและขอบข่ายของสถิติข้อมูลและระดับการจัด
-                                            วิธีการเก็บข้อมูลและการนำเสนอการวัดแนวโน้มเข้าสู่ส่วนกลางและการกระจายความน่าจะเป็นตัวแปรสุ่มและการแจกแจงบางแบบ
-                                            การแจกแจงของตัวสถิติการประมาณค่าและการทดสอบสมมติฐานการถดถอยและสหสัมพันธ์เชิงเส้น
-                                        </span>
-                                    </div>
-                                    <div class="readmore__fade" aria-hidden="true"></div>
-                                    <button type="button" class="btn btn--outline btn--sm readmore__btn"
-                                        data-toggle="readmore" aria-controls="c1" aria-expanded="false">
-                                    </button>
-                                </div>
-                            </li>
-                        </ul>
-
-
-                        <div class="resource-chips chips">
-                            <a class="chip" href="#" data-i18n="subjectsPage.c1.link1">Random number</a>
-                            <a class="chip" href="#" data-i18n="subjectsPage.c1.link2">Q</a>
-                            <a class="chip" href="#" data-i18n="subjectsPage.c1.link3">MST</a>
-                            <a class="chip" href="#" data-i18n="subjectsPage.c1.link4">Google Classroom</a>
-                        </div>
-                    </article>
-
-                    <aside class="card">
-                        <h3 data-i18n="subjectsPage.assess">การประเมินผล</h3>
-                        <ul class="bullets">
-                            <li data-i18n="subjectsPage.c1.gr1">แบบฝึกหัด/งานย่อย 35%</li>
-                            <li data-i18n="subjectsPage.c1.gr2">MIDTERM 30%</li>
-                            <li data-i18n="subjectsPage.c1.gr3">FINAL 35%</li>
-                        </ul>
-
-                        <h4 data-i18n="subjectsPage.topics">หัวข้อโดยรวม</h4>
-                        <ul class="bullets">
-                            <div class="readmore" id="c1">
-                                <div class="readmore__content" style="--lines: 6;">
-                                    <li data-i18n="subjectsPage.c1.t1">Chapter 1</li>
-                                    <li data-i18n="subjectsPage.c1.t2">Chapter 2</li>
-                                    <li data-i18n="subjectsPage.c1.t3">Chapter 3</li>
-                                    <li data-i18n="subjectsPage.c1.t4">Chapter 4</li>
-                                    <li data-i18n="subjectsPage.c1.t5">Chapter 5</li>
-                                    <li data-i18n="subjectsPage.c1.t6">Chapter 6</li>
-                                    <li data-i18n="subjectsPage.c1.t4">Chapter 7</li>
-                                    <li data-i18n="subjectsPage.c1.t8">Chapter 8</li>
-                                    <li data-i18n="subjectsPage.c1.t9">Chapter 9</li>
-                                    <li data-i18n="subjectsPage.c1.t10">Chapter 10</li>
-                                    <li data-i18n="subjectsPage.c1.t11">Chapter 11</li>
-                                </div>
-                                <div class="readmore__fade" aria-hidden="true"></div>
-                                <button type="button" class="btn btn--outline btn--sm readmore__btn"
-                                    data-toggle="readmore" aria-controls="c1" aria-expanded="false">
-                                </button>
-                        </ul>
-                    </aside>
-                </div>
-                <h3 class="section-title" data-i18n="course.announcements.title"></h3>
-                <ul class="timeline js-news" data-course="SC602001" data-sort="pinnedThenDate" data-new-days="3"
-                    aria-live="polite"></ul>
-                <a class="link-more" href="announcements.html?course=SC602001"
-                    data-i18n="course.announcements.viewAll"></a>
-                <div class="back-top"><a href="#top" data-i18n="subjectsPage.backTop">↑ กลับไปด้านบน</a></div>
-            </div>
-        </section>
-
-        <!-- รายละเอียดวิชา 2 -->
-        <section id="SC602005" class="section anchor-section">
-            <div class="container">
-                <div class="course-header">
-                    <div>
-                        <h2 data-i18n="subjectsPage.c2.h2">SC602005: Probability &amp; Statistics</h2>
-                        <p class="muted" data-i18n="subjectsPage.c2.meta">ภาคต้น 2568 • 3(3-0-6) หน่วยกิต</p>
-                    </div>
-                    <div class="actions">
-                        <a class="btn btn--primary" href="files/SC65xxx-stat-ai-syllabus.pdf" target="_blank"
-                            rel="noopener" data-i18n="subjectsPage.btn.syllabus">Syllabus</a>
-                        <a class="btn btn--outline" href="#" target="_blank" rel="noopener"
-                            data-i18n="subjectsPage.btn.materials">Materials</a>
-                        <a class="btn btn--ghost btn--sm" href="portal.html?course=SC602005">ดูคะแนน</a>
-                    </div>
-                </div>
-
-                <div class="detail-grid">
-                    <article class="card">
-                        <h3 data-i18n="subjectsPage.info">ข้อมูลรายวิชา</h3>
-                        <ul class="kv">
-                            <li><b data-i18n="subjectsPage.labels.lecturerL">ผู้สอน</b> : <span
-                                    data-i18n="subjectsPage.c2.lecturerV">Thanawan Prahadchai</span></li>
-                            <li><b data-i18n="subjectsPage.labels.timeL">เวลา</b> : <span
-                                    data-i18n="subjectsPage.c2.timeV">ศุกร์ 09:00–12:00</span></li>
-                            <li><b data-i18n="subjectsPage.labels.placeL">สถานที่</b> : <span
-                                    data-i18n="subjectsPage.c2.placeV">Faculty of Science, KKU</span></li>
-                            <li><b data-i18n="subjectsPage.labels.toolsL">เครื่องมือ</b> : <span
-                                    data-i18n="subjectsPage.c2.toolsV">Python (pandas, scikit-learn)</span></li>
-                        </ul>
-
-                        <h4 data-i18n="subjectsPage.learning">Course description</h4>
-                        <ul class="bullets">
-                            <li class="no-marker">
-                                <div class="readmore" id="c1">
-                                    <div class="readmore__content" style="--lines: 3;">
-                                        <span data-i18n="subjectsPage.c2.lo1">
-                                            Understand the workflow of statistical data projects
-                                            Apply basic ML to research problems
-                                            Write reports / reproduce experiments
-                                        </span>
-                                    </div>
-                                    <div class="readmore__fade" aria-hidden="true"></div>
-                                    <button type="button" class="btn btn--outline btn--sm readmore__btn"
-                                        data-toggle="readmore" aria-controls="c1" aria-expanded="false">
-                                    </button>
-                                </div>
-                        </ul>
-                        <div class="resource-chips chips">
-                            <a class="chip" href="#" data-i18n="subjectsPage.c2.link1"></a>
-                            <a class="chip" href="#" data-i18n="subjectsPage.c2.link2"></a>
-                            <a class="chip" href="#" data-i18n="subjectsPage.c2.link3"></a>
-                        </div>
-                    </article>
-
-                    <aside class="card">
-                        <h3 data-i18n="subjectsPage.assess">การประเมินผล</h3>
-                        <ul class="bullets">
-                            <li data-i18n="subjectsPage.c2.gr1">Test-1 10%</li>
-                            <li data-i18n="subjectsPage.c2.gr2">Test-2 10%</li>
-                            <li data-i18n="subjectsPage.c2.gr3">Test-2 10%</li>
-                            <li data-i18n="subjectsPage.c2.gr4">Test-2 10%</li>
-                            <li data-i18n="subjectsPage.c2.gr5">Final Project 30%</li>
-                        </ul>
-
-                        <h4 data-i18n="subjectsPage.topics">หัวข้อโดยรวม</h4>
-                        <ul class="bullets">
-                            <div class="readmore" id="c1">
-                                <div class="readmore__content" style="--lines: 4;">
-                                    <li data-i18n="subjectsPage.c2.t1">Chapter 1</li>
-                                    <li data-i18n="subjectsPage.c2.t2">Chapter 2</li>
-                                    <li data-i18n="subjectsPage.c2.t3">Chapter 3</li>
-                                    <li data-i18n="subjectsPage.c2.t4">Chapter 4</li>
-                                    <li data-i18n="subjectsPage.c2.t5">Chapter 5</li>
-                                    <li data-i18n="subjectsPage.c2.t6">Chapter 6</li>
-                                    <li data-i18n="subjectsPage.c2.t7">Chapter 7</li>
-                                </div>
-                                <div class="readmore__fade" aria-hidden="true"></div>
-                                <button type="button" class="btn btn--outline btn--sm readmore__btn"
-                                    data-toggle="readmore" aria-controls="c1" aria-expanded="false">
-                                </button>
-                        </ul>
-                    </aside>
-                </div>
-                <h3 class="section-title" data-i18n="course.announcements.title"></h3>
-                <ul class="timeline js-news" data-course="SC602005" data-sort="pinnedThenDate" data-new-days="3"
-                    aria-live="polite"></ul>
-                <a class="link-more" href="announcements.html?course=SC602005"
-                    data-i18n="course.announcements.viewAll"></a>
-                <div class="back-top"><a href="#top" data-i18n="subjectsPage.backTop">↑ กลับไปด้านบน</a></div>
-            </div>
-        </section>
+        <!-- รายละเอียดรายวิชาแต่ละตัว (จะถูกเติมโดย JS) -->
+        <div id="courses-sections"></div>
     </main>
 
     <footer class="site-footer">
